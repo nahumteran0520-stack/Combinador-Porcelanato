@@ -29,10 +29,10 @@
     h2 { color: #00adb5; font-size: 1rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2d2d2d; padding-bottom: 6px; }
     h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500; }
 
-    /* Contenedor del Visualizador */
+    /* Visualizador 3D Centrado */
     .preview-section { display: flex; flex-direction: column; align-items: center; }
     
-    .viewport-3d {
+    .habitacion {
       width: 100%;
       height: 480px;
       border-radius: 8px;
@@ -40,35 +40,30 @@
       background: #000;
       border: 1px solid #333;
       position: relative;
-      display: flex;
-      flex-direction: column;
+      transition: filter 0.3s ease;
     }
 
-    /* Estructura para superponer pared y piso en el contenedor */
-    .sim-pared {
-      width: 100%;
-      height: 70%;
-      object-fit: cover;
+    /* Modos de Luz */
+    .habitacion.modo-dia { filter: brightness(1) contrast(1); }
+    .habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
+
+    /* Estructura 3D */
+    #pared-fondo, #pared-izq, #pared-der, #piso {
+      position: absolute;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 0.3s ease;
     }
 
-    .sim-piso {
-      width: 100%;
-      height: 30%;
-      object-fit: cover;
-    }
+    #pared-fondo { width: 60%; height: 60%; top: 10%; left: 20%; border: 1px solid rgba(255, 255, 255, 0.05); }
+    #pared-izq { width: 20%; height: 60%; top: 10%; left: 0; transform: skewY(15deg); transform-origin: right center; }
+    #pared-der { width: 20%; height: 60%; top: 10%; right: 0; transform: skewY(-15deg); transform-origin: left center; }
+    #piso { width: 100%; height: 30%; bottom: 0; left: 0; background-color: #111; }
 
     /* Catálogo y Botones */
-    .controls-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #282828;
-      padding: 5px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
+    .controls-bar { display: flex; align-items: center; gap: 8px; background: #282828; padding: 5px; border-radius: 6px; margin-bottom: 10px; }
 
-    .btn-light {
+    .btn-luz {
       background: transparent;
       border: none;
       color: #aaa;
@@ -81,14 +76,9 @@
       transition: 0.2s;
     }
 
-    .btn-light.active { background: #00adb5; color: white; }
+    .btn-luz.activo { background: #00adb5; color: white; }
 
-    .grid-porcelanatos {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+    .grid-porcelanatos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
 
     .tile-card {
       width: 100%;
@@ -101,10 +91,7 @@
       background: #252525;
     }
 
-    .tile-card:hover {
-      transform: scale(1.04);
-      border-color: #00adb5;
-    }
+    .tile-card:hover { transform: scale(1.04); border-color: #00adb5; }
 
     /* Formulario */
     .form-group { margin-bottom: 8px; }
@@ -133,91 +120,111 @@
     }
 
     .btn-calc:hover { background: #00e676; }
+
+    /* Recuadro de Resultados */
+    .res-box {
+      margin-top: 12px;
+      padding: 10px;
+      background: #282828;
+      border-radius: 6px;
+      border-left: 4px solid #00adb5;
+      font-size: 0.8rem;
+      display: none;
+    }
+    .res-box p { margin-bottom: 4px; color: #ddd; }
+    .res-box span { font-weight: bold; color: #00adb5; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- COLUMNA 1: CALCULADORA -->
+    <!-- COLUMNA 1: CALCULADORA DE MATERIALES -->
     <section class="panel">
       <h2>Calcular Materiales</h2>
       
       <p style="color: #ff9800; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px;">🧱 Paredes</p>
       <div class="form-group">
         <label>Alto de pared (m):</label>
-        <input type="number" id="altoPared" step="0.01" placeholder="Ej: 2.80">
+        <input type="number" id="pared-alto" step="0.01" placeholder="Ej: 2.80">
       </div>
       <div class="form-group">
         <label>Ancho de pared (m):</label>
-        <input type="number" id="anchoPared" step="0.01" placeholder="Ej: 3.50">
+        <input type="number" id="pared-ancho" step="0.01" placeholder="Ej: 3.50">
       </div>
       <div class="form-group">
         <label>M² por caja (Pared):</label>
-        <input type="number" id="m2CajaPared" step="0.01" value="1.44">
+        <input type="number" id="pared-caja" step="0.01" value="1.44">
       </div>
 
       <p style="color: #ff9800; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; margin-top: 10px;">📐 Piso</p>
       <div class="form-group">
         <label>Largo de piso (m):</label>
-        <input type="number" id="largoPiso" step="0.01" placeholder="Ej: 4.00">
+        <input type="number" id="piso-largo" step="0.01" placeholder="Ej: 4.00">
       </div>
       <div class="form-group">
         <label>Ancho de piso (m):</label>
-        <input type="number" id="anchoPiso" step="0.01" placeholder="Ej: 3.50">
+        <input type="number" id="piso-ancho" step="0.01" placeholder="Ej: 3.50">
       </div>
       <div class="form-group">
         <label>M² por caja (Piso):</label>
-        <input type="number" id="m2CajaPiso" step="0.01" value="1.44">
+        <input type="number" id="piso-caja" step="0.01" value="1.44">
       </div>
 
-      <button class="btn-calc" onclick="calcularEstimado()">Calcular Estimado</button>
+      <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
+
+      <!-- Resultados -->
+      <div id="resultado-calculo" class="res-box">
+        <p>Área Pared: <span id="res-area-pared">0</span> m² (<span id="res-cajas-pared">0</span> cajas)</p>
+        <p>Área Piso: <span id="res-area-piso">0</span> m² (<span id="res-cajas-piso">0</span> cajas)</p>
+        <p style="margin-top: 6px; border-top: 1px solid #444; padding-top: 4px;">Pego Estimado: <span id="res-total-pego">0</span> sacos</p>
+      </div>
     </section>
 
-    <!-- COLUMNA 2: VISUALIZADOR CON ESTRUCTURA COMPATIBLE -->
+    <!-- COLUMNA 2: VISUALIZADOR 3D -->
     <section class="panel preview-section">
       <h2>Visualizador 3D</h2>
-      <div id="simulador" class="viewport-3d">
-        <img id="pared" class="sim-pared" src="piso-marmoleadoblanco-144.jpg" alt="Pared">
-        <img id="piso" class="sim-piso" src="piso-marmoleadonegro-358.jpg" alt="Piso">
+      <div class="habitacion modo-dia">
+        <div id="pared-fondo"></div>
+        <div id="pared-izq"></div>
+        <div id="pared-der"></div>
+        <div id="piso"></div>
       </div>
     </section>
 
-   <!-- COLUMNA 3: CATÁLOGO -->
-<section class="panel">
-  <h2>Catálogo</h2>
-  
-  <div class="controls-bar">
-    <span style="font-size: 0.75rem; color: #aaa;">Luz:</span>
-    <button class="btn-light active" onclick="cambiarLuz('dia')">☀️ Día</button>
-    <button class="btn-light" onclick="cambiarLuz('noche')">🌙 Noche</button>
-  </div>
+    <!-- COLUMNA 3: CATÁLOGO -->
+    <section class="panel">
+      <h2>Catálogo</h2>
+      
+      <div class="controls-bar">
+        <span style="font-size: 0.75rem; color: #aaa;">Luz:</span>
+        <button class="btn-luz activo" onclick="cambiarLuz('dia', this)">☀️ Día</button>
+        <button class="btn-luz" onclick="cambiarLuz('noche', this)">🌙 Noche</button>
+      </div>
 
-  <h3>Porcelanato Pared</h3>
-  <div class="grid-porcelanatos">
-    <!-- Asumiendo que tu función de pared es cambiarPared (en singular) -->
-    <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-    <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadonegro-358.jpg')" alt="Negro">
-    <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPared('piso-griscemento-350.jpg')" alt="Gris Cemento">
-    <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadoazul-357.jpg')" alt="Azul">
-    <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-    <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPared('pisobeige-343.jpg')" alt="Beige">
-  </div>
+      <h3>Porcelanato Pared</h3>
+      <div class="grid-porcelanatos">
+        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadonegro-358.jpg')" alt="Negro">
+        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarParedes('piso-griscemento-350.jpg')" alt="Gris Cemento">
+        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoazul-357.jpg')" alt="Azul">
+        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarParedes('pisobeige-343.jpg')" alt="Beige">
+      </div>
 
-  <h3>Porcelanato Piso</h3>
-  <div class="grid-porcelanatos">
-    <!-- Tus imágenes y funciones exactas integradas a la tarjeta simétrica -->
-    <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-    <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
-    <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
-    <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
-    <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-    <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
-    <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
-    <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
-  </div>
-</section>
-    
+      <h3>Porcelanato Piso</h3>
+      <div class="grid-porcelanatos">
+        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
+        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
+        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
+        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+        <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
+        <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
+        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
+      </div>
+    </section>
+
   </div>
 
   <script src="script.js"></script>
