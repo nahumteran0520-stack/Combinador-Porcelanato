@@ -47,61 +47,68 @@
     .habitacion.modo-dia { filter: brightness(1) contrast(1); }
     .habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
 
-   /* VISUALIZADOR 3D SIMÉTRICO Y ALINEADO */
+   /* CONTENEDOR HABITACIÓN 3D PERFECTA */
 .habitacion {
   width: 100%;
   height: 480px;
   border-radius: 8px;
   overflow: hidden;
-  background: #111;
+  background: #d0d0d0; /* Color del Techo */
   border: 1px solid #333;
   position: relative;
   transition: filter 0.3s ease;
 }
 
-/* Pared del Fondo */
+/* Pared del Fondo (Centrada) */
 #pared-fondo {
-  width: 60%;
-  height: 65%;
-  top: 0;
-  left: 20%;
   position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 60%;
+  height: 50%;
+  background-size: cover;
+  background-position: center;
+  z-index: 2;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Pared Izquierda (Perspectiva Trapezoidal) */
+#pared-izq {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 65%;
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(0 0, 100% 23%, 100% 100%, 0 100%);
   z-index: 1;
 }
 
-/* Pared Izquierda (Perspectiva Recta) */
-#pared-izq {
-  width: 20%;
-  height: 65%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  transform: skewY(20deg);
-  transform-origin: top right;
-  z-index: 2;
-}
-
-/* Pared Derecha (Perspectiva Recta) */
+/* Pared Derecha (Perspectiva Trapezoidal) */
 #pared-der {
-  width: 20%;
-  height: 65%;
+  position: absolute;
   top: 0;
   right: 0;
-  position: absolute;
-  transform: skewY(-20deg);
-  transform-origin: top left;
-  z-index: 2;
+  width: 20%;
+  height: 65%;
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(0 23%, 100% 0, 100% 100%, 0 100%);
+  z-index: 1;
 }
 
-/* Piso Ensamble Perfecto */
+/* Piso en Perspectiva (Perspectiva Fuga) */
 #piso {
-  width: 100%;
-  height: 35%;
+  position: absolute;
   bottom: 0;
   left: 0;
-  position: absolute;
+  width: 100%;
+  height: 35%;
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(0 100%, 20% 0, 80% 0, 100% 100%);
   z-index: 3;
-  box-shadow: inset 0 10px 15px rgba(0,0,0,0.5);
 }
     /* Catálogo y Botones */
     .controls-bar { display: flex; align-items: center; gap: 8px; background: #282828; padding: 5px; border-radius: 6px; margin-bottom: 10px; }
