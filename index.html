@@ -47,19 +47,62 @@
     .habitacion.modo-dia { filter: brightness(1) contrast(1); }
     .habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
 
-    /* Estructura 3D */
-    #pared-fondo, #pared-izq, #pared-der, #piso {
-      position: absolute;
-      background-size: cover;
-      background-position: center;
-      transition: background-image 0.3s ease;
-    }
+   /* VISUALIZADOR 3D SIMÉTRICO Y ALINEADO */
+.habitacion {
+  width: 100%;
+  height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid #333;
+  position: relative;
+  transition: filter 0.3s ease;
+}
 
-    #pared-fondo { width: 60%; height: 60%; top: 10%; left: 20%; border: 1px solid rgba(255, 255, 255, 0.05); }
-    #pared-izq { width: 20%; height: 60%; top: 10%; left: 0; transform: skewY(15deg); transform-origin: right center; }
-    #pared-der { width: 20%; height: 60%; top: 10%; right: 0; transform: skewY(-15deg); transform-origin: left center; }
-    #piso { width: 100%; height: 30%; bottom: 0; left: 0; background-color: #111; }
+/* Pared del Fondo */
+#pared-fondo {
+  width: 60%;
+  height: 65%;
+  top: 0;
+  left: 20%;
+  position: absolute;
+  z-index: 1;
+}
 
+/* Pared Izquierda (Perspectiva Recta) */
+#pared-izq {
+  width: 20%;
+  height: 65%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  transform: skewY(20deg);
+  transform-origin: top right;
+  z-index: 2;
+}
+
+/* Pared Derecha (Perspectiva Recta) */
+#pared-der {
+  width: 20%;
+  height: 65%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  transform: skewY(-20deg);
+  transform-origin: top left;
+  z-index: 2;
+}
+
+/* Piso Ensamble Perfecto */
+#piso {
+  width: 100%;
+  height: 35%;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  z-index: 3;
+  box-shadow: inset 0 10px 15px rgba(0,0,0,0.5);
+}
     /* Catálogo y Botones */
     .controls-bar { display: flex; align-items: center; gap: 8px; background: #282828; padding: 5px; border-radius: 6px; margin-bottom: 10px; }
 
