@@ -285,11 +285,9 @@
 
   </div>
 
-
   <script src="script.js"></script>
 </body>
 </html>
-// Variables para almacenar lo que el usuario va seleccionando
 let paredActual = "Predeterminada";
 let pisoActual = "Predeterminado";
 
@@ -311,7 +309,7 @@ function registrarVisitaEnSheets(pared, piso) {
   }).catch(error => console.error("Error al registrar:", error));
 }
 
-// Modifica tus funciones de cambio para actualizar y enviar el registro:
+
 function cambiarParedes(imagen) {
   paredActual = imagen;
   document.getElementById('pared-fondo').style.backgroundImage = `url('${imagen}')`;
