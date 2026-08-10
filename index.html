@@ -232,10 +232,22 @@
       <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
 
       <!-- Resultados -->
+     <div class="form-group">
+        <label>Tipo de Pego / Adhesivo:</label>
+        <select id="tipo-pego" style="width: 100%; padding: 6px 8px; border-radius: 5px; border: 1px solid #383838; background: #2b2b2b; color: #fff; font-size: 0.85rem;">
+          <option value="10">Pego de 10 kg (Rendimiento: 1 m² / saco)</option>
+          <option value="14">Pego de 14 kg (Rendimiento: 1.4 m² / saco)</option>
+        </select>
+      </div>
+
+      <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
+
+      <!-- Resultados -->
       <div id="resultado-calculo" class="res-box">
         <p>Área Pared: <span id="res-area-pared">0</span> m² (<span id="res-cajas-pared">0</span> cajas)</p>
         <p>Área Piso: <span id="res-area-piso">0</span> m² (<span id="res-cajas-piso">0</span> cajas)</p>
-        <p style="margin-top: 6px; border-top: 1px solid #444; padding-top: 4px;">Pego Estimado: <span id="res-total-pego">0</span> sacos</p>
+        <p style="margin-top: 6px; border-top: 1px solid #444; padding-top: 4px;">Área Global: <span id="res-area-global">0</span> m²</p>
+        <p>Pego Requerido: <span id="res-total-pego">0</span> sacos (<span id="nombre-pego-seleccionado">10 kg</span>)</p>
       </div>
     </section>
 
