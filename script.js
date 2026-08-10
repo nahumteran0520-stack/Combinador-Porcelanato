@@ -111,6 +111,74 @@ function calcularMaterialesTotales() {
     return;
   }
 
+  // CÁLCULO EXACTO PARED (Alto x Ancho)
+  const areaParedTotal = altoPared * anchoPared;
+  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
+
+  // CÁLCULO EXACTO PISO (Largo x Ancho)
+  const areaPisoTotal = largoPiso * anchoPiso;
+  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
+
+  // CÁLCULO TOTAL PEGO EXACTO (Sumatoria de áreas / 1.5)
+  const areaGlobal = areaParedTotal + areaPisoTotal;
+  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
+
+  // Mostrar Resultados
+  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
+  document.getElementById('res-cajas-pared').innerText = cajasPared;
+
+  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
+  document.getElementById('res-cajas-piso').innerText = cajasPiso;
+
+  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
+
+  document.getElementById('resultado-calculo').style.display = 'block';
+}
+
+  // Obtener valores de Piso
+  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
+  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
+  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
+
+  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
+    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
+    return;
+  }
+
+  // CÁLCULO EXACTO PARED (Alto x Ancho)
+  const areaParedTotal = altoPared * anchoPared;
+  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
+
+  // CÁLCULO EXACTO PISO (Largo x Ancho)
+  const areaPisoTotal = largoPiso * anchoPiso;
+  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
+
+  // CÁLCULO TOTAL PEGO EXACTO (Sumatoria de áreas / 1.5)
+  const areaGlobal = areaParedTotal + areaPisoTotal;
+  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
+
+  // Mostrar Resultados
+  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
+  document.getElementById('res-cajas-pared').innerText = cajasPared;
+
+  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
+  document.getElementById('res-cajas-piso').innerText = cajasPiso;
+
+  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
+
+  document.getElementById('resultado-calculo').style.display = 'block';
+}
+
+  // Obtener valores de Piso
+  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
+  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
+  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
+
+  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
+    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
+    return;
+  }
+
   // CÁLCULO PARED (Alto x Ancho x 1.10)
   const areaParedTotal = (altoPared * anchoPared) * 1.10;
   const cajasPared = Math.ceil(areaParedTotal / cajaPared);
