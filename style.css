@@ -95,7 +95,47 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+/* Botones de Iluminación */
+.control-iluminacion {
+  margin-bottom: 15px;
+}
 
+.botones-luz {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-luz {
+  flex: 1;
+  padding: 8px 12px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.btn-luz.activo {
+  background: #00a8ff;
+  border-color: #00a8ff;
+  font-weight: bold;
+}
+
+/* Efectos de Iluminación en la Habitación */
+.habitacion {
+  transition: filter 0.5s ease, background-color 0.5s ease;
+}
+
+/* Modo Día (Por defecto) */
+.habitacion.modo-dia {
+  filter: brightness(1) contract(1);
+}
+
+/* Modo Noche (Luz Cálida y Tenue) */
+.habitacion.modo-noche {
+  filter: brightness(0.7) sepia(0.25) hue-rotate(-10deg);
+}
 .thumb {
   width: 100%;
   height: 70px;
