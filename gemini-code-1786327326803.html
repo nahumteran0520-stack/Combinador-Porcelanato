@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Porcelanatos 3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Escena 3D con perspectiva -->
+    <div class="habitacion">
+      <div id="techo" class="techo"></div>
+      <div id="pared-izq" class="pared-lateral izq"></div>
+      <div id="pared-fondo" class="pared-fondo"></div>
+      <div id="pared-der" class="pared-lateral der"></div>
+      <div id="piso" class="piso"></div>
+    </div>
+
+    <!-- Catálogo lateral -->
+    <div class="sidebar">
+      <h2>Catálogo</h2>
+
+      <h3>Paredes</h3>
+      <div class="galeria">
+        <img src="marmol-blanco.jpg" class="thumb" onclick="cambiarParedes('marmol-blanco.jpg')" alt="Mármol Blanco">
+        <img src="negro-marquina.jpg" class="thumb" onclick="cambiarParedes('negro-marquina.jpg')" alt="Negro Marquina">
+        <img src="cemento-gris.jpg" class="thumb" onclick="cambiarParedes('cemento-gris.jpg')" alt="Cemento Gris">
+      </div>
+
+      <h3>Piso</h3>
+      <div class="galeria">
+        <img src="negro-marquina.jpg" class="thumb" onclick="cambiarPiso('negro-marquina.jpg')" alt="Negro Marquina">
+        <img src="marmol-blanco.jpg" class="thumb" onclick="cambiarPiso('marmol-blanco.jpg')" alt="Mármol Blanco">
+        <img src="madera.jpg" class="thumb" onclick="cambiarPiso('madera.jpg')" alt="Madera">
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
