@@ -1,26 +1,25 @@
-// PEGA AQUÍ LA URL QUE COPIASTE DE GOOGLE APPS SCRIPT:
-const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbweGwf3Hc4lU-ZkY4rgxK4mKRMnV54Px0bcvLphOAXqG-fdL2C_Urle-2b9htS4heo1/exec";
+// URL de tu Google Apps Script
+const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/TU_NUEVA_URL_AQUI/exec";
 
-// Variables para recordar la selección actual del usuario
 let paredActual = "piso-marmoleadoblanco-344.jpg";
 let pisoActual = "piso-marmoleadonegro-358.jpg";
 
-// Función que envía los datos a tu Google Sheet
+// Enviar datos a Google Sheets
 function registrarEnSheet(opcionPared, opcionPiso) {
-  if (GOOGLE_WEB_APP_URL.includes("TU_SCRIPT_ID_AQUI")) return;
+  if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_NUEVA_URL_AQUI")) return;
+
+  const formData = new FormData();
+  formData.append("pared", opcionPared);
+  formData.append("piso", opcionPiso);
 
   fetch(GOOGLE_WEB_APP_URL, {
     method: "POST",
     mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      pared: opcionPared,
-      piso: opcionPiso
-    })
-  }).catch(err => console.error("Error al registrar:", err));
+    body: formData
+  }).catch(err => console.error("Error al registrar en Google Sheets:", err));
 }
 
-// Funciones para cambiar superficies y guardar la selección
+// Cambiar texturas de pared
 function cambiarParedes(imagen) {
   paredActual = imagen;
   const ruta = `url('${imagen}')`;
@@ -28,35 +27,41 @@ function cambiarParedes(imagen) {
   document.getElementById('pared-izq').style.backgroundImage = ruta;
   document.getElementById('pared-der').style.backgroundImage = ruta;
   
-  // Registra la combinación elegida
   registrarEnSheet(paredActual, pisoActual);
 }
 
+// Cambiar textura de piso
 function cambiarPiso(imagen) {
   pisoActual = imagen;
   document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
   
-  // Registra la combinación elegida
   registrarEnSheet(paredActual, pisoActual);
 }
 
-// Registrar ingreso inicial
-window.onload = function() {
-  registrarEnSheet(paredActual, pisoActual);
-};
-function cambiarLuz(modo) {
+// Función corregida de Cambio de Luz (Día / Noche)
+function cambiarLuz(modo, elementoBtn) {
   const habitacion = document.querySelector('.habitacion');
   const botones = document.querySelectorAll('.btn-luz');
 
+  // Remover estado activo de todos los botones
   botones.forEach(btn => btn.classList.remove('activo'));
 
+  // Aplicar efecto en la habitación
   if (modo === 'noche') {
     habitacion.classList.remove('modo-dia');
     habitacion.classList.add('modo-noche');
-    event.target.classList.add('activo');
   } else {
     habitacion.classList.remove('modo-noche');
     habitacion.classList.add('modo-dia');
-    event.target.classList.add('activo');
+  }
+
+  // Activar botón presionado
+  if (elementoBtn) {
+    elementoBtn.classList.add('activo');
   }
 }
+
+// Registro inicial
+window.onload = function() {
+  registrarEnSheet(paredActual, pisoActual);
+};
