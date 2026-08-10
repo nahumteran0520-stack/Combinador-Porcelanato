@@ -3,33 +3,39 @@ const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw7CEmtB5yel
 let paredActual = "piso-marmoleadoblanco-344.jpg";
 let pisoActual = "piso-marmoleadonegro-358.jpg";
 
-// Variables para la rotación suave (Inercia)
+// Variables para la rotación suave (Inercia 3D)
 let rotY = 0;
 let objetivoRotY = 0;
 let isDragging = false;
 let lastX = 0;
 
 // --- REGISTRO EN GOOGLE SHEETS ---
-function registrarEnSheet(opcionPared, opcionPiso) {
-    if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_NUEVA_URL_AQUI")) return;
-    const formData = new FormData();
-    formData.append("pared", opcionPared);
-    formData.append("piso", opcionPiso);
-    fetch(GOOGLE_WEB_APP_URL, { method: "POST", mode: "no-cors", body: formData }).catch(err => console.error(err));
+function registrarVisitaEnSheets(pared, piso) {
+    if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_URL")) return;
+    const datos = { pared: pared, piso: piso };
+
+    fetch(GOOGLE_WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+    }).catch(error => console.error("Error al registrar:", error));
 }
 
 // --- TEXTURAS ---
 function cambiarParedes(imagen) {
     paredActual = imagen;
     const ruta = `url('${imagen}')`;
-    document.querySelectorAll('#pared-fondo, #pared-izq, #pared-der').forEach(el => el.style.backgroundImage = ruta);
-    registrarEnSheet(paredActual, pisoActual);
+    document.getElementById('pared-fondo').style.backgroundImage = ruta;
+    document.getElementById('pared-izq').style.backgroundImage = ruta;
+    document.getElementById('pared-der').style.backgroundImage = ruta;
+    registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
 function cambiarPiso(imagen) {
     pisoActual = imagen;
     document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
-    registrarEnSheet(paredActual, pisoActual);
+    registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
 // --- ILUMINACIÓN ---
@@ -52,7 +58,6 @@ function calcularMaterialesTotales() {
     
     const areaPared = getVal('pared-alto', 0) * getVal('pared-ancho', 0);
     const areaPiso = getVal('piso-largo', 0) * getVal('piso-ancho', 0);
-    
     const selectPego = document.getElementById('tipo-pego');
     const rendimientoPego = selectPego ? parseFloat(selectPego.value) : 1.5;
 
@@ -72,19 +77,18 @@ function calcularMaterialesTotales() {
     document.getElementById('resultado-calculo').style.display = 'block';
 }
 
-// --- LÓGICA DE GIRO SUAVE (INERCIA) ---
-// --- LÓGICA DE GIRO 3D REAL ---
+// --- LÓGICA DE GIRO 3D REAL (INERCIA) ---
 function animarRotacion() {
-    rotY += (objetivoRotY - rotY) * 0.08; // Un poco más rápido
+    rotY += (objetivoRotY - rotY) * 0.08; 
     const habitacionEl = document.getElementById('habitacion');
     if (habitacionEl) {
-        // Rotamos en Y para el giro, y mantenemos una inclinación leve en X para que se vea "desde arriba"
+        // Mantiene la inclinación fija en X y rota suavemente en el eje Y
         habitacionEl.style.transform = `rotateX(-10deg) rotateY(${rotY}deg)`;
     }
     requestAnimationFrame(animarRotacion);
 }
 
-// Eventos de Mouse / Tactil para girar la habitación
+// Eventos de Mouse para interactuar con la habitación 3D
 document.addEventListener('mousedown', (e) => { 
     if(e.target.closest('#habitacion')) {
         isDragging = true; 
@@ -101,7 +105,24 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// Inicialización al cargar la página
+// Soporte táctil para celulares y tablets
+document.addEventListener('touchstart', (e) => {
+    if(e.target.closest('#habitacion')) {
+        isDragging = true;
+        lastX = e.touches[0].clientX;
+    }
+});
+
+document.addEventListener('touchend', () => isDragging = false);
+
+document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+        objetivoRotY += (e.touches[0].clientX - lastX) * 0.4;
+        lastX = e.touches[0].clientX;
+    }
+});
+
+// Inicialización
 window.onload = () => {
     cambiarParedes(paredActual);
     cambiarPiso(pisoActual);
