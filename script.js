@@ -1,5 +1,5 @@
 // PEGA AQUÍ LA URL QUE COPIASTE DE GOOGLE APPS SCRIPT:
-const GOOGLE_WEB_APP_URL = https://script.google.com/macros/s/AKfycbweGwf3Hc4lU-ZkY4rgxK4mKRMnV54Px0bcvLphOAXqG-fdL2C_Urle-2b9htS4heo1/exec;
+const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbweGwf3Hc4lU-ZkY4rgxK4mKRMnV54Px0bcvLphOAXqG-fdL2C_Urle-2b9htS4heo1/exec";
 
 // Variables para recordar la selección actual del usuario
 let paredActual = "piso-marmoleadoblanco-344.jpg";
