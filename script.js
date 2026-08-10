@@ -115,4 +115,4 @@ window.onload = function() {
   document.getElementById('res-total-pego').innerText = sacosPegoTotal;
 
   document.getElementById('resultado-calculo').style.display = 'block';
-}
+
