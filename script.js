@@ -77,9 +77,19 @@ function calcularMaterialesTotales() {
   const anchoPiso = obtenerNumero('piso-ancho', 0);
   const cajaPiso = obtenerNumero('piso-caja', 1.44);
 
-  // Obtener el tipo de pego seleccionado (10kg o 14kg)
+ // Obtener el tipo de pego seleccionado (10kg o 14kg)
   const selectPego = document.getElementById('tipo-pego');
   const tipoPegoValor = selectPego ? parseInt(selectPego.value) : 10;
+
+  let rendimientoSaco = 1; 
+  let textoPegoNombre = "10 kg";
+
+  if (tipoPegoValor === 14) {
+    rendimientoSaco = 1.5; // Ajusta este número si un saco de 14kg rinde otra cantidad de m²
+    textoPegoNombre = "14 kg";
+  }
+
+  const sacosPego = areaTotalGlobal > 0 ? Math.ceil(areaTotalGlobal / rendimientoSaco) : 0;
 
   if (altoPared <= 0 && anchoPared <= 0 && largoPiso <= 0 && anchoPiso <= 0) {
     alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
