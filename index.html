@@ -283,12 +283,12 @@
     <section class="panel">
       <h2>Catálogo</h2>
       
-      <div class="controls-bar">
-        <span style="font-size: 0.75rem; color: #aaa;">Luz:</span>
-        <button class="btn-luz activo" onclick="cambiarLuz('dia', this)">☀️ Día</button>
-        <button class="btn-luz" onclick="cambiarLuz('noche', this)">🌙 Noche</button>
-      </div>
-
+     <div class="controls-bar" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px;">
+  <button class="btn-luz activo" onclick="cambiarLuz('dia', this)">☀️ Día</button>
+  <button class="btn-luz" onclick="cambiarLuz('noche', this)">🌙 Noche</button>
+  <button class="btn-luz" onclick="cambiarLuz('calida', this)">💡 Cálida</button>
+  <button class="btn-luz" onclick="cambiarLuz('fria', this)">❄️ Fría</button>
+</div>
       <h3>Porcelanato Pared</h3>
       <div class="grid-porcelanatos">
         <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
