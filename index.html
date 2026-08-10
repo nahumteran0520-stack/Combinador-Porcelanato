@@ -37,7 +37,7 @@
       height: 480px;
       border-radius: 8px;
       overflow: hidden;
-      background: #000;
+      background: #d0d0d0; /* Techo gris claro */
       border: 1px solid #333;
       position: relative;
       transition: filter 0.3s ease;
@@ -47,77 +47,62 @@
     .habitacion.modo-dia { filter: brightness(1) contrast(1); }
     .habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
 
-/* HABITACIÓN 3D SELLADA Y GEOMÉTRICAMENTE PERFECTA */
-.habitacion {
-  width: 100%;
-  height: 480px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #d0d0d0; /* Techo gris claro */
-  border: 1px solid #333;
-  position: relative;
-  transition: filter 0.3s ease;
-}
+    /* Pared del Fondo */
+    #pared-fondo {
+      position: absolute;
+      top: 15%;
+      left: 20%;
+      width: 60%;
+      height: 50%;
+      background-size: 140px 140px;
+      background-repeat: repeat;
+      background-position: center;
+      z-index: 1;
+    }
 
-/* Modos de Luz */
-.habitacion.modo-dia { filter: brightness(1) contrast(1); }
-.habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
+    /* Pared Izquierda */
+    #pared-izq {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20%;
+      height: 100%;
+      background-size: 140px 140px;
+      background-repeat: repeat;
+      background-position: center;
+      clip-path: polygon(0 0, 100% 15%, 100% 65%, 0 100%);
+      z-index: 2;
+    }
 
-/* Pared del Fondo */
-#pared-fondo {
-  position: absolute;
-  top: 15%;
-  left: 20%;
-  width: 60%;
-  height: 50%;
-  background-size: 140px 140px; /* Tamaño de cuadrícula uniforme */
-  background-repeat: repeat;
-  background-position: center;
-  z-index: 1;
-}
+    /* Pared Derecha */
+    #pared-der {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20%;
+      height: 100%;
+      background-size: 140px 140px;
+      background-repeat: repeat;
+      background-position: center;
+      clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 65%);
+      z-index: 2;
+    }
 
-/* Pared Izquierda (Sella desde el techo hasta la esquina inferior exacta) */
-#pared-izq {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 100%;
-  background-size: 140px 140px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 0, 100% 15%, 100% 65%, 0 100%);
-  z-index: 2;
-}
+    /* Piso */
+    #piso {
+      position: absolute;
+      top: 65%;
+      left: 0;
+      width: 100%;
+      height: 35%;
+      background-size: 140px 140px;
+      background-repeat: repeat;
+      background-position: center;
+      clip-path: polygon(0 100%, 20% 0, 80% 0, 100% 100%);
+      z-index: 3;
+      box-shadow: inset 0 8px 16px rgba(0,0,0,0.4);
+    }
 
-/* Pared Derecha (Sella desde el techo hasta la esquina inferior exacta) */
-#pared-der {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 20%;
-  height: 100%;
-  background-size: 140px 140px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 65%);
-  z-index: 2;
-}
-
-/* Piso (Conecta de forma hermética con el fondo y los laterales) */
-#piso {
-  position: absolute;
-  top: 65%;
-  left: 0;
-  width: 100%;
-  height: 35%;
-  background-size: 140px 140px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 100%, 20% 0, 80% 0, 100% 100%);
-  z-index: 3;
-  box-shadow: inset 0 8px 16px rgba(0,0,0,0.4);
-}
     /* Catálogo y Botones */
     .controls-bar { display: flex; align-items: center; gap: 8px; background: #282828; padding: 5px; border-radius: 6px; margin-bottom: 10px; }
 
@@ -229,10 +214,7 @@
         <input type="number" id="piso-caja" step="0.01" value="1.44">
       </div>
 
-      <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
-
-      <!-- Resultados -->
-    <div class="form-group">
+      <div class="form-group" style="margin-top: 8px;">
         <label>Tipo de Pego / Adhesivo:</label>
         <select id="tipo-pego" onchange="calcularMaterialesTotales()" style="width: 100%; padding: 6px 8px; border-radius: 5px; border: 1px solid #383838; background: #2b2b2b; color: #fff; font-size: 0.85rem;">
           <option value="10">Pego de 10 kg (Rendimiento: 1 m² / saco)</option>
