@@ -22,10 +22,10 @@ function registrarEnSheet(opcionPared, opcionPiso) {
 // Cambiar texturas de pared
 function cambiarParedes(imagen) {
   paredActual = imagen;
-  const ruta = `url('${imagen}')`;
-  document.getElementById('pared-fondo').style.backgroundImage = ruta;
-  document.getElementById('pared-izq').style.backgroundImage = ruta;
-  document.getElementById('pared-der').style.backgroundImage = ruta;
+  const ruta = "url('" + imagen + "')";
+  if (document.getElementById('pared-fondo')) document.getElementById('pared-fondo').style.backgroundImage = ruta;
+  if (document.getElementById('pared-izq')) document.getElementById('pared-izq').style.backgroundImage = ruta;
+  if (document.getElementById('pared-der')) document.getElementById('pared-der').style.backgroundImage = ruta;
   
   registrarEnSheet(paredActual, pisoActual);
 }
@@ -33,171 +33,85 @@ function cambiarParedes(imagen) {
 // Cambiar textura de piso
 function cambiarPiso(imagen) {
   pisoActual = imagen;
-  document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
+  if (document.getElementById('piso')) document.getElementById('piso').style.backgroundImage = "url('" + imagen + "')";
   
   registrarEnSheet(paredActual, pisoActual);
 }
-// Función para calcular rendimiento, cajas y pego (Ajustado pego a 1.5 m²)
-function calcularMateriales() {
-  const alto = parseFloat(document.getElementById('alto').value) || 0;
-  const ancho = parseFloat(document.getElementById('ancho').value) || 0;
-  const rendimientoCaja = parseFloat(document.getElementById('rendimiento-caja').value) || 1.44;
 
-  if (alto <= 0 || ancho <= 0) {
-    alert("Por favor, ingresa dimensiones válidas (alto y ancho).");
-    return;
-  }
-
-  // Área base
-  const areaBase = alto * ancho;
-  
-  // Se agrega un 10% estándar para cortes y desperdicio
-  const areaTotal = areaBase * 1.10;
-
-  // Cálculo de cajas necesarias (redondeado hacia arriba)
-  const cajasNecesarias = Math.ceil(areaTotal / rendimientoCaja);
-
-  // Rendimiento ajustado: 1 saco rinde 1.5 m²
-  const sacosPego = Math.ceil(areaTotal / 1.5);
-
-  // Mostrar resultados en pantalla
-  document.getElementById('res-area').innerText = areaTotal.toFixed(2);
-  document.getElementById('res-cajas').innerText = cajasNecesarias;
-  document.getElementById('res-pego').innerText = sacosPego;
-
-  // Hacer visible la caja de resultados
-  document.getElementById('resultado-calculo').style.display = 'block';
-}
-// Función corregida de Cambio de Luz (Día / Noche)
+// Control de Iluminación (Día / Noche)
 function cambiarLuz(modo, elementoBtn) {
   const habitacion = document.querySelector('.habitacion');
   const botones = document.querySelectorAll('.btn-luz');
 
-  // Remover estado activo de todos los botones
-  botones.forEach(btn => btn.classList.remove('activo'));
+  if (botones) botones.forEach(btn => btn.classList.remove('activo'));
 
-  // Aplicar efecto en la habitación
-  if (modo === 'noche') {
-    habitacion.classList.remove('modo-dia');
-    habitacion.classList.add('modo-noche');
-  } else {
-    habitacion.classList.remove('modo-noche');
-    habitacion.classList.add('modo-dia');
+  if (habitacion) {
+    if (modo === 'noche') {
+      habitacion.classList.remove('modo-dia');
+      habitacion.classList.add('modo-noche');
+    } else {
+      habitacion.classList.remove('modo-noche');
+      habitacion.classList.add('modo-dia');
+    }
   }
 
-  // Activar botón presionado
   if (elementoBtn) {
     elementoBtn.classList.add('activo');
   }
 }
 
-// Registro inicial
+// CALCULADORA DE MATERIALES EXACTOS
+function calcularMaterialesTotales() {
+  function obtenerNumero(id, valorDefecto) {
+    const el = document.getElementById(id);
+    if (!el || !el.value) return valorDefecto;
+    const val = el.value.toString().replace(',', '.');
+    return parseFloat(val) || valorDefecto;
+  }
+
+  const altoPared = obtenerNumero('pared-alto', 0);
+  const anchoPared = obtenerNumero('pared-ancho', 0);
+  const cajaPared = obtenerNumero('pared-caja', 1.44);
+
+  const largoPiso = obtenerNumero('piso-largo', 0);
+  const anchoPiso = obtenerNumero('piso-ancho', 0);
+  const cajaPiso = obtenerNumero('piso-caja', 1.44);
+
+  if (altoPared <= 0 && anchoPared <= 0 && largoPiso <= 0 && anchoPiso <= 0) {
+    alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
+    return;
+  }
+
+  // Cálculos Exactos
+  const areaPared = altoPared * anchoPared;
+  const cajasPared = areaPared > 0 ? Math.ceil(areaPared / cajaPared) : 0;
+
+  const areaPiso = largoPiso * anchoPiso;
+  const cajasPiso = areaPiso > 0 ? Math.ceil(areaPiso / cajaPiso) : 0;
+
+  const areaTotalGlobal = areaPared + areaPiso;
+  const sacosPego = areaTotalGlobal > 0 ? Math.ceil(areaTotalGlobal / 1.5) : 0;
+
+  // Imprimir
+  if (document.getElementById('res-area-pared')) document.getElementById('res-area-pared').innerText = areaPared.toFixed(2);
+  if (document.getElementById('res-cajas-pared')) document.getElementById('res-cajas-pared').innerText = cajasPared;
+
+  if (document.getElementById('res-area-piso')) document.getElementById('res-area-piso').innerText = areaPiso.toFixed(2);
+  if (document.getElementById('res-cajas-piso')) document.getElementById('res-cajas-piso').innerText = cajasPiso;
+
+  if (document.getElementById('res-total-pego')) document.getElementById('res-total-pego').innerText = sacosPego;
+
+  // Mostrar recuadro
+  const divRes = document.getElementById('resultado-calculo');
+  if (divRes) {
+    divRes.style.display = 'block';
+  }
+}
+
+// Registro inicial al cargar
 window.onload = function() {
   registrarEnSheet(paredActual, pisoActual);
 };
-function calcularMaterialesTotales() {
-  // Obtener valores de Pared
-  const altoPared = parseFloat(document.getElementById('pared-alto').value) || 0;
-  const anchoPared = parseFloat(document.getElementById('pared-ancho').value) || 0;
-  const cajaPared = parseFloat(document.getElementById('pared-caja').value) || 1.44;
-
-  // Obtener valores de Piso
-  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
-  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
-  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
-
-  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
-    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
-    return;
-  }
-
-  // CÁLCULO EXACTO PARED (Alto x Ancho)
-  const areaParedTotal = altoPared * anchoPared;
-  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
-
-  // CÁLCULO EXACTO PISO (Largo x Ancho)
-  const areaPisoTotal = largoPiso * anchoPiso;
-  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
-
-  // CÁLCULO TOTAL PEGO EXACTO (Sumatoria de áreas / 1.5)
-  const areaGlobal = areaParedTotal + areaPisoTotal;
-  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
-
-  // Mostrar Resultados
-  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
-  document.getElementById('res-cajas-pared').innerText = cajasPared;
-
-  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
-  document.getElementById('res-cajas-piso').innerText = cajasPiso;
-
-  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
-
-  document.getElementById('resultado-calculo').style.display = 'block';
-}
-
-  // Obtener valores de Piso
-  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
-  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
-  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
-
-  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
-    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
-    return;
-  }
-
-  // CÁLCULO EXACTO PARED (Alto x Ancho)
-  const areaParedTotal = altoPared * anchoPared;
-  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
-
-  // CÁLCULO EXACTO PISO (Largo x Ancho)
-  const areaPisoTotal = largoPiso * anchoPiso;
-  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
-
-  // CÁLCULO TOTAL PEGO EXACTO (Sumatoria de áreas / 1.5)
-  const areaGlobal = areaParedTotal + areaPisoTotal;
-  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
-
-  // Mostrar Resultados
-  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
-  document.getElementById('res-cajas-pared').innerText = cajasPared;
-
-  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
-  document.getElementById('res-cajas-piso').innerText = cajasPiso;
-
-  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
-
-  document.getElementById('resultado-calculo').style.display = 'block';
-}
-
-  // Obtener valores de Piso
-  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
-  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
-  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
-
-  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
-    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
-    return;
-  }
-
-  // CÁLCULO PARED (Alto x Ancho x 1.10)
-  const areaParedTotal = (altoPared * anchoPared) * 1.10;
-  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
-
-  // CÁLCULO PISO (Largo x Ancho x 1.10)
-  const areaPisoTotal = (largoPiso * anchoPiso) * 1.10;
-  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
-
-  // CÁLCULO TOTAL PEGO (Sumatoria de áreas / 1.5)
-  const areaGlobal = areaParedTotal + areaPisoTotal;
-  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
-
-  // Mostrar Resultados
-  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
-  document.getElementById('res-cajas-pared').innerText = cajasPared;
-
-  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
-  document.getElementById('res-cajas-piso').innerText = cajasPiso;
-
   document.getElementById('res-total-pego').innerText = sacosPegoTotal;
 
   document.getElementById('resultado-calculo').style.display = 'block';
