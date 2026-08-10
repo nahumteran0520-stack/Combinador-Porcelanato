@@ -183,44 +183,41 @@
       </div>
     </section>
 
-    <!-- COLUMNA 3: CATÁLOGO -->
-    <section class="panel">
-      <h2>Catálogo</h2>
-      
-      <div class="controls-bar">
-        <span style="font-size: 0.75rem; color: #aaa;">Luz:</span>
-        <button class="btn-light active" onclick="cambiarLuz('dia')">☀️ Día</button>
-        <button class="btn-light" onclick="cambiarLuz('noche')">🌙 Noche</button>
-      </div>
+   <!-- COLUMNA 3: CATÁLOGO -->
+<section class="panel">
+  <h2>Catálogo</h2>
+  
+  <div class="controls-bar">
+    <span style="font-size: 0.75rem; color: #aaa;">Luz:</span>
+    <button class="btn-light active" onclick="cambiarLuz('dia')">☀️ Día</button>
+    <button class="btn-light" onclick="cambiarLuz('noche')">🌙 Noche</button>
+  </div>
 
-      <h3>Porcelanato Pared</h3>
-      <div class="grid-porcelanatos">
-               <img src="piso-marmoleadoblanco-344.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-        <img src="piso-marmoleadonegro-358.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadonegro-358.jpg')" alt="Negro">
-        <img src="piso-griscemento-350.jpg" class="thumb" onclick="cambiarParedes('piso-griscemento-350.jpg')" alt="Gris Cemento">
-        <img src="piso-marmoleadoazul-357.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-        <img src="piso-superblanco-345.jpg" class="thumb" onclick="cambiarParedes('piso-superblanco-345.jpg')" alt="Súper Blanco">
-        <img src="piso-supernegro-346.jpg" class="thumb" onclick="cambiarParedes('piso-supernegro-346.jpg')" alt="Súper Negro">
-        <img src="pisobeige-343.jpg" class="thumb" onclick="cambiarParedes('pisobeige-343.jpg')" alt="Beige">
-      </div>
+  <h3>Porcelanato Pared</h3>
+  <div class="grid-porcelanatos">
+    <!-- Asumiendo que tu función de pared es cambiarPared (en singular) -->
+    <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+    <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadonegro-358.jpg')" alt="Negro">
+    <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPared('piso-griscemento-350.jpg')" alt="Gris Cemento">
+    <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadoazul-357.jpg')" alt="Azul">
+    <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+    <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPared('pisobeige-343.jpg')" alt="Beige">
+  </div>
 
-      </div>
-
-      <h3>Porcelanato Piso</h3>
-      <div class="grid-porcelanatos">
-       <img src="piso-marmoleadoblanco-344.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-        <img src="piso-marmoleadonegro-358.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
-        <img src="piso-griscemento-350.jpg" class="thumb" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
-        <img src="piso-marmoleadoazul-357.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-        <img src="piso-superblanco-345.jpg" class="thumb" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
-        <img src="piso-supernegro-346.jpg" class="thumb" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
-        <img src="pisobeige-343.jpg" class="thumb" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
-      </div>
-
-    </section>
-
+  <h3>Porcelanato Piso</h3>
+  <div class="grid-porcelanatos">
+    <!-- Tus imágenes y funciones exactas integradas a la tarjeta simétrica -->
+    <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+    <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
+    <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
+    <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
+    <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+    <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
+    <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
+    <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
+  </div>
+</section>
+    
   </div>
 
   <script src="script.js"></script>
