@@ -66,19 +66,42 @@ function calcularMaterialesTotales() {
         return parseFloat(val) || valorDefecto;
     }
 
+    // ... (tus variables de altoPared, anchoPared, etc., se mantienen igual)
     const altoPared = obtenerNumero('pared-alto', 0);
     const anchoPared = obtenerNumero('pared-ancho', 0);
     const cajaPared = obtenerNumero('pared-caja', 1.44);
-
     const largoPiso = obtenerNumero('piso-largo', 0);
     const anchoPiso = obtenerNumero('piso-ancho', 0);
     const cajaPiso = obtenerNumero('piso-caja', 1.44);
 
-    if (altoPared <= 0 && anchoPared <= 0 && largoPiso <= 0 && anchoPiso <= 0) {
-        alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
-        return;
+    // NUEVO: Obtener el rendimiento seleccionado del select
+    const rendimientoPego = parseFloat(document.getElementById('tipo-pego').value);
+
+    // Cálculos
+    const areaPared = altoPared * anchoPared;
+    const cajasPared = areaPared > 0 ? Math.ceil(areaPared / cajaPared) : 0;
+    const areaPiso = largoPiso * anchoPiso;
+    const cajasPiso = areaPiso > 0 ? Math.ceil(areaPiso / cajaPiso) : 0;
+
+    // Cálculo dinámico de sacos según el rendimiento elegido
+    const areaTotalGlobal = areaPared + areaPiso;
+    const sacosPego = areaTotalGlobal > 0 ? Math.ceil(areaTotalGlobal / rendimientoPego) : 0;
+
+    // Actualizar pantalla
+    if (document.getElementById('res-area-pared')) document.getElementById('res-area-pared').innerText = areaPared.toFixed(2);
+    if (document.getElementById('res-cajas-pared')) document.getElementById('res-cajas-pared').innerText = cajasPared;
+    if (document.getElementById('res-area-piso')) document.getElementById('res-area-piso').innerText = areaPiso.toFixed(2);
+    if (document.getElementById('res-cajas-piso')) document.getElementById('res-cajas-piso').innerText = cajasPiso;
+
+    // Mostrar el tipo de pego calculado en el resultado (opcional)
+    const labelSacos = rendimientoPego === 1.5 ? "14 kg" : "10 kg";
+    if (document.getElementById('res-total-pego')) {
+        document.getElementById('res-total-pego').innerText = `${sacosPego} sacos (${labelSacos})`;
     }
 
+    const divRes = document.getElementById('resultado-calculo');
+    if (divRes) divRes.style.display = 'block';
+}
     // Cálculos
     const areaPared = altoPared * anchoPared;
     const cajasPared = areaPared > 0 ? Math.ceil(areaPared / cajaPared) : 0;
