@@ -9,13 +9,22 @@
     body { background-color: #121212; color: #ffffff; padding: 15px; }
     
     /* Layout Simétrico de 3 Columnas */
+    /* Layout Adaptable para Computadora y Teléfono */
     .app-container {
       display: grid;
-      grid-template-columns: 310px 1fr 310px;
+      grid-template-columns: 1fr; /* Por defecto para teléfonos: una sola columna apilada */
       gap: 15px;
       max-width: 1400px;
       margin: 0 auto;
-      align-items: start;
+      padding: 10px;
+    }
+
+    /* Cuando la pantalla es más ancha (computadoras o tablets horizontales), vuelve a 3 columnas */
+    @media (min-width: 1024px) {
+      .app-container {
+        grid-template-columns: 310px 1fr 310px;
+      }
+    }
     }
 
     .panel {
