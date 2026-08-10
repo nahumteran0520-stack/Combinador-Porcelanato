@@ -20,6 +20,33 @@
     <!-- Catálogo Lateral -->
     <div class="sidebar">
       <h2>Catálogo</h2>
+      <!-- CALCULADORA DE MATERIALES -->
+<div class="calculadora-box">
+  <h3>Calculadora de Materiales</h3>
+  
+  <div class="input-group">
+    <label for="alto">Alto del espacio (m):</label>
+    <input type="number" id="alto" placeholder="Ej: 2.80" step="0.01" min="0">
+  </div>
+  
+  <div class="input-group">
+    <label for="ancho">Ancho del espacio (m):</label>
+    <input type="number" id="ancho" placeholder="Ej: 3.50" step="0.01" min="0">
+  </div>
+
+  <div class="input-group">
+    <label for="rendimiento-caja">M² por caja:</label>
+    <input type="number" id="rendimiento-caja" value="1.44" step="0.01" min="0.1">
+  </div>
+
+  <button type="button" class="btn-calcular" onclick="calcularMateriales()">Calcular Estimado</button>
+
+  <div id="resultado-calculo" class="resultado-box" style="display: none;">
+    <p><strong>Área total (+10% desp.):</strong> <span id="res-area">0</span> m²</p>
+    <p><strong>Cajas de Porcelanato:</strong> <span id="res-cajas">0</span> cajas</p>
+    <p><strong>Sacos de Pego (1.5m² c/u):</strong> <span id="res-pego">0</span> sacos</p>
+  </div>
+</div>
 <!-- Control de Iluminación -->
 <div class="control-iluminacion">
   <h3>Iluminación</h3>
