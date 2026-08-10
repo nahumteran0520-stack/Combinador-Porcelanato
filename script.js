@@ -44,3 +44,19 @@ function cambiarPiso(imagen) {
 window.onload = function() {
   registrarEnSheet(paredActual, pisoActual);
 };
+function cambiarLuz(modo) {
+  const habitacion = document.querySelector('.habitacion');
+  const botones = document.querySelectorAll('.btn-luz');
+
+  botones.forEach(btn => btn.classList.remove('activo'));
+
+  if (modo === 'noche') {
+    habitacion.classList.remove('modo-dia');
+    habitacion.classList.add('modo-noche');
+    event.target.classList.add('activo');
+  } else {
+    habitacion.classList.remove('modo-noche');
+    habitacion.classList.add('modo-dia');
+    event.target.classList.add('activo');
+  }
+}
