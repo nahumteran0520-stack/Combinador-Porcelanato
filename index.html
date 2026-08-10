@@ -20,31 +20,58 @@
     <!-- Catálogo Lateral -->
     <div class="sidebar">
       <h2>Catálogo</h2>
-      <!-- CALCULADORA DE MATERIALES -->
-<div class="calculadora-box">
-  <h3>Calculadora de Materiales</h3>
-  
-  <div class="input-group">
-    <label for="alto">Alto del espacio (m):</label>
-    <input type="number" id="alto" placeholder="Ej: 2.80" step="0.01" min="0">
-  </div>
-  
-  <div class="input-group">
-    <label for="ancho">Ancho del espacio (m):</label>
-    <input type="number" id="ancho" placeholder="Ej: 3.50" step="0.01" min="0">
+     <!-- PANEL CALCULADORA DE MATERIALES -->
+<div class="calculadora-panel">
+  <h2>Calcular Materiales</h2>
+
+  <!-- SECCIÓN 1: PAREDES -->
+  <div class="seccion-calc">
+    <h3>🧱 Paredes</h3>
+    <div class="input-group">
+      <label for="pared-alto">Alto de pared (m):</label>
+      <input type="number" id="pared-alto" placeholder="Ej: 2.80" step="0.01" min="0">
+    </div>
+    <div class="input-group">
+      <label for="pared-ancho">Ancho de pared (m):</label>
+      <input type="number" id="pared-ancho" placeholder="Ej: 3.50" step="0.01" min="0">
+    </div>
+    <div class="input-group">
+      <label for="pared-caja">M² por caja (Pared):</label>
+      <input type="number" id="pared-caja" value="1.44" step="0.01" min="0.1">
+    </div>
   </div>
 
-  <div class="input-group">
-    <label for="rendimiento-caja">M² por caja:</label>
-    <input type="number" id="rendimiento-caja" value="1.44" step="0.01" min="0.1">
+  <hr class="divisor-calc">
+
+  <!-- SECCIÓN 2: PISO -->
+  <div class="seccion-calc">
+    <h3>📐 Piso</h3>
+    <div class="input-group">
+      <label for="piso-largo">Largo de piso (m):</label>
+      <input type="number" id="piso-largo" placeholder="Ej: 4.00" step="0.01" min="0">
+    </div>
+    <div class="input-group">
+      <label for="piso-ancho">Ancho de piso (m):</label>
+      <input type="number" id="piso-ancho" placeholder="Ej: 3.50" step="0.01" min="0">
+    </div>
+    <div class="input-group">
+      <label for="piso-caja">M² por caja (Piso):</label>
+      <input type="number" id="piso-caja" value="1.44" step="0.01" min="0.1">
+    </div>
   </div>
 
-  <button type="button" class="btn-calcular" onclick="calcularMateriales()">Calcular Estimado</button>
+  <button type="button" class="btn-calcular" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
 
+  <!-- RESULTADOS -->
   <div id="resultado-calculo" class="resultado-box" style="display: none;">
-    <p><strong>Área total (+10% desp.):</strong> <span id="res-area">0</span> m²</p>
-    <p><strong>Cajas de Porcelanato:</strong> <span id="res-cajas">0</span> cajas</p>
-    <p><strong>Sacos de Pego (1.5m² c/u):</strong> <span id="res-pego">0</span> sacos</p>
+    <h4>Resumen de Materiales (+10% desp.)</h4>
+    <p><strong>Área Total Paredes:</strong> <span id="res-area-pared">0</span> m²</p>
+    <p><strong>Cajas para Pared:</strong> <span id="res-cajas-pared">0</span> cajas</p>
+    <br>
+    <p><strong>Área Total Piso:</strong> <span id="res-area-piso">0</span> m²</p>
+    <p><strong>Cajas para Piso:</strong> <span id="res-cajas-piso">0</span> cajas</p>
+    <br>
+    <p class="total-pego"><strong>Total Sacos de Pego (1.5m² c/u):</strong> <span id="res-total-pego">0</span> sacos</p>
   </div>
 </div>
 <!-- Control de Iluminación -->
