@@ -289,3 +289,41 @@
   <script src="script.js"></script>
 </body>
 </html>
+// Variables para almacenar lo que el usuario va seleccionando
+let paredActual = "Predeterminada";
+let pisoActual = "Predeterminado";
+
+function registrarVisitaEnSheets(pared, piso) {
+  const urlWebApp = "https://script.google.com/macros/s/AKfycbweGwf3Hc4lU-ZkY4rgxK4mKRMnV54Px0bcvLphOAXqG-fdL2C_Urle-2b9htS4heo1/exec"; 
+
+  const datos = {
+    pared: pared,
+    piso: piso
+  };
+
+  fetch(urlWebApp, {
+    method: "POST",
+    mode: "no-cors", // Evita problemas de políticas de origen cruzado (CORS)
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+  }).catch(error => console.error("Error al registrar:", error));
+}
+
+// Modifica tus funciones de cambio para actualizar y enviar el registro:
+function cambiarParedes(imagen) {
+  paredActual = imagen;
+  document.getElementById('pared-fondo').style.backgroundImage = `url('${imagen}')`;
+  document.getElementById('pared-izq').style.backgroundImage = `url('${imagen}')`;
+  document.getElementById('pared-der').style.backgroundImage = `url('${imagen}')`;
+  
+  registrarVisitaEnSheets(paredActual, pisoActual);
+}
+
+function cambiarPiso(imagen) {
+  pisoActual = imagen;
+  document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
+  
+  registrarVisitaEnSheets(paredActual, pisoActual);
+}
