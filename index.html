@@ -1,21 +1,52 @@
-<!-- ... (resto del HTML anterior igual) ... -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Porcelanatos 3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
   <div class="app-container">
-    <!-- Escena 3D Real con Profundidad -->
-    <div class="habitacion-contenedor"> <!-- NUEVO: Contenedor de Perspectiva -->
-      <div class="habitacion-3d">       <!-- NUEVO: Cubo 3D -->
-        <div id="techo" class="techo superficie-3d"></div>
-        <div id="pared-izq" class="pared-lateral izq superficie-3d"></div>
-        <div id="pared-fondo" class="pared-fondo superficie-3d"></div>
-        <div id="pared-der" class="pared-lateral der superficie-3d"></div>
-        <div id="piso" class="piso superficie-3d"></div>
-      </div>
+    <!-- Habitación 3D -->
+    <div class="habitacion">
+      <div id="techo" class="techo"></div>
+      <div id="pared-izq" class="pared-lateral izq"></div>
+      <div id="pared-fondo" class="pared-fondo"></div>
+      <div id="pared-der" class="pared-lateral der"></div>
+      <div id="piso" class="piso"></div>
     </div>
 
-    <!-- Catálogo lateral (¡Asegúrate de que este HTML coincida con tus 8 imágenes actuales!) -->
+    <!-- Catálogo Lateral -->
     <div class="sidebar">
-       <!-- ... (tus 8 imágenes de Pared y Piso aquí) ... -->
+      <h2>Catálogo</h2>
+
+      <h3>Porcelanato Pared</h3>
+      <div class="galeria">
+        <img src="piso-marmoleadoblanco-344.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+        <img src="piso-marmoleadonegro-358.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadonegro-358.jpg')" alt="Negro">
+        <img src="piso-griscemento-350.jpg" class="thumb" onclick="cambiarParedes('piso-griscemento-350.jpg')" alt="Gris Cemento">
+        <img src="piso-marmoleadoazul-357.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadoazul-357.jpg')" alt="Azul">
+        <img src="piso-marmoleadogris-34.jpg" class="thumb" onclick="cambiarParedes('piso-marmoleadogris-34.jpg')" alt="Gris Marmoleado">
+        <img src="piso-superblanco-345.jpg" class="thumb" onclick="cambiarParedes('piso-superblanco-345.jpg')" alt="Súper Blanco">
+        <img src="piso-supemegro-346.jpg" class="thumb" onclick="cambiarParedes('piso-supemegro-346.jpg')" alt="Súper Negro">
+        <img src="pisobeige-343.jpg" class="thumb" onclick="cambiarParedes('pisobeige-343.jpg')" alt="Beige">
+      </div>
+
+      <h3>Porcelanato Piso</h3>
+      <div class="galeria">
+        <img src="piso-marmoleadoblanco-344.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+        <img src="piso-marmoleadonegro-358.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
+        <img src="piso-griscemento-350.jpg" class="thumb" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
+        <img src="piso-marmoleadoazul-357.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
+        <img src="piso-marmoleadogris-34.jpg" class="thumb" onclick="cambiarPiso('piso-marmoleadogris-34.jpg')" alt="Gris Marmoleado">
+        <img src="piso-superblanco-345.jpg" class="thumb" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
+        <img src="piso-supemegro-346.jpg" class="thumb" onclick="cambiarPiso('piso-supemegro-346.jpg')" alt="Súper Negro">
+        <img src="pisobeige-343.jpg" class="thumb" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
+      </div>
     </div>
   </div>
 
-<!-- ... (resto del HTML anterior igual) ... -->
+  <script src="script.js"></script>
+</body>
+</html>
