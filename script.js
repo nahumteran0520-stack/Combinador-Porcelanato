@@ -121,3 +121,20 @@ window.onload = function() {
     cambiarParedes(paredActual);
     cambiarPiso(pisoActual);
 };
+let rotY = 0;
+let objetivoRotY = 0;
+
+function animar() {
+  rotY += (objetivoRotY - rotY) * 0.05; // 0.05 crea la inercia (suavidad)
+  document.getElementById('habitacion').style.transform = `rotateY(${rotY}deg)`;
+  requestAnimationFrame(animar);
+}
+animar();
+
+// En el evento de mover el mouse:
+function girar(e) {
+  if (isDragging) {
+    objetivoRotY += (e.clientX - lastX) * 0.2; // Sensibilidad baja para realismo
+    lastX = e.clientX;
+  }
+}
