@@ -53,16 +53,83 @@
   cursor: grab;
 }
 
-/* Paredes 3D */
-#pared-fondo, #pared-izq, #pared-der, #piso {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  backface-visibility: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+.preview-section { 
+      perspective: 1200px; 
+      overflow: hidden;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+    }
+    
+    .habitacion {
+      width: 100%;
+      height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: filter 0.3s ease;
+      cursor: grab;
+      /* Ángulo inicial de la cámara para ver profundidad */
+      transform: rotateX(-10deg) rotateY(0deg);
+    }
 
+    .habitacion:active {
+      cursor: grabbing;
+    }
+
+    /* Caja contenedora interna 3D para formar el cubo */
+    #habitacion-cubo {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transform-style: preserve-3d;
+    }
+
+    /* Superficies de la Habitación (Paredes y Piso) */
+    #pared-fondo, #pared-izq, #pared-der, #piso {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: 140px 140px;
+      background-repeat: repeat;
+      backface-visibility: hidden;
+    }
+
+    /* Posicionamiento en el espacio tridimensional */
+    #pared-fondo {
+      transform: translateZ(-130px);
+      filter: brightness(0.9);
+    }
+    #pared-izq {
+      transform: rotateY(-90deg) translateZ(130px);
+      filter: brightness(0.75); /* Sombra natural lateral */
+    }
+    #pared-der {
+      transform: rotateY(90deg) translateZ(130px);
+      filter: brightness(0.65); /* Sombra natural lateral */
+    }
+    #piso {
+      transform: rotateX(90deg) translateZ(130px);
+      background-size: 160px 160px;
+      filter: brightness(0.85);
+    }
+
+    /* Superposición de Brillo Espejo para el Porcelanato del Piso */
+    #piso::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+      pointer-events: none;
+    }
+
+    /* Modos de Luz Avanzados */
+    .habitacion.modo-dia { filter: brightness(1.05) contrast(1.05); }
+    .habitacion.modo-noche { filter: brightness(0.45) contrast(1.2) sepia(0.3); }
+    .habitacion.modo-calida { filter: brightness(0.9) contrast(1.1) sepia(0.4); }
+    .habitacion.modo-fria { filter: brightness(0.95) contrast(1.1) hue-rotate(180deg); }
 /* Posicionamiento en el espacio 3D */
 #pared-fondo { transform: translateZ(-150px); }
 #pared-izq { transform: rotateY(-90deg) translateZ(150px); }
