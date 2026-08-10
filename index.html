@@ -8,23 +8,17 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     body { background-color: #121212; color: #ffffff; padding: 15px; }
     
-    /* Layout Simétrico de 3 Columnas */
-    /* Layout Adaptable para Computadora y Teléfono */
     .app-container {
       display: grid;
-      grid-template-columns: 1fr; /* Por defecto para teléfonos: una sola columna apilada */
+      grid-template-columns: 1fr;
       gap: 15px;
       max-width: 1400px;
       margin: 0 auto;
       padding: 10px;
     }
 
-    /* Cuando la pantalla es más ancha (computadoras o tablets horizontales), vuelve a 3 columnas */
     @media (min-width: 1024px) {
-      .app-container {
-        grid-template-columns: 310px 1fr 310px;
-      }
-    }
+      .app-container { grid-template-columns: 310px 1fr 310px; }
     }
 
     .panel {
@@ -35,425 +29,90 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
-    h2 { color: #00adb5; font-size: 1rem; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #2d2d2d; padding-bottom: 6px; }
-    h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500; }
-
-    /* Visualizador 3D Centrado */
-    .preview-section { display: flex; flex-direction: column; align-items: center; }
+    h2 { color: #00adb5; font-size: 1rem; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #2d2d2d; padding-bottom: 6px; }
     
-    /* Contenedor padre con perspectiva */
-.preview-section { perspective: 1000px; }
-
-.habitacion {
-  width: 300px; /* Ajusta a tu gusto */
-  height: 300px;
-  position: relative;
-  transform-style: preserve-3d; /* ESTO es la clave */
-  transition: transform 0.1s ease-out;
-  cursor: grab;
-}
-
-.preview-section { 
-      perspective: 1200px; 
-      overflow: hidden;
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-    }
+    /* Visualizador 3D */
+    .preview-section { display: flex; flex-direction: column; align-items: center; }
     
     .habitacion {
       width: 100%;
       height: 480px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #151515;
+      border: 1px solid #333;
       position: relative;
-      transform-style: preserve-3d;
-      transition: filter 0.3s ease;
-      cursor: grab;
-      /* Ángulo inicial de la cámara para ver profundidad */
-      transform: rotateX(-10deg) rotateY(0deg);
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
     }
 
-    .habitacion:active {
-      cursor: grabbing;
-    }
+    #pared-fondo { position: absolute; top: 15%; left: 25%; width: 50%; height: 50%; background-size: 100px 100px; z-index: 1; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+    #pared-izq { position: absolute; top: 0; left: 0; width: 25%; height: 100%; background-size: 120px 120px; clip-path: polygon(0 0, 100% 15%, 100% 65%, 0 100%); z-index: 2; filter: brightness(0.85); }
+    #pared-der { position: absolute; top: 0; right: 0; width: 25%; height: 100%; background-size: 120px 120px; clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 65%); z-index: 2; filter: brightness(0.75); }
+    #piso { position: absolute; top: 65%; left: 0; width: 100%; height: 35%; background-size: 150px 150px; clip-path: polygon(0 100%, 25% 0, 75% 0, 100% 100%); z-index: 3; box-shadow: inset 0 15px 25px rgba(0,0,0,0.6); }
 
-    /* Caja contenedora interna 3D para formar el cubo */
-    #habitacion-cubo {
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transform-style: preserve-3d;
-    }
-
-    /* Superficies de la Habitación (Paredes y Piso) */
-    #pared-fondo, #pared-izq, #pared-der, #piso {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-size: 140px 140px;
-      background-repeat: repeat;
-      backface-visibility: hidden;
-    }
-
-    /* Posicionamiento en el espacio tridimensional */
-    #pared-fondo {
-      transform: translateZ(-130px);
-      filter: brightness(0.9);
-    }
-    #pared-izq {
-      transform: rotateY(-90deg) translateZ(130px);
-      filter: brightness(0.75); /* Sombra natural lateral */
-    }
-    #pared-der {
-      transform: rotateY(90deg) translateZ(130px);
-      filter: brightness(0.65); /* Sombra natural lateral */
-    }
-    #piso {
-      transform: rotateX(90deg) translateZ(130px);
-      background-size: 160px 160px;
-      filter: brightness(0.85);
-    }
-
-    /* Superposición de Brillo Espejo para el Porcelanato del Piso */
-    #piso::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
-      pointer-events: none;
-    }
-
-    /* Modos de Luz Avanzados */
-    .habitacion.modo-dia { filter: brightness(1.05) contrast(1.05); }
-    .habitacion.modo-noche { filter: brightness(0.45) contrast(1.2) sepia(0.3); }
-    .habitacion.modo-calida { filter: brightness(0.9) contrast(1.1) sepia(0.4); }
-    .habitacion.modo-fria { filter: brightness(0.95) contrast(1.1) hue-rotate(180deg); }
-/* Posicionamiento en el espacio 3D */
-#pared-fondo { transform: translateZ(-150px); }
-#pared-izq { transform: rotateY(-90deg) translateZ(150px); }
-#pared-der { transform: rotateY(90deg) translateZ(150px); }
-#piso { transform: rotateX(90deg) translateZ(150px); }
-
-    /* Modos de Luz */
-    .habitacion.modo-dia { filter: brightness(1) contrast(1); }
-    .habitacion.modo-noche { filter: brightness(0.65) contrast(1.15) sepia(0.2); }
-
-/* HABITACIÓN 3D CON PROFUNDIDAD Y REALISMO */
-.habitacion {
-  width: 100%;
-  height: 480px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #151515;
-  border: 1px solid #333;
-  position: relative;
-  transition: filter 0.3s ease;
-  box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-}
-.esquina-sombra {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  pointer-events: none;
-  background: radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);
-  z-index: 10;
-}
-/* Modos de Luz Avanzados */
-.habitacion.modo-dia { 
-  filter: brightness(1.05) contrast(1.05); 
-}
-.habitacion.modo-noche { 
-  filter: brightness(0.45) contrast(1.2) sepia(0.3); 
-}
-
-/* Pared del Fondo (Con perspectiva de profundidad) */
-#pared-fondo {
-  position: absolute;
-  top: 15%;
-  left: 25%;
-  width: 50%;
-  height: 50%;
-  background-size: 100px 100px; /* Textura más pequeña al fondo por distancia */
-  background-repeat: repeat;
-  background-position: center;
-  z-index: 1;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.5); /* Sombra de profundidad */
-}
-
-/* Pared Izquierda (Efecto fuga real con perspectiva) */
-#pared-izq {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 25%;
-  height: 100%;
-  background-size: 120px 120px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 0, 100% 15%, 100% 65%, 0 100%);
-  z-index: 2;
-  /* Oscurecer el lateral izquierdo para simular sombra natural */
-  filter: brightness(0.85); 
-}
-
-/* Pared Derecha (Efecto fuga real) */
-#pared-der {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 25%;
-  height: 100%;
-  background-size: 120px 120px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 65%);
-  z-index: 2;
-  /* Luz lateral derecha un poco distinta o sombra de ambiente */
-  filter: brightness(0.75);
-}
-
-/* Piso (Con texturas en perspectiva y brillo de porcelanato) */
-#piso {
-  position: absolute;
-  top: 65%;
-  left: 0;
-  width: 100%;
-  height: 35%;
-  background-size: 150px 150px;
-  background-repeat: repeat;
-  background-position: center;
-  clip-path: polygon(0 100%, 25% 0, 75% 0, 100% 100%);
-  z-index: 3;
-  /* Simular el brillo espejo característico del porcelanato */
-  box-shadow: inset 0 15px 25px rgba(0,0,0,0.6);
-}
-
-/* Superposición de Brillo Espejo (Reflejo sutil en el piso) */
-#piso::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, rgba(0,0,0,0.3) 100%);
-  pointer-events: none;
-}
-    /* Catálogo y Botones */
-    .controls-bar { display: flex; align-items: center; gap: 8px; background: #282828; padding: 5px; border-radius: 6px; margin-bottom: 10px; }
-
-    .btn-luz {
-      background: transparent;
-      border: none;
-      color: #aaa;
-      padding: 6px;
-      border-radius: 4px;
-      cursor: pointer;
-      flex: 1;
-      font-size: 0.8rem;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
+    .btn-luz { background: transparent; border: none; color: #aaa; padding: 6px; border-radius: 4px; cursor: pointer; flex: 1; font-size: 0.8rem; font-weight: 600; }
     .btn-luz.activo { background: #00adb5; color: white; }
-
-    .grid-porcelanatos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
-
-    .tile-card {
-      width: 100%;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 2px solid #333;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: #252525;
-    }
-
-    .tile-card:hover { transform: scale(1.04); border-color: #00adb5; }
-
-    /* Formulario */
+    
+    .grid-porcelanatos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .tile-card { width: 100%; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid #444; }
+    
     .form-group { margin-bottom: 8px; }
-    .form-group label { display: block; font-size: 0.75rem; color: #aaa; margin-bottom: 2px; }
-    .form-group input {
-      width: 100%;
-      padding: 6px 8px;
-      border-radius: 5px;
-      border: 1px solid #383838;
-      background: #2b2b2b;
-      color: #fff;
-      font-size: 0.85rem;
-    }
+    .form-group label { display: block; font-size: 0.75rem; color: #aaa; }
+    .form-group input, .form-group select { width: 100%; padding: 6px; border-radius: 5px; border: 1px solid #383838; background: #2b2b2b; color: #fff; }
 
-    .btn-calc {
-      width: 100%;
-      background: #00c853;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 8px;
-      font-size: 0.9rem;
-    }
-
-    .btn-calc:hover { background: #00e676; }
-
-    /* Recuadro de Resultados */
-    .res-box {
-      margin-top: 12px;
-      padding: 10px;
-      background: #282828;
-      border-radius: 6px;
-      border-left: 4px solid #00adb5;
-      font-size: 0.8rem;
-      display: none;
-    }
-    .res-box p { margin-bottom: 4px; color: #ddd; }
-    .res-box span { font-weight: bold; color: #00adb5; }
+    .btn-calc { width: 100%; background: #00c853; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .res-box { margin-top: 12px; padding: 10px; background: #282828; border-left: 4px solid #00adb5; display: none; font-size: 0.8rem; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-
-    <!-- COLUMNA 1: CALCULADORA DE MATERIALES -->
     <section class="panel">
       <h2>Calcular Materiales</h2>
-      
-      <p style="color: #ff9800; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px;">🧱 Paredes</p>
+      <div class="form-group"><label>Alto pared (m):</label><input type="number" id="pared-alto" step="0.01"></div>
+      <div class="form-group"><label>Ancho pared (m):</label><input type="number" id="pared-ancho" step="0.01"></div>
+      <div class="form-group"><label>M² caja pared:</label><input type="number" id="pared-caja" value="1.44"></div>
+      <div class="form-group"><label>Largo piso (m):</label><input type="number" id="piso-largo" step="0.01"></div>
+      <div class="form-group"><label>Ancho piso (m):</label><input type="number" id="piso-ancho" step="0.01"></div>
+      <div class="form-group"><label>M² caja piso:</label><input type="number" id="piso-caja" value="1.44"></div>
       <div class="form-group">
-        <label>Alto de pared (m):</label>
-        <input type="number" id="pared-alto" step="0.01" placeholder="Ej: 2.80">
+        <label>Tipo de Pego:</label>
+        <select id="tipo-pego">
+          <option value="1.5">Saco 14kg (1.5 m²)</option>
+          <option value="1.0">Saco 10kg (1.0 m²)</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label>Ancho de pared (m):</label>
-        <input type="number" id="pared-ancho" step="0.01" placeholder="Ej: 3.50">
-      </div>
-      <div class="form-group">
-        <label>M² por caja (Pared):</label>
-        <input type="number" id="pared-caja" step="0.01" value="1.44">
-      </div>
-
-      <p style="color: #ff9800; font-size: 0.8rem; font-weight: bold; margin-bottom: 4px; margin-top: 10px;">📐 Piso</p>
-      <div class="form-group">
-        <label>Largo de piso (m):</label>
-        <input type="number" id="piso-largo" step="0.01" placeholder="Ej: 4.00">
-      </div>
-      <div class="form-group">
-        <label>Ancho de piso (m):</label>
-        <input type="number" id="piso-ancho" step="0.01" placeholder="Ej: 3.50">
-      </div>
-      <div class="form-group">
-        <label>M² por caja (Piso):</label>
-        <input type="number" id="piso-caja" step="0.01" value="1.44">
-      </div>
-      <!-- Agrega esto después del input de M² por caja (Piso) -->
-<div class="form-group">
-  <label>Tipo de Pego:</label>
-  <select id="tipo-pego" style="width: 100%; padding: 6px; border-radius: 5px; background: #2b2b2b; color: #fff; border: 1px solid #383838;">
-    <option value="1.5">Saco de 14 kg (Rinde 1.5 m²)</option>
-    <option value="1.0">Saco de 10 kg (Rinde 1.0 m²)</option>
-  </select>
-</div>
-
-      <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
-
-      <!-- Resultados -->
+      <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular</button>
       <div id="resultado-calculo" class="res-box">
-        <p>Área Pared: <span id="res-area-pared">0</span> m² (<span id="res-cajas-pared">0</span> cajas)</p>
-        <p>Área Piso: <span id="res-area-piso">0</span> m² (<span id="res-cajas-piso">0</span> cajas)</p>
-        <p style="margin-top: 6px; border-top: 1px solid #444; padding-top: 4px;">Pego Estimado: <span id="res-total-pego">0</span> sacos</p>
+        <p>Pared: <span id="res-area-pared">0</span> m² (<span id="res-cajas-pared">0</span> cajas)</p>
+        <p>Piso: <span id="res-area-piso">0</span> m² (<span id="res-cajas-piso">0</span> cajas)</p>
+        <p>Pego: <span id="res-total-pego">0</span> sacos</p>
       </div>
     </section>
 
-    <!-- COLUMNA 2: VISUALIZADOR 3D -->
-   <!-- COLUMNA 2: VISUALIZADOR 3D -->
     <section class="panel preview-section">
-      <h2>Visualizador 3D (Arrastra para girar)</h2>
-      <div class="habitacion modo-dia" id="habitacion">
-        <div id="habitacion-cubo">
-          <div id="pared-fondo"></div>
-          <div id="pared-izq"></div>
-          <div id="pared-der"></div>
-          <div id="piso"></div>
-        </div>
+      <h2>Visualizador</h2>
+      <div class="habitacion" id="habitacion">
+        <div id="pared-fondo"></div>
+        <div id="pared-izq"></div>
+        <div id="pared-der"></div>
+        <div id="piso"></div>
       </div>
     </section>
 
-    <!-- COLUMNA 3: CATÁLOGO -->
     <section class="panel">
       <h2>Catálogo</h2>
-      
-     <div class="controls-bar" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px;">
-  <button class="btn-luz activo" onclick="cambiarLuz('dia', this)">☀️ Día</button>
-  <button class="btn-luz" onclick="cambiarLuz('noche', this)">🌙 Noche</button>
-  <button class="btn-luz" onclick="cambiarLuz('calida', this)">💡 Cálida</button>
-  <button class="btn-luz" onclick="cambiarLuz('fria', this)">❄️ Fría</button>
-</div>
-      <h3>Porcelanato Pared</h3>
-      <div class="grid-porcelanatos">
-        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadonegro-358.jpg')" alt="Negro">
-        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarParedes('piso-griscemento-350.jpg')" alt="Gris Cemento">
-        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarParedes('pisobeige-343.jpg')" alt="Beige">
-        <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
-        <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
+      <div class="controls-bar" style="display: flex; gap: 5px; margin-bottom: 10px;">
+        <button class="btn-luz activo" onclick="cambiarLuz('dia', this)">Día</button>
+        <button class="btn-luz" onclick="cambiarLuz('noche', this)">Noche</button>
       </div>
-
-      <h3>Porcelanato Piso</h3>
+      <h3>Paredes</h3>
       <div class="grid-porcelanatos">
-        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
-        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
-        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-        <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
-        <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
-        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
+        <!-- Tus imágenes irían aquí -->
       </div>
     </section>
-
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-let paredActual = "Predeterminada";
-let pisoActual = "Predeterminado";
-
-function registrarVisitaEnSheets(pared, piso) {
-  const urlWebApp = "https://script.google.com/macros/s/AKfycbw7CEmtB5yelhe07mk3PjF1I1RWuW3_7nJIFA7cno1vwITWLSsEpC49LdwhnqxWSga0/exec"; 
-
-  const datos = {
-    pared: pared,
-    piso: piso
-  };
-
-  fetch(urlWebApp, {
-    method: "POST",
-    mode: "no-cors", // Evita problemas de políticas de origen cruzado (CORS)
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(datos)
-  }).catch(error => console.error("Error al registrar:", error));
-}
-
-
-function cambiarParedes(imagen) {
-  paredActual = imagen;
-  document.getElementById('pared-fondo').style.backgroundImage = `url('${imagen}')`;
-  document.getElementById('pared-izq').style.backgroundImage = `url('${imagen}')`;
-  document.getElementById('pared-der').style.backgroundImage = `url('${imagen}')`;
-  
-  registrarVisitaEnSheets(paredActual, pisoActual);
-}
-
-function cambiarPiso(imagen) {
-  pisoActual = imagen;
-  document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
-  
-  registrarVisitaEnSheets(paredActual, pisoActual);
-}
