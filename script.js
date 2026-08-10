@@ -60,7 +60,7 @@ function cambiarLuz(modo, elementoBtn) {
   }
 }
 
-// CALCULADORA DE MATERIALES EXACTOS
+// CALCULADORA DE MATERIALES CON SELECCIÓN DE PEGO
 function calcularMaterialesTotales() {
   function obtenerNumero(id, valorDefecto) {
     const el = document.getElementById(id);
@@ -77,12 +77,16 @@ function calcularMaterialesTotales() {
   const anchoPiso = obtenerNumero('piso-ancho', 0);
   const cajaPiso = obtenerNumero('piso-caja', 1.44);
 
+  // Obtener el tipo de pego seleccionado (10kg o 14kg)
+  const selectPego = document.getElementById('tipo-pego');
+  const tipoPegoValor = selectPego ? parseInt(selectPego.value) : 10;
+
   if (altoPared <= 0 && anchoPared <= 0 && largoPiso <= 0 && anchoPiso <= 0) {
     alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
     return;
   }
 
-  // Cálculos Exactos
+  // Cálculos Exactos de Área
   const areaPared = altoPared * anchoPared;
   const cajasPared = areaPared > 0 ? Math.ceil(areaPared / cajaPared) : 0;
 
@@ -90,16 +94,29 @@ function calcularMaterialesTotales() {
   const cajasPiso = areaPiso > 0 ? Math.ceil(areaPiso / cajaPiso) : 0;
 
   const areaTotalGlobal = areaPared + areaPiso;
-  const sacosPego = areaTotalGlobal > 0 ? Math.ceil(areaTotalGlobal / 1.5) : 0;
+  
+  // Rendimiento según el pego elegido:
+  // Si es de 10 kg rinde 1 m² por saco. Si es de 14 kg asumimos un rendimiento de 1.4 m² por saco (ajustable si varía).
+  let rendimientoSaco = 1; 
+  let textoPegoNombre = "10 kg";
 
-  // Imprimir
+  if (tipoPegoValor === 14) {
+    rendimientoSaco = 1.4; // Cada saco de 14kg rinde 1.4 m²
+    textoPegoNombre = "14 kg";
+  }
+
+  const sacosPego = areaTotalGlobal > 0 ? Math.ceil(areaTotalGlobal / rendimientoSaco) : 0;
+
+  // Imprimir en pantalla
   if (document.getElementById('res-area-pared')) document.getElementById('res-area-pared').innerText = areaPared.toFixed(2);
   if (document.getElementById('res-cajas-pared')) document.getElementById('res-cajas-pared').innerText = cajasPared;
 
   if (document.getElementById('res-area-piso')) document.getElementById('res-area-piso').innerText = areaPiso.toFixed(2);
   if (document.getElementById('res-cajas-piso')) document.getElementById('res-cajas-piso').innerText = cajasPiso;
 
+  if (document.getElementById('res-area-global')) document.getElementById('res-area-global').innerText = areaTotalGlobal.toFixed(2);
   if (document.getElementById('res-total-pego')) document.getElementById('res-total-pego').innerText = sacosPego;
+  if (document.getElementById('nombre-pego-seleccionado')) document.getElementById('nombre-pego-seleccionado').innerText = textoPegoNombre;
 
   // Mostrar recuadro
   const divRes = document.getElementById('resultado-calculo');
@@ -107,10 +124,3 @@ function calcularMaterialesTotales() {
     divRes.style.display = 'block';
   }
 }
-
-// Registro e inicialización al cargar
-window.onload = function() {
-  cambiarParedes(paredActual);
-  cambiarPiso(pisoActual);
-};
-
