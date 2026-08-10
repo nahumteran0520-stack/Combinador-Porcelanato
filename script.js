@@ -108,11 +108,9 @@ function calcularMaterialesTotales() {
   }
 }
 
-// Registro inicial al cargar
+// Registro e inicialización al cargar
 window.onload = function() {
-  registrarEnSheet(paredActual, pisoActual);
+  cambiarParedes(paredActual);
+  cambiarPiso(pisoActual);
 };
-  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
-
-  document.getElementById('resultado-calculo').style.display = 'block';
 
