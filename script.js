@@ -37,7 +37,37 @@ function cambiarPiso(imagen) {
   
   registrarEnSheet(paredActual, pisoActual);
 }
+// Función para calcular rendimiento, cajas y pego (Ajustado pego a 1.5 m²)
+function calcularMateriales() {
+  const alto = parseFloat(document.getElementById('alto').value) || 0;
+  const ancho = parseFloat(document.getElementById('ancho').value) || 0;
+  const rendimientoCaja = parseFloat(document.getElementById('rendimiento-caja').value) || 1.44;
 
+  if (alto <= 0 || ancho <= 0) {
+    alert("Por favor, ingresa dimensiones válidas (alto y ancho).");
+    return;
+  }
+
+  // Área base
+  const areaBase = alto * ancho;
+  
+  // Se agrega un 10% estándar para cortes y desperdicio
+  const areaTotal = areaBase * 1.10;
+
+  // Cálculo de cajas necesarias (redondeado hacia arriba)
+  const cajasNecesarias = Math.ceil(areaTotal / rendimientoCaja);
+
+  // Rendimiento ajustado: 1 saco rinde 1.5 m²
+  const sacosPego = Math.ceil(areaTotal / 1.5);
+
+  // Mostrar resultados en pantalla
+  document.getElementById('res-area').innerText = areaTotal.toFixed(2);
+  document.getElementById('res-cajas').innerText = cajasNecesarias;
+  document.getElementById('res-pego').innerText = sacosPego;
+
+  // Hacer visible la caja de resultados
+  document.getElementById('resultado-calculo').style.display = 'block';
+}
 // Función corregida de Cambio de Luz (Día / Noche)
 function cambiarLuz(modo, elementoBtn) {
   const habitacion = document.querySelector('.habitacion');
