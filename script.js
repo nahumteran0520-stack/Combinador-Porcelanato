@@ -95,36 +95,42 @@ function cambiarLuz(modo, elementoBtn) {
 window.onload = function() {
   registrarEnSheet(paredActual, pisoActual);
 };
-function calcularMateriales() {
-  const inputAlto = document.getElementById('alto');
-  const inputAncho = document.getElementById('ancho');
-  const inputRendimiento = document.getElementById('rendimiento-caja');
-  const divResultado = document.getElementById('resultado-calculo');
+function calcularMaterialesTotales() {
+  // Obtener valores de Pared
+  const altoPared = parseFloat(document.getElementById('pared-alto').value) || 0;
+  const anchoPared = parseFloat(document.getElementById('pared-ancho').value) || 0;
+  const cajaPared = parseFloat(document.getElementById('pared-caja').value) || 1.44;
 
-  if (!inputAlto || !inputAncho || !inputRendimiento || !divResultado) {
-    alert("Error: Revisa los IDs en el HTML de la calculadora.");
+  // Obtener valores de Piso
+  const largoPiso = parseFloat(document.getElementById('piso-largo').value) || 0;
+  const anchoPiso = parseFloat(document.getElementById('piso-ancho').value) || 0;
+  const cajaPiso = parseFloat(document.getElementById('piso-caja').value) || 1.44;
+
+  if ((altoPared <= 0 || anchoPared <= 0) && (largoPiso <= 0 || anchoPiso <= 0)) {
+    alert("Por favor, ingresa las medidas de al menos una sección (Pared o Piso).");
     return;
   }
 
-  const alto = parseFloat(inputAlto.value);
-  const ancho = parseFloat(inputAncho.value);
-  const rendimientoCaja = parseFloat(inputRendimiento.value) || 1.44;
+  // CÁLCULO PARED (Alto x Ancho x 1.10)
+  const areaParedTotal = (altoPared * anchoPared) * 1.10;
+  const cajasPared = Math.ceil(areaParedTotal / cajaPared);
 
-  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
-    alert("Por favor, ingresa el alto y el ancho en metros.");
-    return;
-  }
+  // CÁLCULO PISO (Largo x Ancho x 1.10)
+  const areaPisoTotal = (largoPiso * anchoPiso) * 1.10;
+  const cajasPiso = Math.ceil(areaPisoTotal / cajaPiso);
 
-  // Área con 10% de desperdicio
-  const areaTotal = (alto * ancho) * 1.10;
-  const cajasNecesarias = Math.ceil(areaTotal / rendimientoCaja);
-  
-  // Pego rinde 1.5 m² por saco
-  const sacosPego = Math.ceil(areaTotal / 1.5);
+  // CÁLCULO TOTAL PEGO (Sumatoria de áreas / 1.5)
+  const areaGlobal = areaParedTotal + areaPisoTotal;
+  const sacosPegoTotal = Math.ceil(areaGlobal / 1.5);
 
-  document.getElementById('res-area').innerText = areaTotal.toFixed(2);
-  document.getElementById('res-cajas').innerText = cajasNecesarias;
-  document.getElementById('res-pego').innerText = sacosPego;
+  // Mostrar Resultados
+  document.getElementById('res-area-pared').innerText = areaParedTotal.toFixed(2);
+  document.getElementById('res-cajas-pared').innerText = cajasPared;
 
-  divResultado.style.display = 'block';
+  document.getElementById('res-area-piso').innerText = areaPisoTotal.toFixed(2);
+  document.getElementById('res-cajas-piso').innerText = cajasPiso;
+
+  document.getElementById('res-total-pego').innerText = sacosPegoTotal;
+
+  document.getElementById('resultado-calculo').style.display = 'block';
 }
