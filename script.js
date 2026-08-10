@@ -73,11 +73,13 @@ function calcularMaterialesTotales() {
 }
 
 // --- LÓGICA DE GIRO SUAVE (INERCIA) ---
+// --- LÓGICA DE GIRO 3D REAL ---
 function animarRotacion() {
-    rotY += (objetivoRotY - rotY) * 0.05; // Suavidad de movimiento
+    rotY += (objetivoRotY - rotY) * 0.08; // Un poco más rápido
     const habitacionEl = document.getElementById('habitacion');
     if (habitacionEl) {
-        habitacionEl.style.transform = `rotateY(${rotY}deg)`;
+        // Rotamos en Y para el giro, y mantenemos una inclinación leve en X para que se vea "desde arriba"
+        habitacionEl.style.transform = `rotateX(-10deg) rotateY(${rotY}deg)`;
     }
     requestAnimationFrame(animarRotacion);
 }
