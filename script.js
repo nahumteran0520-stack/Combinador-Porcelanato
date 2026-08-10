@@ -1,10 +1,10 @@
-// URL de tu Google Apps Script
-const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/TU_NUEVA_URL_AQUI/exec";
+// URL de tu Google Apps Script activa
+const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw7CEmtB5yelhe07mk3PjF1I1RWuW3_7nJIFA7cno1vwITWLSsEpC49LdwhnqxWSga0/exec";
 
 let paredActual = "piso-marmoleadoblanco-344.jpg";
 let pisoActual = "piso-marmoleadonegro-358.jpg";
 
-// Enviar datos a Google Sheets
+// Enviar datos a Google Sheets usando FormData (evita bloqueos CORS)
 function registrarEnSheet(opcionPared, opcionPiso) {
   if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_NUEVA_URL_AQUI")) return;
 
@@ -108,7 +108,7 @@ function calcularMaterialesTotales() {
   }
 }
 
-// Registro e inicialización al cargar
+// Registro e inicialización al cargar la página
 window.onload = function() {
   cambiarParedes(paredActual);
   cambiarPiso(pisoActual);
