@@ -38,22 +38,31 @@ function cambiarPiso(imagen) {
   registrarEnSheet(paredActual, pisoActual);
 }
 
-// Control de Iluminación (Día / Noche)
-function cambiarLuz(modo, elementoBtn) {
-  const habitacion = document.querySelector('.habitacion');
+function cambiarLuz(tipo, boton) {
+  // 1. Remover la clase 'activo' de todos los botones de luz
   const botones = document.querySelectorAll('.btn-luz');
+  botones.forEach(btn => btn.classList.remove('activo'));
+  
+  // 2. Agregar la clase 'activo' al botón presionado
+  boton.classList.add('activo');
 
-  if (botones) botones.forEach(btn => btn.classList.remove('activo'));
-
-  if (habitacion) {
-    if (modo === 'noche') {
-      habitacion.classList.remove('modo-dia');
-      habitacion.classList.add('modo-noche');
-    } else {
-      habitacion.classList.remove('modo-noche');
-      habitacion.classList.add('modo-dia');
-    }
+  // 3. Seleccionar el contenedor de la habitación
+  const habitacion = document.querySelector('.habitacion');
+  
+  // 4. Limpiar los modos anteriores
+  habitacion.className = 'habitacion';
+  
+  // 5. Aplicar el nuevo modo correspondiente
+  if (tipo === 'dia') {
+    habitacion.classList.add('modo-dia');
+  } else if (tipo === 'noche') {
+    habitacion.classList.add('modo-noche');
+  } else if (tipo === 'calida') {
+    habitacion.classList.add('modo-calida');
+  } else if (tipo === 'fria') {
+    habitacion.classList.add('modo-fria');
   }
+}
 
   if (elementoBtn) {
     elementoBtn.classList.add('activo');
