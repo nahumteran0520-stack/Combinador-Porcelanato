@@ -95,3 +95,36 @@ function cambiarLuz(modo, elementoBtn) {
 window.onload = function() {
   registrarEnSheet(paredActual, pisoActual);
 };
+function calcularMateriales() {
+  const inputAlto = document.getElementById('alto');
+  const inputAncho = document.getElementById('ancho');
+  const inputRendimiento = document.getElementById('rendimiento-caja');
+  const divResultado = document.getElementById('resultado-calculo');
+
+  if (!inputAlto || !inputAncho || !inputRendimiento || !divResultado) {
+    alert("Error: Revisa los IDs en el HTML de la calculadora.");
+    return;
+  }
+
+  const alto = parseFloat(inputAlto.value);
+  const ancho = parseFloat(inputAncho.value);
+  const rendimientoCaja = parseFloat(inputRendimiento.value) || 1.44;
+
+  if (isNaN(alto) || isNaN(ancho) || alto <= 0 || ancho <= 0) {
+    alert("Por favor, ingresa el alto y el ancho en metros.");
+    return;
+  }
+
+  // Área con 10% de desperdicio
+  const areaTotal = (alto * ancho) * 1.10;
+  const cajasNecesarias = Math.ceil(areaTotal / rendimientoCaja);
+  
+  // Pego rinde 1.5 m² por saco
+  const sacosPego = Math.ceil(areaTotal / 1.5);
+
+  document.getElementById('res-area').innerText = areaTotal.toFixed(2);
+  document.getElementById('res-cajas').innerText = cajasNecesarias;
+  document.getElementById('res-pego').innerText = sacosPego;
+
+  divResultado.style.display = 'block';
+}
