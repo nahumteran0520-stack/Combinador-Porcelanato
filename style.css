@@ -1,71 +1,107 @@
+/* --- Estilos Generales --- */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+body { background-color: #1e1e1e; color: #fff; padding: 20px; overflow-x: hidden; }
 
-body { background-color: #1e1e1e; color: #fff; padding: 20px; }
-
+/* Contenedor de la Aplicación */
 .app-container {
   display: flex;
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
   align-items: flex-start;
+  flex-wrap: wrap; /* Para pantallas más pequeñas */
 }
 
-/* Escena Principal */
-.habitacion {
-  position: relative;
+/* --- Escena de la Habitación --- */
+/* 1. EL CONTENEDOR MAESTRO DE PERSPECTIVA */
+.habitacion-contenedor {
   width: 800px;
   height: 450px;
   background-color: #000;
   border: 2px solid #444;
   overflow: hidden;
+  position: relative;
+  
+  /* ESTO ES CLAVE: Define la profundidad de la cámara (punto de fuga) */
+  perspective: 1200px; 
+  perspective-origin: 50% 50%; /* Punto de fuga central */
 }
 
-/* Techo */
+/* El 'cubo' interior que sostiene las superficies */
+.habitacion-3d {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d; /* Permite que los hijos sean 3D */
+}
+
+/* Estilos comunes para todas las superficies 3D */
+.superficie-3d {
+  position: absolute;
+  background-size: 200px 200px; /* Tamaño de la baldosa (ajustable) */
+  background-repeat: repeat;
+  border: 1px solid rgba(255,255,255,0.05); /* Línea de lechada muy sutil */
+  transition: background-image 0.2s ease-in-out;
+}
+
+/* --- Posicionamiento de las Superficies (La magia 3D) --- */
+
+/* Techo (arriba, rotado 90deg hacia atrás) */
 .techo {
-  position: absolute;
-  top: 0; width: 100%; height: 20%;
-  background-color: #dcdcdc;
-  clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
-  z-index: 2;
+  width: 100%;
+  height: 500px; /* Más profundo para la fuga */
+  top: 0;
+  left: 0;
+  background-color: #dcdcdc; /* Color plano, o puedes poner textura */
+  transform: translateY(-50%) rotateX(-90deg);
+  transform-origin: top center;
 }
 
-/* Paredes (Usan la imagen de mármol blanco inicial) */
+/* Pared del Fondo (al fondo, sin rotar) */
 .pared-fondo {
-  position: absolute;
-  top: 20%; left: 20%; width: 60%; height: 50%;
-  background-image: url('piso-marmoleadoblanco-344.jpg');
-  background-size: 120px 120px;
-  background-repeat: repeat;
-  border: 1px solid rgba(0,0,0,0.3);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  /* La alejamos en el eje Z */
+  transform: translateZ(-500px) scale(1.5); /* Escala para cubrir huecos */
 }
 
+/* Pared Lateral Izquierda (rotada 90deg hacia la derecha) */
 .pared-lateral.izq {
-  position: absolute;
-  top: 0; left: 0; width: 20%; height: 100%;
-  background-image: url('piso-marmoleadoblanco-344.jpg');
-  background-size: 120px 120px;
-  clip-path: polygon(0 0, 100% 20%, 100% 70%, 0 100%);
+  width: 500px; /* Profundidad */
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: rotateY(90deg);
+  transform-origin: left center;
 }
 
+/* Pared Lateral Derecha (rotada 90deg hacia la izquierda) */
 .pared-lateral.der {
-  position: absolute;
-  top: 0; right: 0; width: 20%; height: 100%;
-  background-image: url('piso-marmoleadoblanco-344.jpg');
-  background-size: 120px 120px;
-  clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 70%);
+  width: 500px; /* Profundidad */
+  height: 100%;
+  top: 0;
+  right: 0;
+  transform: rotateY(-90deg);
+  transform-origin: right center;
 }
 
-/* Piso (Usa la imagen de mármol negro inicial) */
+/* Piso (abajo, rotado -90deg hacia atrás) */
 .piso {
-  position: absolute;
-  bottom: 0; width: 100%; height: 30%;
-  background-image: url('piso-marmoleadonegro-358.jpg');
-  background-size: 160px 160px;
-  background-repeat: repeat;
-  clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  width: 100%;
+  height: 500px; /* Profundidad */
+  bottom: 0;
+  left: 0;
+  background-size: 250px 250px; /* Baldosas de piso más grandes */
+  transform: translateY(50%) rotateX(90deg);
+  transform-origin: bottom center;
 }
 
-/* Panel Lateral */
+
+/* --- Catálogo Lateral (Igual que antes, o mejoras sutiles) --- */
 .sidebar {
   width: 320px;
   background: #2a2a2a;
@@ -82,17 +118,36 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   gap: 10px;
 }
 
-.thumb {
+.thumb-container {
+  position: relative;
   width: 100%;
-  height: 70px;
+  padding-bottom: 100%; /* Cuadrado perfecto */
+  cursor: pointer;
+}
+
+.thumb {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border: 2px solid #555;
   border-radius: 4px;
-  cursor: pointer;
   transition: transform 0.2s, border-color 0.2s;
 }
 
 .thumb:hover {
   transform: scale(1.05);
   border-color: #00a8ff;
+}
+
+/* Estilo para las imágenes rotas en el catálogo */
+.thumb[alt]:not([src]), 
+.thumb[src=""] {
+  background: #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #aaa;
 }
