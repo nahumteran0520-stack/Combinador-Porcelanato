@@ -150,8 +150,8 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   transform: scale(1.05);
   border-color: #00a8ff;
 }
-/* --- CALCULADORA DE MATERIALES --- */
-.calculadora-box {
+/* --- PANEL DE CALCULADORA LATERAL --- */
+.calculadora-panel {
   background: #1e1e1e;
   padding: 15px;
   border-radius: 8px;
@@ -160,23 +160,38 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   color: #ffffff;
 }
 
-.calculadora-box h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
+.calculadora-panel h2 {
+  font-size: 18px;
   color: #00a8ff;
-  border-bottom: 1px solid #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #00a8ff;
   padding-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.seccion-calc h3 {
+  font-size: 14px;
+  color: #ffc107;
+  margin-bottom: 10px;
+}
+
+.divisor-calc {
+  border: 0;
+  height: 1px;
+  background: #333;
+  margin: 15px 0;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .input-group label {
-  font-size: 12px;
-  margin-bottom: 4px;
+  font-size: 11px;
+  margin-bottom: 3px;
   color: #ccc;
 }
 
@@ -184,9 +199,14 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   background: #2b2b2b;
   border: 1px solid #444;
   color: #fff;
-  padding: 8px;
+  padding: 7px;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #00a8ff;
 }
 
 .btn-calcular {
@@ -198,7 +218,8 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 10px;
+  transition: background 0.3s;
 }
 
 .btn-calcular:hover {
@@ -207,19 +228,29 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
 
 .resultado-box {
   margin-top: 15px;
-  padding: 10px;
+  padding: 12px;
   background: #111;
-  border-left: 4px solid #00a8ff;
+  border-left: 4px solid #28a745;
   border-radius: 4px;
+  font-size: 12px;
+}
+
+.resultado-box h4 {
+  color: #fff;
+  margin-bottom: 8px;
   font-size: 13px;
 }
 
 .resultado-box p {
-  margin: 5px 0;
-  color: #eee;
+  margin: 3px 0;
+  color: #ddd;
 }
 
 .resultado-box span {
   color: #00a8ff;
   font-weight: bold;
+}
+
+.resultado-box .total-pego span {
+  color: #ffc107;
 }
