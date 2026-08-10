@@ -150,3 +150,76 @@ body { background-color: #1e1e1e; color: #fff; padding: 20px; }
   transform: scale(1.05);
   border-color: #00a8ff;
 }
+/* --- CALCULADORA DE MATERIALES --- */
+.calculadora-box {
+  background: #1e1e1e;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 1px solid #333;
+  color: #ffffff;
+}
+
+.calculadora-box h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #00a8ff;
+  border-bottom: 1px solid #333;
+  padding-bottom: 6px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.input-group label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #ccc;
+}
+
+.input-group input {
+  background: #2b2b2b;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-calcular {
+  width: 100%;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.btn-calcular:hover {
+  background: #218838;
+}
+
+.resultado-box {
+  margin-top: 15px;
+  padding: 10px;
+  background: #111;
+  border-left: 4px solid #00a8ff;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.resultado-box p {
+  margin: 5px 0;
+  color: #eee;
+}
+
+.resultado-box span {
+  color: #00a8ff;
+  font-weight: bold;
+}
