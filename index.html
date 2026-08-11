@@ -139,15 +139,18 @@
       </div>
     </section>
 
-    <!-- COLUMNA 2: VISUALIZADOR REALISTA -->
+   <!-- COLUMNA 2: VISUALIZADOR REALISTA -->
     <section class="panel preview-section">
       <h2>Visualizador de Ambiente</h2>
       <div class="habitacion" id="habitacion">
-        <!-- Foto de fondo del espacio real -->
-        <div class="escena-base"></div>
-        <!-- Capas dinámicas donde se aplican las texturas -->
-        <div id="pared-fondo"></div>
+        <!-- 1. CAPA INFERIOR: El piso dinámico que cambia al hacer clic -->
         <div id="piso"></div>
+        
+        <!-- 2. CAPA INTERMEDIA: La pared con textura (opcional) -->
+        <div id="pared-fondo"></div>
+        
+        <!-- 3. CAPA SUPERIOR: La cama PNG transparente por delante -->
+        <img src="d94c9a08-0184-4361-b5cc-237579139f5b.jpg" alt="Cama moderna" class="cama-encima">
       </div>
     </section>
 
