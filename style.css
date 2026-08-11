@@ -40,34 +40,46 @@
       background-color: #151515;
     }
 
-    /* 1. CAPA DE PISO INTERACTIVO: Achicado y alineado exactamente al suelo */
+    /* 1. PARED DE FONDO: Muestra la pared limpia */
+    .escena-base {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('habitacion.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+
+    /* 2. PISO INTERACTIVO: Ubicado exactamente en la franja del suelo */
     #piso {
       position: absolute;
-      top: 65%;          /* Empieza donde baja el piso real */
-      left: 10%;         /* Margen lateral para que coincida con la perspectiva de la habitación */
-      width: 80% ;       /* Ancho controlado para que no se desborde */
-      height: 25%;       /* Altura reducida para que no se vea gigante */
-      background-size: 100px 100px; /* Textura más pequeña y realista */
-      z-index: 1; 
+      top: 55%;
+      left: 0;
+      width: 100%;
+      height: 45%;
+      background-size: 150px 150px;
+      z-index: 2;
       opacity: 0.95;
-      transform: perspective(250px) rotateX(50deg);
+      transform: perspective(400px) rotateX(55deg);
       transform-origin: top center;
     }
 
-    /* 2. CAPA SUPERIOR: La imagen transparente con la cama y la pared recortada */
+    /* 3. CAMA / MUEBLES ENCIMA: La imagen transparente que se coloca al frente para tapar los sobrantes */
     .cama-encima {
+      display: block;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 2;        /* Se coloca al frente para tapar los bordes sobrantes del piso */
+      z-index: 3;
       pointer-events: none;
     }
 
-    /* Elementos antiguos desactivados */
-    .escena-base { display: none; }
     #pared-fondo { display: none; }
 
     /* Controles y Botones */
