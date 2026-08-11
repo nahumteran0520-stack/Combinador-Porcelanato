@@ -53,17 +53,17 @@
       z-index: 1;
     }
 
-    /* 2. CAPA DE PISO EN PERSPECTIVA REAL */
+    /* 2. CAPA DE PISO: Ajustada perfectamente al área frontal debajo de la cama */
     #piso {
       position: absolute;
-      top: 58%;
-      left: -20%;
-      width: 140%;
-      height: 45%;
-      background-size: 180px 180px;
-      z-index: 2;
+      top: 75%;          /* Empieza más abajo, justo donde termina la base de la cama */
+      left: 0;
+      width: 100%;
+      height: 25%;         /* Ocupa únicamente el espacio del suelo hacia el frente */
+      background-size: 150px 150px;
+      z-index: 2;          /* Se ubica por encima del fondo pero debajo de la cama si esta tuviera transparencia */
       opacity: 0.95;
-      transform: perspective(400px) rotateX(60deg);
+      transform: perspective(250px) rotateX(40px); /* Perspectiva más suave y realista para la zona frontal */
       transform-origin: top center;
     }
 
