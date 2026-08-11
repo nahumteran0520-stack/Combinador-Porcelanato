@@ -26,15 +26,19 @@ function registrarVisitaEnSheets(pared, piso) {
 function cambiarParedes(imagen) {
     paredActual = imagen;
     const ruta = `url('${imagen}')`;
-    document.getElementById('pared-fondo').style.backgroundImage = ruta;
-    document.getElementById('pared-izq').style.backgroundImage = ruta;
-    document.getElementById('pared-der').style.backgroundImage = ruta;
+    const paredFondo = document.getElementById('pared-fondo');
+    if (paredFondo) {
+        paredFondo.style.backgroundImage = ruta;
+    }
     registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
 function cambiarPiso(imagen) {
     pisoActual = imagen;
-    document.getElementById('piso').style.backgroundImage = `url('${imagen}')`;
+    const pisoEl = document.getElementById('piso');
+    if (pisoEl) {
+        pisoEl.style.backgroundImage = `url('${imagen}')`;
+    }
     registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
@@ -77,18 +81,18 @@ function calcularMaterialesTotales() {
     document.getElementById('resultado-calculo').style.display = 'block';
 }
 
-// --- LÓGICA DE GIRO 3D REAL (INERCIA) ---
+// --- LÓGICA DE GIRO 3D (Opcional si usas capas planas) ---
 function animarRotacion() {
     rotY += (objetivoRotY - rotY) * 0.08; 
     const habitacionEl = document.getElementById('habitacion');
-    if (habitacionEl) {
-        // Mantiene la inclinación fija en X y rota suavemente en el eje Y
-        habitacionEl.style.transform = `rotateX(-10deg) rotateY(${rotY}deg)`;
+    if (habitacionEl && Math.abs(objetivoRotY - rotY) > 0.01) {
+        // Solo aplica rotación si el usuario está interactuando para evitar distorsionar la cama PNG plana
+        habitacionEl.style.transform = `rotateY(${rotY * 0.2}deg)`;
     }
     requestAnimationFrame(animarRotacion);
 }
 
-// Eventos de Mouse para interactuar con la habitación 3D
+// Eventos de Mouse para interactuar con la habitación
 document.addEventListener('mousedown', (e) => { 
     if(e.target.closest('#habitacion')) {
         isDragging = true; 
