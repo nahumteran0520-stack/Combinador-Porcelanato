@@ -61,16 +61,52 @@ h3 {
 }
 
 .habitacion {
-  width: 100%;
-  height: 480px;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #333;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-  background-color: #151515;
-  transition: filter 0.3s ease;
-}
+      width: 100%;
+      height: 480px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      background-color: #f0f0f0; /* Fondo claro para que resalte el piso */
+    }
+
+    /* 1. PARED AL FONDO */
+    #pared-fondo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 55%; /* Ocupa la mitad superior */
+      background-size: 150px 150px;
+      z-index: 1;
+    }
+
+    /* 2. PISO EN PERSPECTIVA ABAJO */
+    #piso {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 45%; /* Ocupa la mitad inferior */
+      background-size: 180px 180px;
+      z-index: 2;
+      transform: perspective(400px) rotateX(55deg);
+      transform-origin: top center;
+    }
+
+    /* 3. CAMA CENTRADA Y ACOPLADA AL PISO */
+    .cama-encima {
+      position: absolute;
+      bottom: 10px; /* Apoyada cerca del borde inferior */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 55%; /* Tamaño proporcional para que no tape todo */
+      max-height: 65%;
+      object-fit: contain;
+      z-index: 3; /* Encima del piso y pared */
+      pointer-events: none;
+    }
 
 /* Imagen de fondo de la habitación real */
 .escena-base {
