@@ -53,18 +53,19 @@
       z-index: 1;
     }
 
-    /* 2. PISO INTERACTIVO: Ubicado exactamente en la franja del suelo */
+    //* 2. PISO INTERACTIVO: Cubre toda la franja inferior de lado a lado */
     #piso {
       position: absolute;
       top: 55%;
-      left: 0;
-      width: 100%;
+      left: -10%;
+      width: 120%;
       height: 45%;
-      background-size: 150px 150px;
+      background-size: 130px 130px;
       z-index: 2;
       opacity: 0.95;
-      transform: perspective(400px) rotateX(55deg);
+      transform: perspective(300px) rotateX(45deg);
       transform-origin: top center;
+    }
     }
 
     /* 3. CAMA / MUEBLES ENCIMA: La imagen transparente que se coloca al frente para tapar los sobrantes */
