@@ -53,18 +53,17 @@
       z-index: 1;
     }
 
-   /* 2. PISO INTERACTIVO: Cubre desde más arriba hasta el borde inferior total */
+  /* 2. PISO INTERACTIVO: Cubre toda la zona inferior hasta el borde de la tarjeta */
     #piso {
       position: absolute;
-      top: 42%;
-      left: -10%;
-      width: 120%;
-      height: 58%;
-      background-size: 130px 130px;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background-size: 150px 150px;
       z-index: 2;
-      opacity: 0.95;
-      transform: perspective(300px) rotateX(45deg);
-      transform-origin: top center;
+      opacity: 1;
+      transform: none; /* Quitamos la perspectiva 3D para que llene todo el rectángulo plano inferior */
     }
     }
 
