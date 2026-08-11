@@ -1,237 +1,90 @@
-/* --- ESTILOS GENERALES --- */
-* { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-  font-family: 'Segoe UI', Roboto, sans-serif; 
-}
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #121212; color: #ffffff; padding: 15px; }
+    
+    .app-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 10px;
+    }
 
-body { 
-  background-color: #121212; 
-  color: #ffffff; 
-  padding: 15px; 
-}
+    @media (min-width: 1024px) {
+      .app-container { grid-template-columns: 310px 1fr 310px; }
+    }
 
-/* --- DISEÑO DE CONTENEDOR PRINCIPAL (3 Columnas) --- */
-.app-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 10px;
-}
+    .panel {
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 15px;
+      border: 1px solid #2d2d2d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
 
-@media (min-width: 1024px) {
-  .app-container { 
-    grid-template-columns: 310px 1fr 310px; 
-  }
-}
+    h2 { color: #00adb5; font-size: 1rem; margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid #2d2d2d; padding-bottom: 6px; }
+    h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500; }
+    
+    /* Visualizador Estilo Escena Real */
+    .preview-section { display: flex; flex-direction: column; align-items: center; }
+    
+    .habitacion {
+      width: 100%;
+      height: 480px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      background-color: #151515;
+    }
 
-/* --- PANELES --- */
-.panel {
-  background: #1e1e1e;
-  border-radius: 10px;
-  padding: 15px;
-  border: 1px solid #2d2d2d;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
+    /* 1. CAPA BASE: La foto completa de la habitación de fondo */
+    .escena-base {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('habitacion.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
 
-h2 { 
-  color: #00adb5; 
-  font-size: 1rem; 
-  margin-bottom: 12px; 
-  text-transform: uppercase; 
-  border-bottom: 1px solid #2d2d2d; 
-  padding-bottom: 6px; 
-}
+    /* 2. CAPA DE PISO: Ajustada perfectamente abajo para que se aprecie la textura */
+    #piso {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30%; /* Altura exacta para cubrir la zona del suelo visible */
+      background-size: 200px 200px; /* Tamaño de los cuadros del porcelanato para que se noten bien */
+      z-index: 2;
+      opacity: 0.95;
+    }
 
-h3 { 
-  color: #e0e0e0; 
-  font-size: 0.85rem; 
-  margin: 10px 0 8px 0; 
-  font-weight: 500; 
-}
+    #pared-fondo { display: none; }
+    .cama-encima { display: none; }
 
-/* --- VISUALIZADOR DE AMBIENTE REALISTA --- */
-.preview-section { 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-}
+    /* Controles y Botones */
+    .controls-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; background: #282828; padding: 5px; border-radius: 6px; }
+    .btn-luz { background: transparent; border: none; color: #aaa; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: 0.2s; }
+    .btn-luz.activo { background: #00adb5; color: white; }
+    
+    .grid-porcelanatos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+    .tile-card { width: 100%; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 2px solid #333; transition: all 0.2s ease; background: #252525; }
+    .tile-card:hover { transform: scale(1.04); border-color: #00adb5; }
+    
+    .form-group { margin-bottom: 8px; }
+    .form-group label { display: block; font-size: 0.75rem; color: #aaa; margin-bottom: 2px; }
+    .form-group input, .form-group select { width: 100%; padding: 6px; border-radius: 5px; border: 1px solid #383838; background: #2b2b2b; color: #fff; font-size: 0.85rem; }
 
-.habitacion {
-  width: 100%;
-  height: 480px;
-  border-radius: 8px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #333;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-  background-color: #151515;
-}
-
-/* 1. Imagen de fondo de la habitación real */
-.escena-base {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('habitacion.jpg');
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-}
-
-/* 2. Capa de la pared al fondo */
-#pared-fondo {
-  position: absolute;
-  top: 28%;
-  left: 36%;
-  width: 28%;
-  height: 30%;
-  background-size: 100px 100px;
-  z-index: 2;
-  opacity: 0.92;
-  mix-blend-mode: multiply;
-}
-
-/* 3. Capa del piso */
-#piso {
-  position: absolute;
-  top: 57%;
-  left: 0;
-  width: 100%;
-  height: 43%;
-  background-size: 140px 140px;
-  z-index: 2;
-  opacity: 0.9;
-}
-
-/* 4. Cama al frente perfectamente proporcionada y centrada */
-.cama-encima {
-  position: absolute;
-  bottom: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  max-height: 80%;
-  object-fit: contain;
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Modos de Iluminación */
-.habitacion.modo-dia { filter: brightness(1.05) contrast(1.05); }
-.habitacion.modo-noche { filter: brightness(0.45) contrast(1.2) sepia(0.3); }
-
-/* --- CONTROLES Y BOTONES DE LUZ --- */
-.controls-bar { 
-  display: grid; 
-  grid-template-columns: repeat(2, 1fr); 
-  gap: 5px; 
-  margin-bottom: 10px; 
-  background: #282828; 
-  padding: 5px; 
-  border-radius: 6px; 
-}
-
-.btn-luz { 
-  background: transparent; 
-  border: none; 
-  color: #aaa; 
-  padding: 6px; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 0.8rem; 
-  font-weight: 600; 
-  transition: 0.2s; 
-}
-
-.btn-luz.activo { 
-  background: #00adb5; 
-  color: white; 
-}
-
-/* --- CATÁLOGO DE PORCELANATOS --- */
-.grid-porcelanatos { 
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 8px; 
-  margin-bottom: 10px; 
-}
-
-.tile-card { 
-  width: 100%; 
-  height: 60px; 
-  object-fit: cover; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  border: 2px solid #333; 
-  transition: all 0.2s ease; 
-  background: #252525; 
-}
-
-.tile-card:hover { 
-  transform: scale(1.04); 
-  border-color: #00adb5; 
-}
-
-/* --- CALCULADORA DE MATERIALES --- */
-.form-group { 
-  margin-bottom: 8px; 
-}
-
-.form-group label { 
-  display: block; 
-  font-size: 0.75rem; 
-  color: #aaa; 
-  margin-bottom: 2px; 
-}
-
-.form-group input, 
-.form-group select { 
-  width: 100%; 
-  padding: 6px; 
-  border-radius: 5px; 
-  border: 1px solid #383838; 
-  background: #2b2b2b; 
-  color: #fff; 
-  font-size: 0.85rem; 
-}
-
-.btn-calc { 
-  width: 100%; 
-  background: #00c853; 
-  color: white; 
-  border: none; 
-  padding: 10px; 
-  border-radius: 6px; 
-  cursor: pointer; 
-  font-weight: bold; 
-  margin-top: 8px; 
-}
-
-.btn-calc:hover { 
-  background: #00e676; 
-}
-
-.res-box { 
-  margin-top: 12px; 
-  padding: 10px; 
-  background: #282828; 
-  border-left: 4px solid #00adb5; 
-  display: none; 
-  font-size: 0.8rem; 
-}
-
-.res-box p { 
-  margin-bottom: 4px; 
-  color: #ddd; 
-}
-
-.res-box span { 
-  font-weight: bold; 
-  color: #00adb5; 
-}
+    .btn-calc { width: 100%; background: #00c853; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 8px; }
+    .btn-calc:hover { background: #00e676; }
+    
+    .res-box { margin-top: 12px; padding: 10px; background: #282828; border-left: 4px solid #00adb5; display: none; font-size: 0.8rem; }
+    .res-box p { margin-bottom: 4px; color: #ddd; }
+    .res-box span { font-weight: bold; color: #00adb5; }
+  </style>
