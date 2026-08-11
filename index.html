@@ -37,7 +37,7 @@
     
     .habitacion {
       width: 100%;
-      aspect-ratio: 16 / 9; /* Mantiene la proporción perfecta de la foto y evita deformaciones */
+      aspect-ratio: 16 / 9; /* Mantiene la proporción real de tu foto sin distorsiones */
       max-height: 520px;
       border-radius: 8px;
       overflow: hidden;
@@ -63,10 +63,10 @@
     /* 2. PISO INTERACTIVO: Ubicado exactamente en la franja del suelo */
     #piso {
       position: absolute;
-      top: 62%; /* Ajustado para coincidir exactamente con el inicio del piso en la imagen */
+      top: 65%; /* Sube o baja este valor si necesitas afinar exactamente dónde empieza el piso en tu imagen */
       left: 0;
       width: 100%;
-      height: 38%;
+      height: 35%;
       background-size: 140px 140px;
       z-index: 2;
       opacity: 0.95;
@@ -188,6 +188,9 @@
 
   </div>
 
+  <script src="script.js"></script>
+</body>
+</html>
   <script src="script.js"></script>
 </body>
 </html>
