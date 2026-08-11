@@ -37,7 +37,8 @@
     
     .habitacion {
       width: 100%;
-      height: 480px;
+      aspect-ratio: 16 / 9; /* Mantiene la proporción perfecta de la foto y evita deformaciones */
+      max-height: 520px;
       border-radius: 8px;
       overflow: hidden;
       position: relative;
@@ -46,7 +47,7 @@
       background-color: #151515;
     }
 
-    /* 1. CAPA BASE: La foto completa de la habitación cubriendo todo el cuadro */
+    /* 1. PARED DE FONDO: Muestra la pared limpia */
     .escena-base {
       position: absolute;
       top: 0;
@@ -59,19 +60,34 @@
       z-index: 1;
     }
 
-    /* 2. CAPA DE PISO EN PERSPECTIVA REAL (Ajustada para respetar la cama) */
+    /* 2. PISO INTERACTIVO: Ubicado exactamente en la franja del suelo */
     #piso {
       position: absolute;
-      top: 75%;
+      top: 62%; /* Ajustado para coincidir exactamente con el inicio del piso en la imagen */
       left: 0;
       width: 100%;
-      height: 25%;
-      background-size: 150px 150px;
+      height: 38%;
+      background-size: 140px 140px;
       z-index: 2;
       opacity: 0.95;
-      transform: perspective(250px) rotateX(40deg);
+      transform: perspective(350px) rotateX(50deg);
       transform-origin: top center;
     }
+
+    /* 3. CAMA / MUEBLES ENCIMA: La imagen transparente que se coloca al frente para tapar los sobrantes */
+    .cama-encima {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #pared-fondo { display: none; }
 
     /* Controles y Botones */
     .controls-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; background: #282828; padding: 5px; border-radius: 6px; }
@@ -126,14 +142,12 @@
       </div>
     </section>
 
-  <!-- COLUMNA 2: VISUALIZADOR REALISTA -->
+    <!-- COLUMNA 2: VISUALIZADOR REALISTA -->
     <section class="panel preview-section">
       <h2>Visualizador de Ambiente</h2>
       <div class="habitacion" id="habitacion">
-        <!-- 1. CAPA DE PISO INTERACTIVO (Queda al fondo) -->
+        <div class="escena-base"></div>
         <div id="piso"></div>
-        
-        <!-- 2. CAPA SUPERIOR: Tu imagen PNG transparente con la cama y elementos que tapan el piso -->
         <img src="habitacion.png" alt="Cama y Muebles" class="cama-encima">
       </div>
     </section>
@@ -174,9 +188,6 @@
 
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
   <script src="script.js"></script>
 </body>
 </html>
