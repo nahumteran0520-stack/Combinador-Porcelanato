@@ -61,67 +61,30 @@ h3 {
 }
 
 .habitacion {
-      width: 100%;
-      height: 480px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid #333;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: #f0f0f0; /* Fondo claro para que resalte el piso */
-    }
+  width: 100%;
+  height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #333;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  background-color: #151515;
+}
 
-    /* 1. PARED AL FONDO */
-    #pared-fondo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 55%; /* Ocupa la mitad superior */
-      background-size: 150px 150px;
-      z-index: 1;
-    }
-
-    /* 2. PISO EN PERSPECTIVA ABAJO */
-    #piso {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 45%; /* Ocupa la mitad inferior */
-      background-size: 180px 180px;
-      z-index: 2;
-      transform: perspective(400px) rotateX(55deg);
-      transform-origin: top center;
-    }
-
-    /* 3. CAMA CENTRADA Y ACOPLADA AL PISO */
-    .cama-encima {
-      position: absolute;
-      bottom: 10px; /* Apoyada cerca del borde inferior */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 55%; /* Tamaño proporcional para que no tape todo */
-      max-height: 65%;
-      object-fit: contain;
-      z-index: 3; /* Encima del piso y pared */
-      pointer-events: none;
-    }
-
-/* Imagen de fondo de la habitación real */
+/* 1. Imagen de fondo de la habitación real */
 .escena-base {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('./habitacion-base.jpg');
+  background-image: url('base.jpg');
   background-size: cover;
   background-position: center;
   z-index: 1;
 }
 
-/* Capa de la pared */
+/* 2. Capa de la pared al fondo */
 #pared-fondo {
   position: absolute;
   top: 28%;
@@ -134,7 +97,7 @@ h3 {
   mix-blend-mode: multiply;
 }
 
-/* Capa del piso corregida (sin transformaciones para que llene todo el suelo) */
+/* 3. Capa del piso */
 #piso {
   position: absolute;
   top: 57%;
@@ -144,6 +107,19 @@ h3 {
   background-size: 140px 140px;
   z-index: 2;
   opacity: 0.9;
+}
+
+/* 4. Cama al frente perfectamente proporcionada y centrada */
+.cama-encima {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  max-height: 80%;
+  object-fit: contain;
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Modos de Iluminación */
@@ -254,18 +230,11 @@ h3 {
   margin-bottom: 4px; 
   color: #ddd; 
 }
-.cama-encima {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 85%; /* Ajusta el tamaño según se vea mejor en pantalla */
-      max-height: 85%;
-      object-fit: contain;
-      z-index: 3; /* Esto asegura que esté siempre por delante del piso */
-      pointer-events: none; /* Permite que los clics funcionen a través de ella */
-    }
+
 .res-box span { 
+  font-weight: bold; 
+  color: #00adb5; 
+}
   font-weight: bold; 
   color: #00adb5; 
 }
