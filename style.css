@@ -29,15 +29,16 @@
     /* Visualizador Estilo Escena Real */
     .preview-section { display: flex; flex-direction: column; align-items: center; }
     
-    .habitacion {
+   .habitacion {
       width: 100%;
-      height: 480px;
+      height: auto; /* Permite que tome la proporción natural */
+      aspect-ratio: 16 / 10; /* Ajusta este número si tu imagen es más alta o más ancha */
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: #151515;
+      background-color: transparent; /* Quitamos el fondo negro para que no haga contraste */
     }
 
     /* 1. PARED DE FONDO: Muestra la pared limpia */
@@ -53,31 +54,16 @@
       z-index: 1;
     }
 
-  /* 2. PISO INTERACTIVO: Cubre toda la zona inferior hasta el borde de la tarjeta */
-    #piso {
-      position: absolute;
-      top: 50%;
-      left: 0;
+  .habitacion {
       width: 100%;
-      height: 50%;
-      background-size: 150px 150px;
-      z-index: 2;
-      opacity: 1;
-      transform: none; /* Quitamos la perspectiva 3D para que llene todo el rectángulo plano inferior */
-    }
-    }
-
-    /* 3. CAMA / MUEBLES ENCIMA: La imagen transparente que se coloca al frente para tapar los sobrantes */
-    .cama-encima {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 3;
-      pointer-events: none;
+      height: auto; /* Permite que tome la proporción natural */
+      aspect-ratio: 16 / 10; /* Ajusta este número si tu imagen es más alta o más ancha */
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      background-color: transparent; /* Quitamos el fondo negro para que no haga contraste */
     }
 
     #pared-fondo { display: none; }
