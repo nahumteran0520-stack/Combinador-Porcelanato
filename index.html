@@ -46,7 +46,7 @@
       background-color: #151515;
     }
 
-    /* Foto base de la habitación real */
+    /* 1. CAPA BASE: Foto de la habitación real */
     .escena-base {
       position: absolute;
       top: 0;
@@ -59,7 +59,7 @@
       z-index: 1;
     }
 
-    /* Capa de textura para la pared dentro de la escena */
+    /* 2. CAPA DE PARED AL FONDO */
     #pared-fondo {
       position: absolute;
       top: 15%;
@@ -72,7 +72,7 @@
       mix-blend-mode: multiply;
     }
 
-    /* Capa de textura para el piso dentro de la escena */
+    /* 3. CAPA DE PISO EN PERSPECTIVA */
     #piso {
       position: absolute;
       top: 60%;
@@ -86,14 +86,14 @@
       transform-origin: top center;
     }
 
-    /* Estilo para que la cama quede al frente de forma realista */
+    /* 4. CAPA SUPERIOR: Cama PNG centrada y proporcionada */
     .cama-encima {
       position: absolute;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 85%;
-      max-height: 85%;
+      width: 65%;
+      max-height: 75%;
       object-fit: contain;
       z-index: 10;
       pointer-events: none;
@@ -165,8 +165,8 @@
         <!-- 3. CAPA DE PARED -->
         <div id="pared-fondo"></div>
         
-        <!-- 4. CAPA SUPERIOR: Imagen de la cama por delante -->
-        <img src="base.jpg" alt="Cama moderna" class="cama-encima">
+        <!-- 4. CAPA SUPERIOR: Imagen de la cama PNG transparente -->
+        <img src="cama.png" alt="Cama moderna" class="cama-encima">
       </div>
     </section>
 
@@ -207,5 +207,7 @@
   </div>
 
   <script src="script.js"></script>
+</body>
+</html>
 </body>
 </html>
