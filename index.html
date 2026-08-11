@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador de Porcelanatos Fotorrealista</title>
- <style>
+  <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     body { background-color: #121212; color: #ffffff; padding: 15px; }
     
@@ -46,39 +46,31 @@
       background-color: #151515;
     }
 
-    /* 1. CAPA BASE: La imagen completa de la habitación cubriendo todo el cuadro */
+    /* 1. CAPA BASE: La foto completa de la habitación cubriendo todo el cuadro */
     .escena-base {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('habitacion.png'); /* Usa tu misma imagen PNG completa de fondo */
+      background-image: url('habitacion.png');
       background-size: cover;
       background-position: center;
       z-index: 1;
     }
 
-    /* 2. CAPA DE PISO EN PERSPECTIVA (Se coloca encima del piso original para cambiarlo) */
+    /* 2. CAPA DE PISO EN PERSPECTIVA REAL (Ajustada para respetar la cama) */
     #piso {
       position: absolute;
-      top: 55%;
+      top: 75%;
       left: 0;
       width: 100%;
-      height: 45%;
+      height: 25%;
       background-size: 150px 150px;
       z-index: 2;
-      opacity: 0.9;
-      transform: perspective(400px) rotateX(55deg);
+      opacity: 0.95;
+      transform: perspective(250px) rotateX(40deg);
       transform-origin: top center;
-    }
-
-    /* Se elimina la capa de pared independiente para que la pared original de la foto no se mueva */
-    #pared-fondo { display: none; }
-
-    /* 3. CAPA SUPERIOR: Si quieres mantener un recorte superior o dejarlo libre */
-    .cama-encima {
-      display: none; /* Ya no es necesaria porque la imagen completa está en la base cubriendo todo */
     }
 
     /* Controles y Botones */
@@ -138,17 +130,11 @@
     <section class="panel preview-section">
       <h2>Visualizador de Ambiente</h2>
       <div class="habitacion" id="habitacion">
-        <!-- 1. CAPA BASE: Foto de la habitación real -->
+        <!-- 1. CAPA BASE: Foto completa de la habitación -->
         <div class="escena-base"></div>
 
-        <!-- 2. CAPA INTERMEDIA: El piso dinámico -->
+        <!-- 2. CAPA DE PISO INTERACTIVO -->
         <div id="piso"></div>
-        
-        <!-- 3. CAPA DE PARED -->
-        <div id="pared-fondo"></div>
-        
-       <!-- 4. CAPA SUPERIOR: Imagen PNG transparente de la cama -->
-        <img src="habitacion.png" alt="Cama moderna" class="cama-encima">
       </div>
     </section>
 
@@ -163,14 +149,14 @@
 
       <h3>Porcelanato Pared</h3>
       <div class="grid-porcelanatos">
-        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadonegro-358.jpg')" alt="Negro">
-        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarParedes('piso-griscemento-350.jpg')" alt="Gris Cemento">
-        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarParedes('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
-        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarParedes('pisobeige-343.jpg')" alt="Beige">
-        <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarParedes('piso-supernegro-346.jpg')" alt="Súper Negro">
-        <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarParedes('piso-superblanco-345.jpg')" alt="Súper Blanco">
+        <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPares('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
+        <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPares('piso-marmoleadonegro-358.jpg')" alt="Negro">
+        <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPares('piso-griscemento-350.jpg')" alt="Gris Cemento">
+        <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPares('piso-marmoleadoazul-357.jpg')" alt="Azul">
+        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPares('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+        <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPares('pisobeige-343.jpg')" alt="Beige">
+        <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPares('piso-supernegro-346.jpg')" alt="Súper Negro">
+        <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPares('piso-superblanco-345.jpg')" alt="Súper Blanco">
       </div>
 
       <h3>Porcelanato Piso</h3>
@@ -188,6 +174,9 @@
 
   </div>
 
+  <script src="script.js"></script>
+</body>
+</html>
   <script src="script.js"></script>
 </body>
 </html>
