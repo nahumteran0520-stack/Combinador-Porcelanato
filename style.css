@@ -31,39 +31,39 @@
     
    .habitacion {
       width: 100%;
-      height: auto; /* Permite que tome la proporción natural */
-      aspect-ratio: 16 / 10; /* Ajusta este número si tu imagen es más alta o más ancha */
+      height: 560px; /* Aumentamos un poco la altura para que entre completa la imagen */
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: transparent; /* Quitamos el fondo negro para que no haga contraste */
+      background-color: #151515;
     }
 
-    /* 1. PARED DE FONDO: Muestra la pared limpia */
-    .escena-base {
+    /* El piso interactivo abarca toda la mitad inferior de lado a lado */
+    #piso {
+      position: absolute;
+      top: 45%;
+      left: 0;
+      width: 100%;
+      height: 55%;
+      background-size: 150px 150px;
+      z-index: 2;
+      opacity: 1;
+      transform: none;
+    }
+
+    /* AQUÍ ESTÁ EL SECRETO: Usamos contain para que la imagen se vea COMPLETA y no corte la base */
+    .cama-encima {
+      display: block;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('habitacion.png');
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
-    }
-
-  .habitacion {
-      width: 100%;
-      height: auto; /* Permite que tome la proporción natural */
-      aspect-ratio: 16 / 10; /* Ajusta este número si tu imagen es más alta o más ancha */
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid #333;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: transparent; /* Quitamos el fondo negro para que no haga contraste */
+      object-fit: contain; 
+      z-index: 3;
+      pointer-events: none;
     }
 
     #pared-fondo { display: none; }
