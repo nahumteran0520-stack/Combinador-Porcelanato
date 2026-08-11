@@ -40,35 +40,35 @@
       background-color: #151515;
     }
 
-    /* 1. CAPA BASE: La foto completa de la habitación cubriendo todo el cuadro */
-    .escena-base {
+    /* 1. CAPA DE PISO INTERACTIVO (Se dibuja detrás) */
+    #piso {
+      position: absolute;
+      top: 55%;
+      left: 0;
+      width: 100%;
+      height: 45%;
+      background-size: 150px 150px;
+      z-index: 1; /* Fondo */
+      opacity: 0.95;
+      transform: perspective(400px) rotateX(55deg);
+      transform-origin: top center;
+    }
+
+    /* 2. CAPA SUPERIOR: Imagen transparente superpuesta que tapa lo que sobresale */
+    .cama-encima {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('habitacion.png');
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
+      object-fit: cover;
+      z-index: 2; /* Al estar arriba, ocultará automáticamente cualquier exceso del piso que suba por la cama */
+      pointer-events: none; /* Permite hacer clics a través de ella si fuera necesario */
     }
 
-    /* 2. CAPA DE PISO: Ajustada perfectamente al área frontal debajo de la cama */
-    #piso {
-      position: absolute;
-      top: 75%;          /* Empieza más abajo, justo donde termina la base de la cama */
-      left: 0;
-      width: 100%;
-      height: 25%;         /* Ocupa únicamente el espacio del suelo hacia el frente */
-      background-size: 150px 150px;
-      z-index: 2;          /* Se ubica por encima del fondo pero debajo de la cama si esta tuviera transparencia */
-      opacity: 0.95;
-      transform: perspective(250px) rotateX(40px); /* Perspectiva más suave y realista para la zona frontal */
-      transform-origin: top center;
-    }
-
+    /* Elementos antiguos desactivados */
+    .escena-base { display: none; }
     #pared-fondo { display: none; }
-    .cama-encima { display: none; }
 
     /* Controles y Botones */
     .controls-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; background: #282828; padding: 5px; border-radius: 6px; }
