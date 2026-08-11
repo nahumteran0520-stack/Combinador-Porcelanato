@@ -53,13 +53,13 @@
       z-index: 1;
     }
 
-    //* 2. PISO INTERACTIVO: Cubre toda la franja inferior de lado a lado */
+   /* 2. PISO INTERACTIVO: Cubre desde más arriba hasta el borde inferior total */
     #piso {
       position: absolute;
-      top: 55%;
+      top: 42%;
       left: -10%;
       width: 120%;
-      height: 45%;
+      height: 58%;
       background-size: 130px 130px;
       z-index: 2;
       opacity: 0.95;
