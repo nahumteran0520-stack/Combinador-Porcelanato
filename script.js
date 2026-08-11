@@ -18,8 +18,13 @@ function registrarVisitaEnSheets(pared, piso) {
 
 // --- TEXTURAS ---
 function cambiarPares(imagen) {
-    // Mantenemos compatibilidad por si se llama desde el catálogo de pared
     paredActual = imagen;
+    
+    // Si en el futuro deseas que la pared también cambie de imagen de fondo de manera dinámica,
+    // puedes descomentar la línea de abajo asegurándote de tener un elemento con id 'escena-base' o similar:
+    // const escenaBase = document.querySelector('.escena-base');
+    // if (escenaBase) { escenaBase.style.backgroundImage = `url('${imagen}')`; }
+
     registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
