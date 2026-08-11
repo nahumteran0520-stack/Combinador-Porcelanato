@@ -3,12 +3,6 @@ const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw7CEmtB5yel
 let paredActual = "piso-marmoleadoblanco-344.jpg";
 let pisoActual = "piso-marmoleadonegro-358.jpg";
 
-// Variables para la rotación suave (Inercia 3D)
-let rotY = 0;
-let objetivoRotY = 0;
-let isDragging = false;
-let lastX = 0;
-
 // --- REGISTRO EN GOOGLE SHEETS ---
 function registrarVisitaEnSheets(pared, piso) {
     if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_URL")) return;
@@ -23,13 +17,9 @@ function registrarVisitaEnSheets(pared, piso) {
 }
 
 // --- TEXTURAS ---
-function cambiarParedes(imagen) {
+function cambiarPares(imagen) {
+    // Mantenemos compatibilidad por si se llama desde el catálogo de pared
     paredActual = imagen;
-    const ruta = `url('${imagen}')`;
-    const paredFondo = document.getElementById('pared-fondo');
-    if (paredFondo) {
-        paredFondo.style.backgroundImage = ruta;
-    }
     registrarVisitaEnSheets(paredActual, pisoActual);
 }
 
@@ -81,54 +71,7 @@ function calcularMaterialesTotales() {
     document.getElementById('resultado-calculo').style.display = 'block';
 }
 
-// --- LÓGICA DE GIRO 3D (Opcional si usas capas planas) ---
-function animarRotacion() {
-    rotY += (objetivoRotY - rotY) * 0.08; 
-    const habitacionEl = document.getElementById('habitacion');
-    if (habitacionEl && Math.abs(objetivoRotY - rotY) > 0.01) {
-        // Solo aplica rotación si el usuario está interactuando para evitar distorsionar la cama PNG plana
-        habitacionEl.style.transform = `rotateY(${rotY * 0.2}deg)`;
-    }
-    requestAnimationFrame(animarRotacion);
-}
-
-// Eventos de Mouse para interactuar con la habitación
-document.addEventListener('mousedown', (e) => { 
-    if(e.target.closest('#habitacion')) {
-        isDragging = true; 
-        lastX = e.clientX; 
-    }
-});
-
-document.addEventListener('mouseup', () => isDragging = false);
-
-document.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        objetivoRotY += (e.clientX - lastX) * 0.4;
-        lastX = e.clientX;
-    }
-});
-
-// Soporte táctil para celulares y tablets
-document.addEventListener('touchstart', (e) => {
-    if(e.target.closest('#habitacion')) {
-        isDragging = true;
-        lastX = e.touches[0].clientX;
-    }
-});
-
-document.addEventListener('touchend', () => isDragging = false);
-
-document.addEventListener('touchmove', (e) => {
-    if (isDragging) {
-        objetivoRotY += (e.touches[0].clientX - lastX) * 0.4;
-        lastX = e.touches[0].clientX;
-    }
-});
-
 // Inicialización
 window.onload = () => {
-    cambiarParedes(paredActual);
     cambiarPiso(pisoActual);
-    animarRotacion();
 };
