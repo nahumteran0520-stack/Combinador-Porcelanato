@@ -116,17 +116,17 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -10px;
+    bottom: -20px; /* Lo bajamos un poquito más para ganar margen */
     left: -30%;
     width: 160%;
-    height: 52%; /* Subimos la altura un poco más para tapar por completo el espacio blanco superior */
+    height: 60%;  /* Subimos la altura para que tape el espacio blanco de arriba */
     z-index: 1;
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
     transform-origin: bottom center;
-    transform: perspective(350px) rotateX(44deg); /* Ajustamos ligeramente el ángulo de inclinación 3D */
+    transform: perspective(350px) rotateX(40px); /* Ajustamos ligeramente para alinear la perspectiva */
     
     mask-image: none;
     -webkit-mask-image: none;
