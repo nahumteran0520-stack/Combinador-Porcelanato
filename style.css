@@ -117,12 +117,11 @@ body {
 #capa-piso {
     position: absolute;
     bottom: -10px;
-    left: -15%;    /* Ampliamos un poco más el margen izquierdo para cubrir ese pedacito faltante */
-    width: 130%;   /* Estiramos el ancho total para sellar los costados */
+    left: -30%;    /* Ampliamos más el desplazamiento hacia la izquierda */
+    width: 160%;   /* Estiramos el ancho total para compensar la inclinación 3D */
     height: 55%;
     z-index: 1;
     
-    /* Aumentamos el tamaño de la cuadrícula para que los porcelanatos se vean más grandes (puedes probar de 150px a 180px) */
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
@@ -134,7 +133,6 @@ body {
     mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
     -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
 }
-
 /* Coordenadas para paredes (solo baño) */
 #capa-paredes {
     top: 0;
