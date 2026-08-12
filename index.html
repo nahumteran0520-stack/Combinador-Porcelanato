@@ -1,110 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador de Porcelanatos Fotorrealista</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* --- CONTENEDOR DEL VISUALIZADOR --- */
+.habitacion {
+    position: relative;
+    width: 100%;
+    height: 380px; /* Ajusta según el alto que prefieras */
+    overflow: hidden;
+    background-color: #111;
+    border-radius: 8px;
+}
 
-  <!-- PANTALLA DE SELECCIÓN INICIAL -->
-  <div id="selector-ambiente">
-    <h1>Selecciona el ambiente a simular</h1>
-    <div class="grid-ambientes">
-      <div class="card-ambiente" onclick="iniciarSimulador('sala')">
-        <span style="font-size: 2.5rem;">🛋️</span>
-        <h3>Sala</h3>
-      </div>
-      <div class="card-ambiente" onclick="iniciarSimulador('bano')">
-        <span style="font-size: 2.5rem;">🚿</span>
-        <h3>Baño</h3>
-      </div>
-      <div class="card-ambiente" onclick="iniciarSimulador('habitacion')">
-        <span style="font-size: 2.5rem;">🛏️</span>
-        <h3>Habitación</h3>
-      </div>
-    </div>
-  </div>
+/* Fondo base de la escena (color o imagen general de respaldo) */
+.escena-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
 
-  <!-- APLICACIÓN PRINCIPAL -->
-  <div id="app-principal">
-    <div class="app-container">
-      
-      <!-- COLUMNA 1: CALCULADORA -->
-      <section class="panel">
-        <h2>Calculadora de Materiales</h2>
-        
-        <div id="calc-pared-grupo" class="seccion-pared-calc">
-          <div class="form-group"><label>Alto pared (m):</label><input type="number" id="pared-alto" step="0.01"></div>
-          <div class="form-group"><label>Ancho pared (m):</label><input type="number" id="pared-ancho" step="0.01"></div>
-          <div class="form-group"><label>M² caja pared:</label><input type="number" id="pared-caja" value="1.44"></div>
-          <hr style="border-color: #333; margin: 10px 0;">
-        </div>
-        
-        <div class="form-group"><label>Largo piso (m):</label><input type="number" id="piso-largo" step="0.01"></div>
-        <div class="form-group"><label>Ancho piso (m):</label><input type="number" id="piso-ancho" step="0.01"></div>
-        <div class="form-group"><label>M² caja piso:</label><input type="number" id="piso-caja" value="1.44"></div>
-        
-        <div class="form-group">
-          <label>Tipo de Pego:</label>
-          <select id="tipo-pego">
-            <option value="1.5">Saco 14kg (1.5 m²)</option>
-            <option value="1.0">Saco 10kg (1.0 m²)</option>
-          </select>
-        </div>
-        
-        <button class="btn-calc" onclick="calcularMaterialesTotales()">Calcular Estimado</button>
-        
-        <div id="resultado-calculo" class="res-box">
-          <p id="res-fila-pared" class="seccion-pared-calc">Área Pared: <span id="res-area-pared">0</span> m² (<span id="res-cajas-pared">0</span> cajas)</p>
-          <p>Área Piso: <span id="res-area-piso">0</span> m² (<span id="res-cajas-piso">0</span> cajas)</p>
-          <p style="margin-top: 6px; border-top: 1px solid #444; padding-top: 4px;">Pego: <span id="res-total-pego">0</span> sacos</p>
-        </div>
-      </section>
+/* Área Interactiva de la Pared (Fondo superior) */
+#pared-interactiva {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%; /* Ajusta el alto que ocupa la pared en tu escena */
+    z-index: 2;
+    background-repeat: repeat;
+    background-size: 200px;
+}
 
-      <!-- COLUMNA 2: VISUALIZADOR -->
-      <section class="panel preview-section">
-        <button class="btn-volver" onclick="volverAlMenu()">← Cambiar Ambiente</button>
-        <h2 id="titulo-visor">Visualizador</h2>
-        <div class="habitacion">
-          <div class="escena-base" id="escena-fondo"></div>
-          <div id="pared-interactiva"></div>
-          <div id="piso-interactivo"></div>
-          <img id="muebles-capa" src="" alt="Muebles" class="muebles-encima">
-        </div>
-      </section>
+/* Área Interactiva del Piso (Fondo inferior con perspectiva) */
+#piso-interactivo {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%; /* Ajusta el alto que ocupa el piso en tu escena */
+    z-index: 3;
+    background-repeat: repeat;
+    background-size: 150px;
+}
 
-      <!-- COLUMNA 3: CATÁLOGO -->
-      <section class="panel">
-        <h2>Catálogo</h2>
-        
-        <div id="catalogo-pared-seccion" class="seccion-pared-calc">
-          <h3>Porcelanato Pared</h3>
-          <div class="grid-porcelanatos">
-            <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-            <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPared('piso-marmoleadonegro-358.jpg')" alt="Negro">
-            <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPared('piso-griscemento-350.jpg')" alt="Gris">
-            <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPared('pisobeige-343.jpg')" alt="Beige">
-          </div>
-        </div>
-
-        <h3>Porcelanato Piso</h3>
-        <div class="grid-porcelanatos">
-          <img src="piso-marmoleadoblanco-344.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoblanco-344.jpg')" alt="Blanco">
-          <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
-          <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris">
-          <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
-          <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris M.">
-          <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="S. Blanco">
-          <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="S. Negro">
-          <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+/* Capa Superior de Muebles / Elementos con Transparencia */
+.muebles-encima {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 4; /* Se coloca estrictamente por encima de los pisos y paredes */
+    pointer-events: none; /* Crucial: permite que los clics la atraviesen sin bloquear el visor */
+}
 </body>
 </html>
