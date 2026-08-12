@@ -1,4 +1,4 @@
-{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -209,34 +209,20 @@ body {
     flex: 1;
 }
 
-/* Tarjetas del catálogo con sombras y mejor visibilidad para los iconos/colores */
-.item-porcelanato {
-    border: 2px solid transparent;
-    border-radius: 8px;
-    overflow: hidden;
+/* Estilo para los botones de colores de la pared */
+.btn-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #fff;
     cursor: pointer;
-    background: #fff;
-    text-align: center;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.item-porcelanato:hover {
-    border-color: #3498db;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(52, 152, 219, 0.2);
-}
-
-.grid-catalogo .item-porcelanato img {
-    width: 100%;
-    height: 105px !important;
-    object-fit: cover;
-}
-
-.item-porcelanato span {
-    font-size: 0.8rem;
-    display: block;
-    padding: 5px;
+.btn-color:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 /* Calculadora */
@@ -391,19 +377,4 @@ body {
         background-repeat: repeat !important;
         transform: perspective(250px) rotateX(25deg) !important;
     }
-}
-/* Estilo para los botones de colores de la pared */
-.btn-color {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-color:hover {
-    transform: scale(1.15);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
