@@ -103,40 +103,48 @@ function aplicarTextura(urlImagen) {
     capa.style.backgroundPosition = 'center bottom';
 }
 
-// Lógica de cálculo de materiales (Considerando formato estándar de caja de 1.44 m²)
+// Lógica de cálculo de materiales (Sin desperdicio, con cajas de 1.44 m² y pego según rendimiento)
 function calcularMateriales() {
     const largo = parseFloat(document.getElementById('input-largo').value) || 0;
     const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
     const alto = parseFloat(document.getElementById('input-alto').value) || 0;
-    const desperdicio = parseFloat(document.getElementById('select-desperdicio').value);
+    const tipoPego = parseInt(document.getElementById('select-pego').value);
     
     if (largo <= 0 || ancho <= 0) {
         alert('Por favor, ingresa medidas válidas para el área.');
         return;
     }
 
-    // Metros cuadrados de piso
-    const m2Piso = largo * ancho;
-    const totalM2PisoConDesperdicio = m2Piso * desperdicio;
-    const cajasPiso = Math.ceil(totalM2PisoConDesperdicio / 1.44); // 1.44m² por caja estándar
+    // Rendimiento del pego según los kg seleccionados
+    const rendimientoPego = tipoPego === 14 ? 1.5 : 1.0;
 
-    let textoPiso = `<strong>Área de Piso:</strong> ${m2Piso.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPiso} cajas</strong> (${totalM2PisoConDesperdicio.toFixed(2)} m² con desperdicio).`;
-    document.getElementById('texto-resultado-piso').innerHTML = textoPiso;
+    // 1. Cálculo para el Piso
+    const m2Piso = largo * ancho;
+    const cajasPiso = Math.ceil(m2Piso / 1.44); // 1.44 m² por caja estándar
+    const sacosPegoPiso = Math.ceil(m2Piso / rendimientoPego);
+
+    document.getElementById('texto-resultado-piso').innerHTML = `<strong>Área de Piso:</strong> ${m2Piso.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPiso} cajas</strong> de porcelanato.`;
+    document.getElementById('texto-resultado-pego-piso').innerHTML = `<strong>Adhesivo para Piso:</strong> ${sacosPegoPiso} sacos de ${tipoPego} kg.`;
 
     const divResultado = document.getElementById('resultado-calculo');
     const textoParedes = document.getElementById('texto-resultado-pared');
+    const textoPegoParedes = document.getElementById('texto-resultado-pego-pared');
 
-    // Si es baño, calcular también paredes
+    // 2. Cálculo para el Baño (Paredes) si aplica
     if (ambienteActual === 'bano' && alto > 0) {
         const perimetro = (largo + ancho) * 2;
         const m2Paredes = perimetro * alto;
-        const totalM2ParedConDesperdicio = m2Paredes * desperdicio;
-        const cajasPared = Math.ceil(totalM2ParedConDesperdicio / 1.44);
+        const cajasPared = Math.ceil(m2Paredes / 1.44);
+        const sacosPegoPared = Math.ceil(m2Paredes / rendimientoPego);
 
-        textoParedes.innerHTML = `<strong>Área de Paredes:</strong> ${m2Paredes.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPared} cajas</strong> (${totalM2ParedConDesperdicio.toFixed(2)} m² con desperdicio).`;
+        textoParedes.innerHTML = `<strong>Área de Paredes:</strong> ${m2Paredes.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPared} cajas</strong> de porcelanato.`;
+        textoPegoParedes.innerHTML = `<strong>Adhesivo para Paredes:</strong> ${sacosPegoPared} sacos de ${tipoPego} kg.`;
+        
         textoParedes.classList.remove('oculto');
+        textoPegoParedes.classList.remove('oculto');
     } else {
         textoParedes.classList.add('oculto');
+        textoPegoParedes.classList.add('oculto');
     }
 
     divResultado.classList.remove('oculto');
