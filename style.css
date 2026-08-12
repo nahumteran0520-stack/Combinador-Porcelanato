@@ -300,47 +300,94 @@ body {
     height: 160px; /* Expande el alto para cubrir hasta el borde inferior */
     transform: perspective(350px) rotateX(40deg); /* Ajusta el ángulo de inclinación 3D */
 }
-/* ==========================================
-   AJUSTE DE TARJETAS EXCLUSIVO PARA MÓVILES
-   ========================================== */
+/* ============================================================
+   SOLUCIÓN DEFINITIVA PARA SIMULADOR Y CATÁLOGO EN MÓVILES
+   ============================================================ */
 @media screen and (max-width: 768px) {
-    /* Forzar el catálogo en 2 columnas y hacerlo más compacto */
-    .grid-catalogo {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* Define 2 columnas iguales */
-        gap: 10px !important; /* Reduce el espacio entre cuadros */
-        max-height: 250px !important; /* Altura máxima con scroll */
-        overflow-y: auto !important; /* Activa el scroll si hay muchos */
+    
+    /* 1. Forzamos la visibilidad de la sección principal */
+    #vista-visualizador {
+        display: block !important;
+        padding: 5px !important;
+        box-sizing: border-box;
+    }
+
+    /* 2. Apilamos el simulador (arriba) y catálogo (abajo) */
+    .vis-content {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+        gap: 10px !important; /* Espacio entre simulador y catálogo */
+    }
+
+    /* 3. FORZAMOS la altura del escenario para que sea visible */
+    .escenario-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 250px !important; /* Altura fija visible en celular */
+        min-height: 250px !important;
+        background-color: #f9f9f9; /* Fondo de respaldo */
+        overflow: hidden !important;
+        border: 1px solid #ddd;
+        display: block !important;
+    }
+
+    /* Aseguramos que la imagen base no colapse */
+    .capa-imagen-base {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    /* 4. CATÁLOGO COMPACTO (En dos columnas) */
+    .catalogo-lateral {
+        width: 100% !important;
+        margin-top: 0 !important;
         padding: 5px !important;
     }
 
-    /* Estilo de cada tarjeta individual */
-    .grid-catalogo .tarjeta-porcelanato,
-    .grid-catalogo .item-catalogo { /* Ajusta el selector según tu HTML */
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 5px !important; /* Reduce el relleno interno */
-        text-align: center;
-        background: #fff;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    /* Cuadrícula de dos columnas para las tarjetas */
+    .grid-catalogo {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* DOS COLUMNAS */
+        gap: 6px !important;
+        max-height: 200px !important; /* Altura máxima del catálogo con scroll */
+        overflow-y: auto !important;
+        padding: 5px !important;
     }
 
-    /* Control estricto del tamaño de la imagen miniatura */
+    /* Tarjetas individuales compactas */
+    .grid-catalogo .tarjeta-porcelanato,
+    .grid-catalogo .item-catalogo {
+        padding: 4px !important;
+        font-size: 11px !important;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    /* Miniaturas de porcelanato pequeñas */
     .grid-catalogo .tarjeta-porcelanato img,
     .grid-catalogo .item-catalogo img {
-        height: 60px !important; /* Fija la altura de la imagen */
-        width: 100% !important; /* Ocupa todo el ancho de la tarjeta */
-        object-fit: cover !important; /* Recorta la imagen para que no se deforme */
-        border-radius: 4px;
-        margin-bottom: 4px;
+        height: 50px !important; /* IMÁGENES PEQUEÑAS */
+        width: 100% !important;
+        object-fit: cover !important;
+        margin-bottom: 2px !important;
+        border-radius: 3px;
     }
 
-    /* Ajuste del texto debajo de la imagen */
-    .grid-catalogo .tarjeta-porcelanato p,
-    .grid-catalogo .item-catalogo span {
-        font-size: 11px !important; /* Letra más pequeña para que quepa en una línea */
-        line-height: 1.2;
-        margin: 0;
-        font-weight: 600;
+    /* Ocultamos elementos que ocupan mucho espacio en móvil */
+    .vis-header h2, 
+    .catalogo-lateral h3 {
+        font-size: 16px !important;
+        margin: 5px 0 !important;
     }
 }
