@@ -399,3 +399,12 @@ body {
         background-repeat: repeat !important;
     }
 }
+.escenario-container {
+    position: relative;
+    overflow: hidden !important; /* Evita que sobresalga al girar */
+}
+
+#capa-piso {
+    transform-origin: center center; /* Rota desde el centro exacto */
+    transition: transform 0.3s ease;
+}
