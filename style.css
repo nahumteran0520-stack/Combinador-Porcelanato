@@ -300,3 +300,40 @@ body {
     height: 160px; /* Expande el alto para cubrir hasta el borde inferior */
     transform: perspective(350px) rotateX(40deg); /* Ajusta el ángulo de inclinación 3D */
 }
+/* ==========================================
+   DISEÑO RESPONSIVO PARA TELÉFONOS (Móviles)
+   ================================---------- */
+@media screen and (max-width: 768px) {
+    /* Apila la imagen arriba y el catálogo/colores abajo */
+    .vis-content {
+        flex-direction: column !important;
+        display: flex !important;
+    }
+
+    /* Ajusta el contenedor de la sala/habitación para que ocupe todo el ancho del celular */
+    .escenario-container {
+        width: 100% !important;
+        height: 280px !important; /* Altura adaptable para pantallas pequeñas */
+        min-height: 250px;
+    }
+
+    /* Hace que la barra lateral del catálogo se adapte al ancho del teléfono */
+    .catalogo-lateral {
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    /* Permite que las tarjetas de porcelanato se acomoden mejor en pantallas chicas */
+    .grid-catalogo {
+        max-height: 220px;
+        overflow-y: auto;
+    }
+
+    /* Reduce un poco los márgenes del encabezado para ganar espacio */
+    .vis-header {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
