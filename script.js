@@ -158,4 +158,20 @@ function cambiarColorPared(colorHex) {
             escenario.style.setProperty('background-color', colorHex, 'important');
         }
     }
+// Variable para almacenar el ángulo de rotación actual del piso
+let anguloRotacionZ = 0;
+
+function girarPiso(direccion) {
+    const capaPiso = document.getElementById('capa-piso');
+    
+    if (direccion === 'izquierda') {
+        anguloRotacionZ -= 15; // Rota 15 grados a la izquierda
+    } else if (direccion === 'derecha') {
+        anguloRotacionZ += 15; // Rota 15 grados a la derecha
+    } else {
+        anguloRotacionZ = 0;  // Restablece al frente
+    }
+    
+    // Aplicamos la rotación Z combinada con tu perspectiva y rotación X fija
+    capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotateZ(${anguloRotacionZ}deg)`;
 }
