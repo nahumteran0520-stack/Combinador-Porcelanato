@@ -146,10 +146,16 @@ function aplicarTextura(urlImagen) {
     }
 }
 
-// Cambiar color de fondo de pared en habitaciones/salas
 function cambiarColorPared(colorHex) {
     const escenario = document.getElementById('escenario');
+    
     if (escenario) {
+        // Aplica el color al escenario general
         escenario.style.backgroundColor = colorHex;
+        
+        // Si estamos en la habitación, aseguramos que el color se refleje visualmente
+        if (ambienteActual === 'habitacion') {
+            escenario.style.setProperty('background-color', colorHex, 'important');
+        }
     }
 }
