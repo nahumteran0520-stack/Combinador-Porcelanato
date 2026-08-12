@@ -163,19 +163,21 @@ function cambiarColorPared(colorHex) {
 // Variable para almacenar el ángulo de rotación actual del piso
 let anguloRotacionZ = 0;
 
-function girarPiso(direccion) {
+let anguloActual = 0;
+
+function girarPiso(accion) {
     const capaPiso = document.getElementById('capa-piso');
-    
-    if (direccion === 'izquierda') {
-        anguloRotacionZ -= 15; // Rota 15 grados a la izquierda
-    } else if (direccion === 'derecha') {
-        anguloRotacionZ += 15; // Rota 15 grados a la derecha
-    } else {
-        anguloRotacionZ = 0;  // Restablece al frente
+    if (!capaPiso) return;
+
+    if (accion === 'izquierda') {
+        anguloActual -= 90;
+    } else if (accion === 'derecha') {
+        anguloActual += 90;
+    } else if (accion === 'reset') {
+        anguloActual = 0;
     }
-    
-    // Aplicamos la rotación Z combinada con tu perspectiva y rotación X fija
-    if (capaPiso) {
-        capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotateZ(${anguloRotacionZ}deg)`;
-    }
+
+    // Aplicamos el cambio de forma inmediata combinando la perspectiva con el giro plano 2D exacto
+    capaPiso.style.transition = 'none'; // Sin retrasos ni animaciones
+    capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotate(${anguloActual}deg)`;
 }
