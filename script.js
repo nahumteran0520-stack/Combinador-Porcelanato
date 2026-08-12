@@ -87,7 +87,6 @@ function volverVisualizador() {
 
 // Control de selección de zona (Piso o Pared)
 function seleccionarZona(zona) {
-    // Si no es baño, bloquear intento de seleccionar pared por seguridad
     if (ambienteActual !== 'bano' && zona === 'pared') {
         zona = 'piso';
     }
@@ -127,9 +126,8 @@ function cargarCatalogo() {
     });
 }
 
-// Aplicar textura con validación de seguridad para habitaciones y salas
+// Aplicar textura con validación de seguridad
 function aplicarTextura(urlImagen) {
-    // Protección estricta: Si estamos en sala o habitación, forzar que la capa destino sea siempre el piso
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
         capaId = 'capa-paredes';
@@ -150,21 +148,15 @@ function cambiarColorPared(colorHex) {
     const escenario = document.getElementById('escenario');
     
     if (escenario) {
-        // Aplica el color al escenario general
         escenario.style.backgroundColor = colorHex;
         
-        // Si estamos en la habitación, aseguramos que el color se refleje visualmente
         if (ambienteActual === 'habitacion') {
             escenario.style.setProperty('background-color', colorHex, 'important');
         }
     }
-} // <--- ¡Aquí estaba faltando esta llave que cerraba cambiarColorPared!
+}
 
-// Variable para almacenar el ángulo de rotación actual del piso
-let anguloRotacionZ = 0;
-
-let anguloActual = 0;
-
+// Rotación instantánea del patrón sin espacios en blanco
 let estadoRotacion = 0;
 
 function girarPiso(accion) {
@@ -179,23 +171,16 @@ function girarPiso(accion) {
         estadoRotacion = 0;
     }
 
-    // En lugar de rotar con grados (lo que corta las esquinas), 
-    // desplazamos el origen del patrón de repetición de forma precisa.
     const posicionesX = ['0px', '90px', '180px', '270px'];
     const posicionesY = ['0px', '90px', '180px', '270px'];
     
     capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-    
-    // Mantenemos la perspectiva fija del piso intacta para que jamás se deforme ni deje espacios blancos
     capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
+    capaPiso.style.transition = 'none';
 }
-    // Aplicamos el cambio de forma inmediata combinando la perspectiva con el giro plano 2D exacto
-    capaPiso.style.transition = 'none'; // Sin retrasos ni animaciones
-    capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotate(${anguloActual}deg)`;
-}
-}
+
+// Calculadora de materiales exacta
 function calcularMateriales() {
-    // 1. Obtener valores de los inputs
     const largo = parseFloat(document.getElementById('input-largo').value) || 0;
     const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
     const alto = parseFloat(document.getElementById('input-alto').value) || 0;
@@ -206,37 +191,28 @@ function calcularMateriales() {
         return;
     }
 
-    // 2. Calcular áreas
-    // Área de piso (largo x ancho) con un 10% extra por desperdicio/cortes
     const areaPiso = largo * ancho;
     const areaPisoConDesperdicio = areaPiso * 1.10;
 
-    // Calcular cajas de porcelanato estándar (asumiendo que una caja cubre aprox 1.44 m², puedes ajustarlo si tu caja cubre distinto)
     const m2PorCaja = 1.44; 
     const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
 
-    // Calcular sacos de pego para el piso
-    // Rendimiento según el selector: 14kg cubre 1.5 m², 10kg cubre 1.0 m²
-    const rendimientoPego =pesoGrisSaco(pegoSacoValor = pesoSacoPego); 
+    const rendimientoPego = pesoGrisSaco(pegoSacoValor = pesoSacoPego); 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
 
-    // 3. Mostrar resultados del piso
     document.getElementById('texto-resultado-piso').innerHTML = 
         `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² (con 10% de desperdicio: ${areaPisoConDesperdicio.toFixed(2)} m²) = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
     
     document.getElementById('texto-resultado-pego-piso').innerHTML = 
         `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
 
-    // 4. Si el ambiente es baño, calcular también las paredes
     const resultadoDiv = document.getElementById('resultado-calculo');
     const textoPared = document.getElementById('texto-resultado-pared');
     const textoPegoPared = document.getElementById('texto-resultado-pego-pared');
 
-    // Verificamos si el contenedor de paredes está visible (lo que indica que es baño)
     const grupoParedes = document.getElementById('grupo-paredes');
     
     if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
-        // Perímetro del baño por la altura de las paredes (Perímetro = 2 * (largo + ancho))
         const perimetro = 2 * (largo + ancho);
         const areaParedes = perimetro * alto;
         const areaParedesConDesperdicio = areaParedes * 1.10;
@@ -254,15 +230,14 @@ function calcularMateriales() {
         textoPegoPared.style.display = 'none';
     }
 
-    // 5. Mostrar el contenedor de resultados
     resultadoDiv.classList.remove('oculto');
 }
 
 // Función auxiliar para determinar el rendimiento del pego seleccionado
 function pesoGrisSaco(peso) {
     if (peso === 14) {
-        return 1.5; // 14 kg cubre 1.5 m²
+        return 1.5; 
     } else {
-        return 1.0; // 10 kg cubre 1.0 m²
+        return 1.0; 
     }
 }
