@@ -8,6 +8,7 @@
 body {
     background-color: #f4f7f6;
     color: #333;
+    overflow: hidden;
 }
 
 .vista {
@@ -71,7 +72,7 @@ body {
     color: #2c3e50;
 }
 
-/* Visualizador */
+/* Visualizador Principal */
 .visualizador-container {
     width: 100%;
     height: 100%;
@@ -84,19 +85,23 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 15px;
+    height: 60px;
 }
 
+/* Estructura de 2 columnas: Izquierda el escenario, Derecha el catálogo */
 .vis-content {
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: 1fr 380px;
     gap: 20px;
     flex: 1;
     height: calc(100% - 60px);
 }
 
-/* Escenario y Sombra agregada a la pared del fondo */
+/* Escenario y Contenedor de la Imagen */
 .escenario-container {
     position: relative;
+    width: 100%;
+    height: 100%;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
@@ -107,7 +112,7 @@ body {
     background-color: #F4F6F6;
 }
 
-/* Capa del piso original que ya tenías perfecta */
+/* Capa del piso con perspectiva */
 #capa-piso {
     position: absolute;
     bottom: -25px;
@@ -115,13 +120,10 @@ body {
     width: 160%;
     height: 100%;
     z-index: 1;
-    
     background-repeat: repeat !important;
     background-size: 180px 180px !important; 
-    
     transform: perspective(350px) rotateX(42deg);
     transform-origin: bottom center;
-    
     mask-image: none;
     -webkit-mask-image: none;
 }
@@ -141,7 +143,6 @@ body {
     display: block !important;
 }
 
-/* Coordenadas para paredes (solo baño) */
 #capa-paredes {
     position: absolute;
     top: 0;
@@ -151,13 +152,9 @@ body {
     z-index: 1;
 }
 
-/* Imágenes PNG transparentes específicas para cada ambiente */
+/* Imágenes específicas para cada ambiente */
 .escenario-sala .capa-imagen-base {
     background-image: url('sala.png') !important;
-}
-
-.escenario-habitacion {
-    background-color: transparent !important;
 }
 
 .escenario-habitacion .capa-imagen-base {
@@ -169,7 +166,35 @@ body {
     background-image: url('baño.png') !important;
 }
 
-/* Catálogo Lateral */
+/* Botones de rotación flotantes dentro del escenario */
+.controles-flotantes {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    z-index: 20;
+}
+
+.btn-control {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-control:hover {
+    background: #fff;
+    border-color: #3498db;
+    color: #3498db;
+}
+
+/* Catálogo Lateral Derecho */
 .catalogo-lateral {
     background: #fff;
     padding: 20px;
@@ -178,6 +203,8 @@ body {
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     z-index: 10;
+    height: 100%;
+    overflow: hidden;
 }
 
 .selector-zona {
@@ -207,12 +234,20 @@ body {
     gap: 10px;
     overflow-y: auto;
     flex: 1;
+    padding-top: 5px;
 }
 
 /* Estilo para los botones de colores de la pared */
+.contenedor-colores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 15px 0;
+}
+
 .btn-color {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 2px solid #fff;
     cursor: pointer;
@@ -292,10 +327,14 @@ body {
    ADAPTACIÓN PARA MÓVILES
    ============================================================ */
 @media screen and (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
     #vista-visualizador {
         display: block !important;
         padding: 5px !important;
-        box-sizing: border-box;
+        height: auto !important;
     }
 
     .vis-content {
@@ -311,118 +350,14 @@ body {
         width: 100% !important;
         height: 250px !important;
         min-height: 250px !important;
-        background-color: #f9f9f9;
-        overflow: hidden !important;
-        border: 1px solid #ddd;
-        display: block !important;
     }
 
-    .capa-imagen-base {
+    .catalogo-lateral {
         width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        z-index: 5;
-        pointer-events: none !important;
-    }
-
-    .catalogo-lateral,
-    .calc-container {
-        width: 100% !important;
-        margin-top: 0 !important;
-        padding: 8px !important;
-        z-index: 10 !important;
-        pointer-events: auto !important;
+        height: auto !important;
     }
 
     .grid-catalogo {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 6px !important;
-        max-height: 180px !important;
-        overflow-y: auto !important;
-        padding: 5px !important;
-        pointer-events: auto !important;
+        max-height: 200px !important;
     }
-
-    .grid-catalogo .item-porcelanato {
-        padding: 4px !important;
-        font-size: 11px !important;
-        text-align: center;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        background: #fff;
-        box-shadow: none;
-    }
-
-    .grid-catalogo .item-porcelanato img {
-        height: 50px !important;
-        width: 100% !important;
-        object-fit: cover !important;
-        margin-bottom: 2px !important;
-        border-radius: 3px;
-    }
-
-    .vis-header h2, 
-    .catalogo-lateral h3 {
-        font-size: 16px !important;
-        margin: 5px 0 !important;
-    }
-
-    #capa-piso {
-        height: 130% !important;
-        background-size: 80px 80px !important; 
-        background-repeat: repeat !important;
-        transform: perspective(250px) rotateX(25deg) !important;
-    }
-}
-/* Organizar la estructura principal del visualizador */
-.vis-content {
-    display: grid;
-    grid-template-columns: 1fr 380px; /* Da espacio cómodo al panel derecho */
-    gap: 20px;
-    flex: 1;
-    height: calc(100% - 60px);
-}
-
-/* Contenedor del escenario con altura fija para que luzca bien la sala */
-.escenario-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 450px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Contenedor de los botones de rotación dentro del escenario */
-.controles-flotantes {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    gap: 8px;
-    z-index: 20;
-}
-
-.btn-control {
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #ccc;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    transition: background 0.2s;
-}
-
-.btn-control:hover {
-    background: #fff;
-    border-color: #3498db;
-    color: #3498db;
 }
