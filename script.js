@@ -48,7 +48,6 @@ function cambiarAmbiente(ambiente) {
         }
     }
 
-    // Forzar siempre que al entrar a un ambiente se seleccione el piso por defecto
     zonaSeleccionada = 'piso';
 
     const tituloAmbiente = document.getElementById('titulo-ambiente');
@@ -136,7 +135,6 @@ function aplicarTextura(urlImagen) {
     if (capa) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        // AUMENTA ESTE VALOR para que las piezas se vean más grandes y el giro sea notable
         capa.style.backgroundSize = '200px 200px'; 
         capa.style.backgroundPosition = '0px 0px';
     }
