@@ -157,6 +157,7 @@ body {
     pointer-events: none; /* Permite que los clics atraviesen esta capa si hiciera falta */
 }
 
+
 /* Imágenes PNG transparentes específicas para cada ambiente */
 .escenario-sala .capa-imagen-base {
     background-image: url('sala.png');
@@ -292,4 +293,10 @@ body {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+}
+/* Configuración específica para el piso cuando el ambiente es habitación */
+.escenario-habitacion #capa-piso {
+    top: 72%; /* Sube o baja el inicio del piso para que encaje con la cama y los muebles */
+    height: 160px; /* Expande el alto para cubrir hasta el borde inferior */
+    transform: perspective(350px) rotateX(40deg); /* Ajusta el ángulo de inclinación 3D */
 }
