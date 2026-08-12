@@ -377,3 +377,31 @@ body {
         background-repeat: repeat !important;
     }
 }
+#capa-piso {
+    position: absolute;
+    bottom: -10px;
+    left: -30%;
+    width: 160%;
+    height: 55%;
+    z-index: 1;
+    
+    background-repeat: repeat !important;
+    background-size: 160px 160px !important; 
+    
+    transform-origin: bottom center;
+    transform: perspective(350px) rotateX(42deg);
+    
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+}
+
+/* Ajuste específico para que el fondo de la habitación no muestre ese rectángulo blanco */
+.escenario-habitacion {
+    background-color: transparent !important;
+}
+
+.escenario-habitacion .capa-imagen-base {
+    /* Asegura que la imagen de la habitación cubra todo el fondo correctamente */
+    background-size: cover;
+    background-position: center;
+}
