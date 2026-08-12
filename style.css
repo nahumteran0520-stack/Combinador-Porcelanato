@@ -97,46 +97,60 @@ body {
 /* Escenario y Capas Transparentes */
 .escenario-container {
     position: relative;
-    background-size: cover;
-    background-position: center;
+    background-color: #e0e0e0; /* Color de fondo base */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
 }
 
-/* Fondos específicos para cada ambiente */
-.escenario-sala {
-    background-image: url('sala.png');
-}
-.escenario-habitacion {
-    background-image: url('habitacion.png');
-}
-.escenario-bano {
-    background-image: url('baño.png');
-}
-
+/* Capa del porcelanato (Se ubica al fondo, z-index: 1) */
 .capa-superficie {
     position: absolute;
-    transition: background 0.3s ease;
-}
-
-/* Coordenadas simuladas para perspectiva de piso */
-#capa-piso {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 45%;
-    clip-path: polygon(0% 100%, 100% 100%, 80% 0%, 20% 0%);
-    opacity: 0.9;
+    height: 100%;
+    z-index: 1;
+    transition: background 0.3s ease;
 }
 
-/* Coordenadas para paredes (solo baño) */
+/* Coordenadas específicas para piso (Cubre toda el área para asomarse por el PNG transparente) */
+#capa-piso {
+    width: 100%;
+    height: 100%;
+}
+
+/* Coordenadas para paredes (solo baño, si usas pared transparente también) */
 #capa-paredes {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60%;
-    opacity: 0.85;
+    height: 100%;
+}
+
+/* Capa de la imagen PNG transparente (Se ubica arriba, z-index: 2) */
+.capa-imagen-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 2;
+    pointer-events: none; /* Permite que los clics atraviesen esta capa si hiciera falta */
+}
+
+/* Imágenes PNG transparentes específicas para cada ambiente */
+.escenario-sala .capa-imagen-base {
+    background-image: url('sala.png');
+}
+.escenario-habitacion .capa-imagen-base {
+    background-image: url('habitacion.png');
+}
+.escenario-bano .capa-imagen-base {
+    background-image: url('baño.png');
 }
 
 /* Catálogo Lateral */
