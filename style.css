@@ -319,3 +319,15 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+.btn-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-color:hover {
+    transform: scale(1.1);
+}
