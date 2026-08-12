@@ -194,3 +194,75 @@ function girarPiso(accion) {
     capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotate(${anguloActual}deg)`;
 }
 }
+function calcularMateriales() {
+    // 1. Obtener valores de los inputs
+    const largo = parseFloat(document.getElementById('input-largo').value) || 0;
+    const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
+    const alto = parseFloat(document.getElementById('input-alto').value) || 0;
+    const pesoSacoPego = parseInt(document.getElementById('select-pego').value) || 14;
+
+    if (largo <= 0 || ancho <= 0) {
+        alert("Por favor, ingresa un largo y un ancho válidos para la estancia.");
+        return;
+    }
+
+    // 2. Calcular áreas
+    // Área de piso (largo x ancho) con un 10% extra por desperdicio/cortes
+    const areaPiso = largo * ancho;
+    const areaPisoConDesperdicio = areaPiso * 1.10;
+
+    // Calcular cajas de porcelanato estándar (asumiendo que una caja cubre aprox 1.44 m², puedes ajustarlo si tu caja cubre distinto)
+    const m2PorCaja = 1.44; 
+    const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
+
+    // Calcular sacos de pego para el piso
+    // Rendimiento según el selector: 14kg cubre 1.5 m², 10kg cubre 1.0 m²
+    const rendimientoPego =pesoGrisSaco(pegoSacoValor = pesoSacoPego); 
+    const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
+
+    // 3. Mostrar resultados del piso
+    document.getElementById('texto-resultado-piso').innerHTML = 
+        `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² (con 10% de desperdicio: ${areaPisoConDesperdicio.toFixed(2)} m²) = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
+    
+    document.getElementById('texto-resultado-pego-piso').innerHTML = 
+        `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
+
+    // 4. Si el ambiente es baño, calcular también las paredes
+    const resultadoDiv = document.getElementById('resultado-calculo');
+    const textoPared = document.getElementById('texto-resultado-pared');
+    const textoPegoPared = document.getElementById('texto-resultado-pego-pared');
+
+    // Verificamos si el contenedor de paredes está visible (lo que indica que es baño)
+    const grupoParedes = document.getElementById('grupo-paredes');
+    
+    if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
+        // Perímetro del baño por la altura de las paredes (Perímetro = 2 * (largo + ancho))
+        const perimetro = 2 * (largo + ancho);
+        const areaParedes = perimetro * alto;
+        const areaParedesConDesperdicio = areaParedes * 1.10;
+        
+        const cajasPared = Math.ceil(areaParedesConDesperdicio / m2PorCaja);
+        const sacosPegoPared = Math.ceil(areaParedes / rendimientoPego);
+
+        textoPared.innerHTML = `<strong>Paredes:</strong> Área de ${areaParedes.toFixed(2)} m² = <strong>${cajasPared} cajas</strong> de porcelanato para pared.`;
+        textoPegoPared.innerHTML = `<strong>Pego para Pared (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPared} sacos</strong>.`;
+        
+        textoPared.style.display = 'block';
+        textoPegoPared.style.display = 'block';
+    } else {
+        textoPared.style.display = 'none';
+        textoPegoPared.style.display = 'none';
+    }
+
+    // 5. Mostrar el contenedor de resultados
+    resultadoDiv.classList.remove('oculto');
+}
+
+// Función auxiliar para determinar el rendimiento del pego seleccionado
+function pesoGrisSaco(peso) {
+    if (peso === 14) {
+        return 1.5; // 14 kg cubre 1.5 m²
+    } else {
+        return 1.0; // 10 kg cubre 1.0 m²
+    }
+}
