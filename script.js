@@ -193,3 +193,4 @@ function girarPiso(accion) {
     capaPiso.style.transition = 'none'; // Sin retrasos ni animaciones
     capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotate(${anguloActual}deg)`;
 }
+}
