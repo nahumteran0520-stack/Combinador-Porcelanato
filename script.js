@@ -98,8 +98,8 @@ function aplicarTextura(urlImagen) {
     capa.style.backgroundImage = `url(${urlImagen})`;
     capa.style.backgroundRepeat = 'repeat';
     
-    capa.style.backgroundSize = '220px auto'; 
-
+    // Un tamaño inicial adecuado para que la perspectiva 3D lo Distorsione de forma natural
+    capa.style.backgroundSize = '150px 150px'; 
     capa.style.backgroundPosition = 'center bottom';
 }
 
