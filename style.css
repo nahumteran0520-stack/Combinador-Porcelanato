@@ -106,7 +106,7 @@ body {
 
 /* Fondos específicos para cada ambiente */
 .escenario-sala {
-    background-image: url('´sala.png');
+    background-image: url('sala.png');
 }
 .escenario-habitacion {
     background-image: url('habitacion.png');
