@@ -116,19 +116,21 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -20px; /* Lo bajamos un poquito más para ganar margen */
+    bottom: -10px;
     left: -30%;
     width: 160%;
-    height: 170;  /* Subimos la altura para que tape el espacio blanco de arriba */
-    z-index: 1;
-   background-repeat: repeat !important;
+    height: 170%; /* Mantenemos una altura limpia para que no suba de más */
+    z-index: 1;   /* Dejamos el piso en su nivel correcto debajo de los muebles */
+    
+    background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
     transform-origin: bottom center;
-    transform: perspective(350px) rotateX(40deg);
+    transform: perspective(350px) rotateX(42deg);
     
     mask-image: none;
     -webkit-mask-image: none;
+}
 
 }
     /* Efecto 3D de profundidad */
