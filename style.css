@@ -115,9 +115,16 @@ body {
 }
 
 /* Coordenadas específicas para piso (Cubre toda el área para asomarse por el PNG transparente) */
-#capa-piso {
+position: absolute;
+    /* Ajusta estos valores según los bordes exactos del espacio transparente en tu PNG */
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: 120px; /* Altura de la zona del piso */
+    
+    /* Magia para la perspectiva 3D */
+    transform-origin: bottom center;
+    transform: perspective(300px) rotateX(45deg);
 }
 
 /* Coordenadas para paredes (solo baño, si usas pared transparente también) */
