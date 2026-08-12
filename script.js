@@ -98,11 +98,8 @@ function aplicarTextura(urlImagen) {
     capa.style.backgroundImage = `url(${urlImagen})`;
     capa.style.backgroundRepeat = 'repeat';
     
-    // Aquí cambiamos el tamaño para que simule perspectiva y proporción real
-    // Puedes cambiar '180px auto' ajustando el primer número (más grande = piezas más grandes)
     capa.style.backgroundSize = '220px auto'; 
-    
-    // Esto ayuda a alinear el punto de fuga de la textura con la perspectiva de la sala
+
     capa.style.backgroundPosition = 'center bottom';
 }
 }
