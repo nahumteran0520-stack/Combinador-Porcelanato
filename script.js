@@ -1,269 +1,137 @@
-// Variables de estado global
-let ambienteActual = '';
-let zonaSeleccionada = 'piso';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Ambientes y Porcelanatos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-// Base de datos simulada del catálogo de porcelanatos
-const catalogoPorcelanatos = [
-    { id: 1, nombre: 'Gris Cemento', tipo: 'patron', url: 'piso-griscemento-350.jpg' },
-    { id: 2, nombre: 'Marmoleado Azul', tipo: 'patron', url: 'piso-marmoleadoazul-357.jpg' },
-    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'patron', url: 'piso-marmoleadoblanco-344.jpg' },
-    { id: 4, nombre: 'Marmoleado Gris', tipo: 'patron', url: 'piso-marmoleadogris-347.jpg' },
-    { id: 5, nombre: 'Marmoleado Negro', tipo: 'patron', url: 'piso-marmoleadonegro-358.jpg' },
-    { id: 6, nombre: 'Super Blanco', tipo: 'patron', url: 'piso-superblanco-345.jpg' },
-    { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supernegro-346.jpg' },
-    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
-];
+    <!-- VISTA 1: MENÚ PRINCIPAL -->
+    <section id="vista-menu" class="vista activa">
+        <div class="menu-container">
+            <h1>Selecciona un Ambiente</h1>
+            <p>Elige el espacio que deseas diseñar e interactuar con nuestros porcelanatos.</p>
+            <div class="grid-opciones">
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('sala')">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=500&q=80" alt="Sala">
+                    <h3>Sala</h3>
+                </div>
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('habitacion')">
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=500&q=80" alt="Habitación">
+                    <h3>Habitación</h3>
+                </div>
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('bano')">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=500&q=80" alt="Baño">
+                    <h3>Baño</h3>
+                </div>
+            </div>
+        </div>
+    </section>
 
-document.addEventListener('DOMContentLoaded', () => {
-    const btnCalcular = document.querySelector('.btn-calcular');
-    if (btnCalcular) {
-        btnCalcular.addEventListener('click', calcularMateriales);
-    }
-});
+    <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
+    <section id="vista-visualizador" class="vista">
+        <div class="visualizador-container">
+            <header class="vis-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
+                <h2 id="titulo-ambiente" style="margin: 0; font-size: 1.2rem;">Ambiente</h2>
+                
+                <!-- Botones de rotación y cálculo ordenados y limpios en la cabecera -->
+                <div class="controles-rotacion" style="display: flex; gap: 5px; align-items: center; flex-wrap: wrap;">
+                    <button onclick="girarPiso('izquierda')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Izq ↺</button>
+                    <button onclick="girarPiso('reset')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Frente ⏹</button>
+                    <button onclick="girarPiso('derecha')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Der ↻</button>
+                    <button class="btn-principal" onclick="abrirCalculadora()" style="padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer;">Calcular Materiales →</button>
+                </div>
+            </header>
 
-function cambiarVista(idVista) {
-    const vistas = document.querySelectorAll('.vista');
-    vistas.forEach(v => {
-        v.classList.remove('activa');
-    });
-    
-    const vistaDestino = document.getElementById(idVista);
-    if (vistaDestino) {
-        vistaDestino.classList.add('activa');
-    } else {
-        console.error("No se encontró la vista:", idVista);
-    }
-}
+            <div class="vis-content">
+                <!-- Lienzo de la Imagen Base y Capas -->
+                <div class="escenario-container" id="escenario">
+                    <!-- Capa de piso (queda al fondo) -->
+                    <div id="capa-piso" class="capa-superficie"></div>
+                    <!-- Capa de paredes (si aplica para el baño) -->
+                    <div id="capa-paredes" class="capa-superficie"></div>
+                    <!-- Capa superior con tu PNG transparente -->
+                    <div class="capa-imagen-base"></div>
+                </div>
 
-function cambiarAmbiente(ambiente) {
-    ambienteActual = ambiente;
-    const escenario = document.getElementById('escenario');
-    const btnZonaPared = document.getElementById('btn-zona-pared');
-    
-    if (escenario) {
-        escenario.className = 'escenario-container';
-        escenario.classList.add(`escenario-${ambiente}`);
-    }
+                <!-- Catálogo Lateral y Controles -->
+                <aside class="catalogo-lateral">
+                    <h3>Catálogo de Porcelanatos</h3>
+                    <div id="selector-zona" class="selector-zona">
+                        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
+                        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+                    </div>
+                    
+                    <!-- Selector de colores de pared en tonos pasteles -->
+                    <div class="selector-color-pared" style="margin: 10px 0; text-align: center;">
+                        <span style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px;">Color de Pared:</span>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+                            <button class="btn-color" style="background-color: #F2EFE9;" onclick="cambiarColorPared('#F2EFE9')" title="Marfil Suave"></button>
+                            <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')" title="Beige Claro"></button>
+                            <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')" title="Arena"></button>
+                            <button class="btn-color" style="background-color: #9C897B;" onclick="cambiarColorPared('#9C897B')" title="Taupe"></button>
+                            <button class="btn-color" style="background-color: #B89781;" onclick="cambiarColorPared('#B89781')" title="Terracota Suave"></button>
+                            <button class="btn-color" style="background-color: #966C52;" onclick="cambiarColorPared('#966C52')" title="Caramelo"></button>
+                            <button class="btn-color" style="background-color: #6E493B;" onclick="cambiarColorPared('#6E493B')" title="Café Moka"></button>
+                            <button class="btn-color" style="background-color: #4D3126;" onclick="cambiarColorPared('#4D3126')" title="Chocolate"></button>
+                            <button class="btn-color" style="background-color: #261611;" onclick="cambiarColorPared('#261611')" title="Café Oscuro"></button>
+                        </div>
+                    </div>
 
-    if (btnZonaPared) {
-        if (ambiente === 'bano') {
-            btnZonaPared.classList.remove('oculto');
-        } else {
-            btnZonaPared.classList.add('oculto');
-        }
-    }
+                    <div class="grid-catalogo" id="grid-catalogo">
+                        <!-- Las opciones del catálogo se inyectan por JS -->
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
 
-    zonaSeleccionada = 'piso';
+    <!-- MODAL CALCULADORA DE MATERIALES -->
+    <div id="modal-calculadora" class="modal-calculadora oculto">
+        <div class="calc-container">
+            <button class="btn-secundario" onclick="cerrarCalculadora()">← Volver al Simulador</button>
+            <h2>Calculadora de Materiales</h2>
+            <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
+            
+            <div class="form-calculadora">
+                <div class="grupo-input">
+                    <label>Largo de la estancia (metros):</label>
+                    <input type="number" id="input-largo" step="0.01" placeholder="Ej. 4.0">
+                </div>
+                <div class="grupo-input">
+                    <label>Ancho de la estancia (metros):</label>
+                    <input type="number" id="input-ancho" step="0.01" placeholder="Ej. 3.0">
+                </div>
+                <div id="grupo-paredes" class="grupo-input oculto">
+                    <label>Altura de las paredes (metros):</label>
+                    <input type="number" id="input-alto" step="0.01" placeholder="Ej. 2.5">
+                </div>
+                
+                <!-- Selector de tipo de pego -->
+                <div class="grupo-input">
+                    <label>Presentación de Pego:</label>
+                    <select id="select-pego">
+                        <option value="14">Saco de 14 kg (Cubre 1.5 m²)</option>
+                        <option value="10">Saco de 10 kg (Cubre 1.0 m²)</option>
+                    </select>
+                </div>
 
-    const tituloAmbiente = document.getElementById('titulo-ambiente');
-    if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
-    
-    const spanNombre = document.getElementById('span-nombre-ambiente');
-    if (spanNombre) spanNombre.innerText = ambiente;
+                <button type="button" class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
+            </div>
 
-    cargarCatalogo();
-    cambiarVista('vista-visualizador');
-}
+            <div id="resultado-calculo" class="resultado-calculo oculto" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
+                <h3 style="margin-bottom: 10px; color: #333;">Resultados Estimados:</h3>
+                <p id="texto-resultado-piso" style="margin: 5px 0;"></p>
+                <p id="texto-resultado-pego-piso" style="margin: 5px 0;"></p>
+                <p id="texto-resultado-pared" style="margin: 5px 0; display: none;"></p>
+                <p id="texto-resultado-pego-pared" style="margin: 5px 0; display: none;"></p>
+            </div>
+        </div>
+    </div>
 
-function volverMenu() {
-    cambiarVista('vista-menu');
-}
-
-// Función corregida para abrir el modal flotante
-toogleCalculadora = function() {
-    abrirCalculadora();
-}
-
-function abrirCalculadora() {
-    const modal = document.getElementById('modal-calculadora');
-    const grupoParedes = document.getElementById('grupo-paredes');
-    const spanNombre = document.getElementById('span-nombre-ambiente');
-    
-    if (spanNombre) spanNombre.innerText = ambienteActual;
-
-    if (grupoParedes) {
-        if (ambienteActual === 'bano') {
-            grupoParedes.classList.remove('oculto');
-        } else {
-            grupoParedes.classList.add('oculto');
-        }
-    }
-    
-    const resultadoCalculo = document.getElementById('resultado-calculo');
-    if (resultadoCalculo) resultadoCalculo.classList.add('oculto');
-
-    if (modal) {
-        modal.classList.remove('oculto');
-    }
-}
-
-// Mantenemos esta por compatibilidad por si algún botón viejo la llama
-function irACalculadora() {
-    abrirCalculadora();
-}
-
-function cerrarCalculadora() {
-    const modal = document.getElementById('modal-calculadora');
-    if (modal) {
-        modal.classList.add('oculto');
-    }
-}
-
-function volverVisualizador() {
-    cerrarCalculadora();
-}
-
-function seleccionarZona(zona) {
-    if (ambienteActual !== 'bano' && zona === 'pared') {
-        zona = 'piso';
-    }
-    
-    zonaSeleccionada = zona;
-    document.querySelectorAll('.btn-zona').forEach(b => b.classList.remove('activo'));
-    
-    if(zona === 'piso') {
-        const primerBtn = document.querySelector('.selector-zona button:first-child');
-        if(primerBtn) primerBtn.classList.add('activo');
-    } else {
-        const btnPared = document.getElementById('btn-zona-pared');
-        if(btnPared) btnPared.classList.add('activo');
-    }
-}
-
-function cargarCatalogo() {
-    const grid = document.getElementById('grid-catalogo');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-
-    catalogoPorcelanatos.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'item-porcelanato';
-        div.innerHTML = `
-            <img src="${item.url}" alt="${item.nombre}">
-            <span>${item.nombre}</span>
-        `;
-        
-        div.addEventListener('click', function() {
-            aplicarTextura(item.url);
-        });
-        
-        grid.appendChild(div);
-    });
-}
-
-function aplicarTextura(urlImagen) {
-    let capaId = 'capa-piso';
-    if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
-        capaId = 'capa-paredes';
-    }
-
-    const capa = document.getElementById(capaId);
-    if (capa) {
-        capa.style.backgroundImage = `url("${urlImagen}")`;
-        capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '200px 200px'; 
-        capa.style.backgroundPosition = '0px 0px';
-    }
-}
-
-function cambiarColorPared(colorHex) {
-    const escenario = document.getElementById('escenario');
-    
-    if (escenario) {
-        escenario.style.backgroundColor = colorHex;
-        
-        if (ambienteActual === 'habitacion') {
-            escenario.style.setProperty('background-color', colorHex, 'important');
-        }
-    }
-}
-
-let estadoRotacion = 0;
-
-function girarPiso(accion) {
-    const capaPiso = document.getElementById('capa-piso');
-    if (!capaPiso) return;
-
-    if (accion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 1 + 4) % 4;
-    } else if (accion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 1) % 4;
-    } else if (accion === 'reset') {
-        estadoRotacion = 0;
-    }
-
-    const posicionesX = ['0px', '90px', '180px', '270px'];
-    const posicionesY = ['0px', '90px', '180px', '270px'];
-    
-    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-    capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
-    capaPiso.style.transition = 'none';
-}
-
-function calcularMateriales() {
-    const largoInput = document.getElementById('input-largo');
-    const anchoInput = document.getElementById('input-ancho');
-    const altoInput = document.getElementById('input-alto');
-    const selectPego = document.getElementById('select-pego');
-
-    const largo = parseFloat(largoInput ? largoInput.value : 0) || 0;
-    const ancho = parseFloat(anchoInput ? anchoInput.value : 0) || 0;
-    const alto = parseFloat(altoInput ? altoInput.value : 0) || 0;
-    const pesoSacoPego = parseInt(selectPego ? selectPego.value : 14) || 14;
-
-    if (largo <= 0 || ancho <= 0) {
-        alert("Por favor, ingresa un largo y un ancho válidos para la estancia.");
-        return;
-    }
-
-    const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10;
-
-    const m2PorCaja = 1.44; 
-    const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
-
-    const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
-    const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
-
-    const textoPiso = document.getElementById('texto-resultado-piso');
-    const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
-    const textoPared = document.getElementById('texto-resultado-pared');
-    const textoPegoPared = document.getElementById('texto-resultado-pego-pared');
-
-    if (textoPiso) {
-        textoPiso.innerHTML = `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² (con 10% de desperdicio: ${areaPisoConDesperdicio.toFixed(2)} m²) = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
-    }
-    
-    if (textoPegoPiso) {
-        textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
-    }
-
-    const grupoParedes = document.getElementById('grupo-paredes');
-    
-    if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
-        const perimetro = 2 * (largo + ancho);
-        const areaParedes = perimetro * alto;
-        const areaParedesConDesperdicio = areaParedes * 1.10;
-        
-        const cajasPared = Math.ceil(areaParedesConDesperdicio / m2PorCaja);
-        const sacosPegoPared = Math.ceil(areaParedes / rendimientoPego);
-
-        if (textoPared) {
-            textoPared.innerHTML = `<strong>Paredes:</strong> Área de ${areaParedes.toFixed(2)} m² = <strong>${cajasPared} cajas</strong> de porcelanato para pared.`;
-            textoPared.style.display = 'block';
-        }
-        if (textoPegoPared) {
-            textoPegoPared.innerHTML = `<strong>Pego para Pared (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPared} sacos</strong>.`;
-            textoPegoPared.style.display = 'block';
-        }
-    } else {
-        if (textoPared) textoPared.style.display = 'none';
-        if (textoPegoPared) textoPegoPared.style.display = 'none';
-    }
-
-    const resultadoDiv = document.getElementById('resultado-calculo');
-    if (resultadoDiv) {
-        resultadoDiv.classList.remove('oculto');
-    }
-}
+    <script src="script.js"></script>
+</body>
+</html>
