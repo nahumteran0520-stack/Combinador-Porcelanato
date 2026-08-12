@@ -2,7 +2,7 @@
 let ambienteActual = '';
 let zonaSeleccionada = 'piso';
 
-// Base de datos simulada del catálogo de porcelanatos
+// Catálogo de porcelanatos
 const catalogoPorcelanatos = [
     { id: 1, nombre: 'Gris Cemento', tipo: 'patron', url: 'piso-griscemento-350.jpg' },
     { id: 2, nombre: 'Marmoleado Azul', tipo: 'patron', url: 'piso-marmoleadoazul-357.jpg' },
@@ -30,8 +30,6 @@ function cambiarVista(idVista) {
     const vistaDestino = document.getElementById(idVista);
     if (vistaDestino) {
         vistaDestino.classList.add('activa');
-    } else {
-        console.error("No se encontró la vista:", idVista);
     }
 }
 
@@ -84,8 +82,12 @@ function abrirCalculadora() {
         }
     }
     
+    // Ocultar resultados previos al abrir
     const resultadoCalculo = document.getElementById('resultado-calculo');
-    if (resultadoCalculo) resultadoCalculo.classList.add('oculto');
+    if (resultadoCalculo) {
+        resultadoCalculo.classList.add('oculto');
+        resultadoCalculo.style.display = 'none';
+    }
 
     if (modal) {
         modal.classList.remove('oculto');
@@ -155,10 +157,8 @@ function aplicarTextura(urlImagen) {
 
 function cambiarColorPared(colorHex) {
     const escenario = document.getElementById('escenario');
-    
     if (escenario) {
         escenario.style.backgroundColor = colorHex;
-        
         if (ambienteActual === 'habitacion') {
             escenario.style.setProperty('background-color', colorHex, 'important');
         }
@@ -248,9 +248,10 @@ function calcularMateriales() {
         if (textoPegoPared) textoPegoPared.style.display = 'none';
     }
 
+    // FUERZA LA VISIBILIDAD DEL CONTENEDOR DE RESULTADOS EN EL MODAL
     const resultadoDiv = document.getElementById('resultado-calculo');
     if (resultadoDiv) {
         resultadoDiv.classList.remove('oculto');
+        resultadoDiv.style.display = 'block'; 
     }
 }
-
