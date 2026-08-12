@@ -1,4 +1,4 @@
-* {
+{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -94,38 +94,39 @@ body {
     height: calc(100% - 60px);
 }
 
-/* Escenario y Capas Transparentes */
+/* Escenario y Sombra agregada a la pared del fondo */
 .escenario-container {
     position: relative;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #escenario {
     background-color: #F4F6F6;
 }
 
-/* Capa del piso con cobertura completa y la perspectiva exacta */
+/* Capa del piso original que ya tenías perfecta */
 #capa-piso {
     position: absolute;
     bottom: -25px;
-    left: -40%;
-    width: 200%;
-    height: 160%;
+    left: -30%;
+    width: 160%;
+    height: 100%;
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 200px 200px !important; 
+    background-size: 180px 180px !important; 
     
-    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
+    transform: perspective(350px) rotateX(42deg);
     transform-origin: bottom center;
     
     mask-image: none;
     -webkit-mask-image: none;
 }
-/* Capa de la imagen PNG transparente con los muebles (Ordenada al frente con z-index: 5) */
+
+/* Capa de la imagen PNG transparente con los muebles */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -208,23 +209,28 @@ body {
     flex: 1;
 }
 
+/* Tarjetas del catálogo con sombras y mejor visibilidad */
 .item-porcelanato {
     border: 2px solid transparent;
-    border-radius: 6px;
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
-    background: #f9f9f9;
+    background: #fff;
     text-align: center;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
 }
 
 .item-porcelanato:hover {
     border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(52, 152, 219, 0.2);
 }
 
-/* Miniaturas del catálogo con el tamaño mejorado */
+/* Miniaturas de botones de pared/piso más grandes y visibles */
 .grid-catalogo .item-porcelanato img {
     width: 100%;
-    height: 105px;
+    height: 105px !important;
     object-fit: cover;
 }
 
@@ -386,37 +392,5 @@ body {
         background-repeat: repeat !important;
         transform: perspective(250px) rotateX(25deg) !important;
     }
-}/* 1. Agrandar las miniaturas de las muestras de pared en el catálogo */
-.grid-catalogo .item-porcelanato img {
-    width: 100%;
-    height: 105px !important; /* Aumentamos el alto de la miniatura para que se vea más grande y clara */
-    object-fit: cover;
-}
-
-/* 2. Añadir sombras y efecto estético a las tarjetas del catálogo */
-.item-porcelanato {
-    border: 2px solid transparent;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #fff;
-    text-align: center;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); /* Sombra suave en cada botón de muestra */
-    transition: all 0.2s ease;
-}
-
-.item-porcelanato:hover {
-    border-color: #3498db;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(52, 152, 219, 0.2); /* Sombra más notable al pasar el ratón */
-}
-
-/* 3. Agregar sombras y profundidad a la pared del fondo del escenario */
-.escenario-container {
-    position: relative;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
-    /* Sombra interna profunda para simular volumen en la habitación/sala */
-    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.1);
+}5), 0 4px 15px rgba(0, 0, 0, 0.1);
 }
