@@ -69,8 +69,18 @@ function volverMenu() {
     cambiarVista('vista-menu');
 }
 
-function irACalculadora() {
+// Función corregida para abrir el modal flotante
+toogleCalculadora = function() {
+    abrirCalculadora();
+}
+
+function abrirCalculadora() {
+    const modal = document.getElementById('modal-calculadora');
     const grupoParedes = document.getElementById('grupo-paredes');
+    const spanNombre = document.getElementById('span-nombre-ambiente');
+    
+    if (spanNombre) spanNombre.innerText = ambienteActual;
+
     if (grupoParedes) {
         if (ambienteActual === 'bano') {
             grupoParedes.classList.remove('oculto');
@@ -81,12 +91,26 @@ function irACalculadora() {
     
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) resultadoCalculo.classList.add('oculto');
-    
-    cambiarVista('vista-calculadora');
+
+    if (modal) {
+        modal.classList.remove('oculto');
+    }
+}
+
+// Mantenemos esta por compatibilidad por si algún botón viejo la llama
+function irACalculadora() {
+    abrirCalculadora();
+}
+
+function cerrarCalculadora() {
+    const modal = document.getElementById('modal-calculadora');
+    if (modal) {
+        modal.classList.add('oculto');
+    }
 }
 
 function volverVisualizador() {
-    cambiarVista('vista-visualizador');
+    cerrarCalculadora();
 }
 
 function seleccionarZona(zona) {
@@ -176,6 +200,7 @@ function girarPiso(accion) {
     capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
     capaPiso.style.transition = 'none';
 }
+
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
@@ -201,7 +226,6 @@ function calcularMateriales() {
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
 
-    // Asignación directa a los IDs reales de tu HTML
     const textoPiso = document.getElementById('texto-resultado-piso');
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
     const textoPared = document.getElementById('texto-resultado-pared');
