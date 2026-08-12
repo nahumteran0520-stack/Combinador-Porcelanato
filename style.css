@@ -102,55 +102,45 @@ body {
     padding: 15px;
     color: #2c3e50;
 }
-./* Contenedor principal de la vista del simulador */
-..visualizador-container {
+/* Ampliamos el contenedor general para que use todo el ancho disponible */
+.visualizador-container {
     display: flex;
     flex-direction: column;
-    max-width: 1400px;    /* Amplía el límite para pantallas grandes */
+    max-width: 95vw;      /* Ocupa casi el 95% del ancho de tu monitor */
     margin: 0 auto;
-    padding: 10px 30px;
+    padding: 10px 20px;
     box-sizing: border-box;
 }
 
-/* Cabecera limpia y bien distribuida */
-.vis-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* Distribución en dos columnas: Izquierda el escenario, Derecha el catálogo */
+/* Hacemos que el contenido interior expanda las columnas */
 .vis-content {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     flex: 1;
-    align-items: flex-start;
-    height: calc(100% - 70px);
+    align-items: stretch;
+    height: 75vh;         /* Ocupa el 75% de la altura de tu pantalla */
 }
 
-/* Aumentamos el tamaño que ocupa el escenario a la izquierda */
+/* Forzamos un tamaño grande y protagonista para la imagen de la habitación */
 .escenario-container {
-    flex: 2.5;            /* Le damos más proporción de espacio */
-    min-height: 550px;    /* Altura mínima más grande para que la habitación luzca amplia */
+    flex: 3;              /* Mucho más espacio para la foto */
+    height: 100%;         
+    min-height: 600px;    /* Altura grande asegurada */
     position: relative;
     overflow: hidden;
     border-radius: 8px;
     border: 1px solid #ddd;
 }
 
-/* Catálogo lateral derecho */
+/* Ajustamos el catálogo lateral para que guarde proporción */
 .catalogo-lateral {
-    flex: 1;
+    flex: 1.2;
     height: 100%;
     background: #fff;
     padding: 15px;
     border-radius: 8px;
     border: 1px solid #ddd;
     overflow-y: auto;
-    max-height: 550px;
 }
 .vis-header {
     display: flex;
