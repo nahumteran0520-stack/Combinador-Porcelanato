@@ -113,14 +113,14 @@ body {
     bottom: -10px;
     left: -50%;
     width: 200%;
-    height: 125%; 
+    height: 100%; 
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 160px 160px !important; 
+    background-size: 150px 150px !important; 
     
     transform-origin: bottom center;
-    transform: perspective(350px) rotateX(28deg);
+    transform: perspective(600px) rotateX(32deg);
     
     mask-image: none;
     -webkit-mask-image: none;
