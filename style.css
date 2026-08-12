@@ -392,3 +392,18 @@ body {
         transform: perspective(250px) rotateX(25deg) !important;
     }
 }
+/* Estilo para los botones de colores de la pared */
+.btn-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-color:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
