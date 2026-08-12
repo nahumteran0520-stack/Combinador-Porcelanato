@@ -107,7 +107,7 @@ body {
     background-color: #F4F6F6;
 }
 
-/* Capa del piso con cobertura completa de la zona inferior */
+/* Aseguramos el orden correcto: piso al fondo (z-index: 1) */
 #capa-piso {
     position: absolute;
     bottom: -30px;
@@ -124,6 +124,15 @@ body {
     
     mask-image: none;
     -webkit-mask-image: none;
+}
+
+/* Forzamos que la imagen base de la habitación esté arriba (z-index: 3) */
+.escenario-habitacion .capa-imagen-base {
+    background-image: url('habitacion.png');
+    background-color: transparent !important;
+    z-index: 3 !important;
+    display: block !important;
+}
 }
 
 /* Selector de colores de pared (miniaturas del catálogo de pared) más grandes */
