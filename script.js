@@ -29,34 +29,30 @@ function cambiarVista(idVista) {
     }
 }
 
-// Iniciar ambiente seleccionado
 function cambiarAmbiente(ambiente) {
     ambienteActual = ambiente;
     const escenario = document.getElementById('escenario');
     const btnZonaPared = document.getElementById('btn-zona-pared');
     
     if (escenario) {
-        // Limpiar clases anteriores y asignar la nueva
         escenario.className = 'escenario-container';
         escenario.classList.add(`escenario-${ambiente}`);
     }
 
-    if (btnZonaPared) {
-        // Configurar visibilidad de paredes según el ambiente (Solo baño permite pared)
-        if (ambiente === 'bano') {
-            btnZonaPared.classList.remove('oculto');
-        } else {
-            btnZonaPared.classList.add('oculto');
-            seleccionarZona('piso');
-        }
+    // Solo el baño permite cambiar pared y piso. Sala y habitación solo usan piso.
+    if (ambiente === 'bano') {
+        btnZonaPared.classList.remove('oculto');
+    } else {
+        btnZonaPared.classList.add('oculto');
     }
-
-    // Actualizar títulos de forma segura
-    const tituloAmbiente = document.getElementById('titulo-ambiente');
-    if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
     
-    const spanNombre = document.getElementById('span-nombre-ambiente');
-    if (spanNombre) spanNombre.innerText = ambiente;
+    // Forzar siempre que al cambiar de ambiente se seleccione el piso por defecto
+    seleccionarZona('piso');
+
+    document.getElementById('titulo-ambiente').innerText = `Simulador de ${ambiente.toUpperCase()}`;
+    document.getElementById('span-nombre-ambiente').innerText = ambiente;
+
+}
 
     cargarCatalogo();
     cambiarVista('vista-visualizador');
