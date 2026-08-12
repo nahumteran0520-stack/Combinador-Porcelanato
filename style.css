@@ -341,4 +341,43 @@ body {
         margin-top: 15px !important;
         box-sizing: border-box !important;
     }
+    /* ==========================================
+   FORZAR VISIBILIDAD EN MÓVILES (Celular)
+   ========================================== */
+@media screen and (max-width: 768px) {
+    /* Forzamos que la sección del visualizador se muestre siempre si está activa */
+    #vista-visualizador {
+        display: block !important;
+        width: 100% !important;
+        padding: 5px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Contenedor general del contenido alineado en columna */
+    .vis-content {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 15px !important;
+    }
+
+    /* Contenedor del escenario con tamaño visible forzado */
+    .escenario-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 260px !important;
+        display: block !important;
+        background-color: #e0e0e0; /* Respaldo por si el color de pared falla */
+    }
+
+    /* Aseguramos que la imagen base de la sala/habitación no colapse */
+    .capa-imagen-base {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 5;
+        pointer-events: none;
+    }
 }
