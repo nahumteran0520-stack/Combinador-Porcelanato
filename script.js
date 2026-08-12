@@ -165,18 +165,30 @@ let anguloRotacionZ = 0;
 
 let anguloActual = 0;
 
+let estadoRotacion = 0;
+
 function girarPiso(accion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
 
     if (accion === 'izquierda') {
-        anguloActual -= 90;
+        estadoRotacion = (estadoRotacion - 1 + 4) % 4;
     } else if (accion === 'derecha') {
-        anguloActual += 90;
+        estadoRotacion = (estadoRotacion + 1) % 4;
     } else if (accion === 'reset') {
-        anguloActual = 0;
+        estadoRotacion = 0;
     }
 
+    // En lugar de rotar con grados (lo que corta las esquinas), 
+    // desplazamos el origen del patrón de repetición de forma precisa.
+    const posicionesX = ['0px', '90px', '180px', '270px'];
+    const posicionesY = ['0px', '90px', '180px', '270px'];
+    
+    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+    
+    // Mantenemos la perspectiva fija del piso intacta para que jamás se deforme ni deje espacios blancos
+    capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
+}
     // Aplicamos el cambio de forma inmediata combinando la perspectiva con el giro plano 2D exacto
     capaPiso.style.transition = 'none'; // Sin retrasos ni animaciones
     capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotate(${anguloActual}deg)`;
