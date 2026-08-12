@@ -119,7 +119,7 @@ body {
     bottom: -10px;
     left: -30%;    /* Ampliamos más el desplazamiento hacia la izquierda */
     width: 160%;   /* Estiramos el ancho total para compensar la inclinación 3D */
-    height: 85%;
+    height: 100%;
     z-index: 1;
     
     background-repeat: repeat !important;
