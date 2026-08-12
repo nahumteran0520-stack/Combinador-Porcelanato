@@ -102,7 +102,6 @@ function aplicarTextura(urlImagen) {
 
     capa.style.backgroundPosition = 'center bottom';
 }
-}
 
 // Lógica de cálculo de materiales (Considerando formato estándar de caja de 1.44 m²)
 function calcularMateriales() {
