@@ -359,3 +359,20 @@ body {
     z-index: 100001;
     margin: auto;
 }
+.modal-calculadora {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+}
+
+.modal-calculadora.oculto {
+    display: none !important;
+}
