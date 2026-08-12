@@ -116,21 +116,22 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 45%; /* Ajusta esto según qué tan alto sube el piso en tu imagen */
+    bottom: -10px; /* Lo extiende un poco más allá del borde inferior para que no quede franja blanca */
+    left: -10%;    /* Amplía el margen izquierdo para cubrir los costados */
+    width: 120%;   /* Estira el ancho total superando el 100% para evitar espacios vacíos */
+    height: 55%;   /* Aumenta un poco la altura para que el piso suba exactamente donde empieza el mueble */
     z-index: 1;
+    
     background-repeat: repeat !important;
-    background-size: 120px 120px !important; /* Mantén el tamaño que te gustó */
+    background-size: 110px 110px !important; 
     
-    /* Magia 3D para dar profundidad real */
+    /* Efecto 3D de profundidad ampliado */
     transform-origin: bottom center;
-    transform: perspective(400px) rotateX(45deg);
+    transform: perspective(350px) rotateX(42deg);
     
-    /* Difuminar sutilmente la parte superior para fundirse con el mueble */
-    mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%);
+    /* Difuminado superior suave para integrarse con el mueble */
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
 }
 
 /* Coordenadas para paredes (solo baño) */
