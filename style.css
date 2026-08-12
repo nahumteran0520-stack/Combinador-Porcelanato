@@ -103,14 +103,35 @@ body {
     color: #2c3e50;
 }
 
-/* Visualizador */
+/* Centrar el contenido y bajar un poco el escenario */
 .visualizador-container {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding-top: 20px; /* Separación desde arriba */
+    height: 100vh;
 }
 
+/* Ajuste del escenario para que no sea tan gigante y se vea completo */
+.escenario-container {
+    width: 80%;       /* O ajusta al ancho que prefieras */
+    max-width: 800px;
+    height: 450px;    /* Altura fija para que no se mueva */
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden; /* Evita que el patrón se desborde */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Asegurar que las capas ocupen todo el espacio sin salirse */
+.capa-superficie {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 .vis-header {
     display: flex;
     justify-content: space-between;
