@@ -33,18 +33,17 @@
     <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
     <section id="vista-visualizador" class="vista">
         <div class="visualizador-container">
-            <header class="vis-header">
+            <header class="vis-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
-                <h2 id="titulo-ambiente">Ambiente</h2>
+                <h2 id="titulo-ambiente" style="margin: 0; font-size: 1.2rem;">Ambiente</h2>
                 
-                <!-- Botones de rotación ubicados de forma visible y limpia en la cabecera -->
-                <div class="controles-rotacion" style="display: flex; gap: 5px;">
+                <!-- Controles de rotación y botón de cálculo juntos en la misma línea -->
+                <div class="controles-rotacion" style="display: flex; gap: 5px; align-items: center; flex-wrap: wrap;">
                     <button onclick="girarPiso('izquierda')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Izq ↺</button>
                     <button onclick="girarPiso('reset')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Frente ⏹</button>
                     <button onclick="girarPiso('derecha')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Der ↻</button>
+                    <button class="btn-principal" onclick="abrirCalculadora()" style="padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer;">Calcular Materiales →</button>
                 </div>
-
-                <button class="btn-principal" onclick="abrirCalculadora()">Calcular Materiales →</button>
             </header>
 
             <div class="vis-content">
