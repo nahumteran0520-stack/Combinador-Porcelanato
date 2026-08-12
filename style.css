@@ -116,20 +116,21 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -10px; /* Lo extiende un poco más allá del borde inferior para que no quede franja blanca */
-    left: -10%;    /* Amplía el margen izquierdo para cubrir los costados */
-    width: 120%;   /* Estira el ancho total superando el 100% para evitar espacios vacíos */
-    height: 55%;   /* Aumenta un poco la altura para que el piso suba exactamente donde empieza el mueble */
+    bottom: -10px;
+    left: -15%;    /* Ampliamos un poco más el margen izquierdo para cubrir ese pedacito faltante */
+    width: 130%;   /* Estiramos el ancho total para sellar los costados */
+    height: 55%;
     z-index: 1;
     
+    /* Aumentamos el tamaño de la cuadrícula para que los porcelanatos se vean más grandes (puedes probar de 150px a 180px) */
     background-repeat: repeat !important;
-    background-size: 110px 110px !important; 
+    background-size: 160px 160px !important; 
     
-    /* Efecto 3D de profundidad ampliado */
+    /* Efecto 3D de profundidad */
     transform-origin: bottom center;
     transform: perspective(350px) rotateX(42deg);
     
-    /* Difuminado superior suave para integrarse con el mueble */
+    /* Difuminado superior para integrarse con el mueble */
     mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
     -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
 }
