@@ -158,5 +158,5 @@ function cambiarColorPared(colorHex) {
 
 // Asegúrate de incluirla en tus enlaces globales al final del script si los usas:
 window.cambiarColorPared = cambiarColorPared;
-
+   }
 }
