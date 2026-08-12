@@ -161,13 +161,23 @@ window.cambiarColorPared = cambiarColorPared;
 let anguloPiso = 0;
 
 function girarTexturaPiso() {
-    // Suma 90 grados cada vez que se presiona (0 -> 90 -> 180 -> 270 -> 0)
     anguloPiso = (anguloPiso + 90) % 360;
     
     const capaPiso = document.getElementById('capa-piso');
     if (capaPiso) {
-        // Aplicamos la rotación al contenedor del piso
+        // En lugar de rotar el div con transform, cambiamos la orientación o la rotación del fondo si el navegador lo soporta, 
+        // o aplicamos un filtro de rotación de imagen mediante CSS background.
+        // Una forma muy limpia es rotar el patrón usando la propiedad de degradados o rotando la imagen de fondo con un canvas temporal,
+        // O más sencillo aún: rotar el elemento pero asegurando que cubra 100% con transform sin alterar el flujo:
+        
         capaPiso.style.transform = `rotate(${anguloPiso}deg)`;
-        capaPiso.style.transition = 'transform 0.3s ease'; // Transición suave
+        capaPiso.style.transformOrigin = 'center center';
+        
+        // Si queremos que cubra todo el espacio al girar sin dejar huecos, ajustamos la escala temporalmente al girar:
+        if (anguloPiso === 90 || anguloPiso === 270) {
+            capaPiso.style.transform = `rotate(${anguloPiso}deg) scale(1.4)`;
+        } else {
+            capaPiso.style.transform = `rotate(${anguloPiso}deg) scale(1)`;
+        }
     }
 }
