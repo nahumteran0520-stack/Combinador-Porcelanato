@@ -1,89 +1,137 @@
-const datosAmbientes = {
-  sala: {
-    titulo: "Visualizador - Sala",
-    fondo: "sala.png",
-    muebles: "muebles-encima.png",
-    permitePared: false
-  },
-  bano: {
-    titulo: "Visualizador - Baño",
-    fondo: "bano-fondo.png",
-    muebles: "bano-encima.png",
-    permitePared: true
-  },
-  habitacion: {
-    titulo: "Visualizador - Habitación",
-    fondo: "habitacion.png",
-    muebles: "muebles-encima.png",
-    permitePared: false
-  }
-};
+// Variables de estado global
+let ambienteActual = '';
+let zonaSeleccionada = 'piso'; // 'piso' o 'pared'
 
-function iniciarSimulador(tipo) {
-  const config = datosAmbientes[tipo];
-  
-  document.getElementById('titulo-visor').textContent = config.titulo;
-  document.getElementById('escena-fondo').style.backgroundImage = `url('${config.fondo}')`;
-  document.getElementById('muebles-capa').src = config.muebles;
+// Base de datos simulada del catálogo de porcelanatos (con texturas en patrón repetible)
+const catalogoPorcelanatos = [
+    { id: 1, nombre: 'Mármol Carrara', tipo: 'patron', url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80' },
+    { id: 2, nombre: 'Cemento Gris', tipo: 'patron', url: 'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=300&q=80' },
+    { id: 3, nombre: 'Madera Roble', tipo: 'patron', url: 'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=300&q=80' },
+    { id: 4, nombre: 'Granito Oscuro', tipo: 'patron', url: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=300&q=80' }
+];
 
-  const elementosPared = document.querySelectorAll('.seccion-pared-calc');
-  const paredInteractiva = document.getElementById('pared-interactiva');
-
-  if (config.permitePared) {
-    elementosPared.forEach(el => el.style.display = 'block');
-    paredInteractiva.style.display = 'block';
-  } else {
-    elementosPared.forEach(el => el.style.display = 'none');
-    paredInteractiva.style.display = 'none';
-  }
-
-  document.getElementById('selector-ambiente').style.display = 'none';
-  document.getElementById('app-principal').style.display = 'block';
+// Cambiar entre vistas principales
+function cambiarVista(idVista) {
+    document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+    document.getElementById(idVista).classList.add('activa');
 }
 
-function volverAlMenu() {
-  document.getElementById('app-principal').style.display = 'none';
-  document.getElementById('selector-ambiente').style.display = 'block';
-  document.getElementById('resultado-calculo').style.display = 'none';
-}
-
-function cambiarPiso(imagenUrl) {
-  document.getElementById('piso-interactivo').style.backgroundImage = `url('${imagenUrl}')`;
-}
-
-function cambiarPared(imagenUrl) {
-  document.getElementById('pared-interactiva').style.backgroundImage = `url('${imagenUrl}')`;
-}
-
-function calcularMaterialesTotales() {
-  const usaPared = document.getElementById('pared-interactiva').style.display === 'block';
-  
-  let areaPared = 0, cajasPared = 0;
-  if (usaPared) {
-    const pAlto = parseFloat(document.getElementById('pared-alto').value) || 0;
-    const pAncho = parseFloat(document.getElementById('pared-ancho').value) || 0;
-    const pCaja = parseFloat(document.getElementById('pared-caja').value) || 1.44;
-    areaPared = pAlto * pAncho;
-    cajasPared = Math.ceil(areaPared / pCaja);
+// Iniciar ambiente seleccionado
+function cambiarAmbiente(ambiente) {
+    ambienteActual = ambiente;
+    const escenario = document.getElementById('escenario');
+    const btnZonaPared = document.getElementById('btn-zona-pared');
     
-    document.getElementById('res-area-pared').textContent = areaPared.toFixed(2);
-    document.getElementById('res-cajas-pared').textContent = cajasPared;
-  }
-  
-  const piLargo = parseFloat(document.getElementById('piso-largo').value) || 0;
-  const piAncho = parseFloat(document.getElementById('piso-ancho').value) || 0;
-  const piCaja = parseFloat(document.getElementById('piso-caja').value) || 1.44;
-  const pegoRendimiento = parseFloat(document.getElementById('tipo-pego').value) || 1.5;
+    // Limpiar clases anteriores y asignar la nueva
+    escenario.className = 'escenario-container';
+    escenario.classList.add(`escenario-${ambiente}`);
 
-  const areaPiso = piLargo * piAncho;
-  const cajasPiso = Math.ceil(areaPiso / piCaja);
+    // Configurar visibilidad de paredes según el ambiente (Solo baño permite pared)
+    if (ambiente === 'bano') {
+        btnZonaPared.classList.remove('oculto');
+    } else {
+        btnZonaPared.classList.add('oculto');
+        seleccionarZona('piso'); // Forzar selección a piso si viene de baño
+    }
 
-  const totalArea = areaPared + areaPiso;
-  const sacosPego = Math.ceil(totalArea / pegoRendimiento);
+    // Actualizar títulos
+    document.getElementById('titulo-ambiente').innerText = `Simulador de ${ambiente.toUpperCase()}`;
+    document.getElementById('span-nombre-ambiente').innerText = ambiente;
 
-  document.getElementById('res-area-piso').textContent = areaPiso.toFixed(2);
-  document.getElementById('res-cajas-piso').textContent = cajasPiso;
-  document.getElementById('res-total-pego').textContent = sacosPego;
+    cargarCatalogo();
+    cambiarVista('vista-visualizador');
+}
 
-  document.getElementById('resultado-calculo').style.display = 'block';
+function volverMenu() {
+    cambiarVista('vista-menu');
+}
+
+function irACalculadora() {
+    const grupoParedes = document.getElementById('grupo-paredes');
+    if (ambienteActual === 'bano') {
+        grupoParedes.classList.remove('oculto');
+    } else {
+        grupoParedes.classList.add('oculto');
+    }
+    document.getElementById('resultado-calculo').classList.add('oculto');
+    cambiarVista('vista-calculadora');
+}
+
+function volverVisualizador() {
+    cambiarVista('vista-visualizador');
+}
+
+// Control de selección de zona (Piso o Pared)
+function seleccionarZona(zona) {
+    zonaSeleccionada = zona;
+    document.querySelectorAll('.btn-zona').forEach(b => b.classList.remove('activo'));
+    if(zona === 'piso') {
+        document.querySelector('.selector-zona button:first-child').classList.add('activo');
+    } else {
+        document.getElementById('btn-zona-pared').classList.add('activo');
+    }
+}
+
+// Cargar elementos en el catálogo lateral
+function cargarCatalogo() {
+    const grid = document.getElementById('grid-catalogo');
+    grid.innerHTML = '';
+
+    catalogoPorcelanatos.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item-porcelanato';
+        div.innerHTML = `
+            <img src="${item.url}" alt="${item.nombre}">
+            <span>${item.nombre}</span>
+        `;
+        div.onclick = () => aplicarTextura(item.url);
+        grid.appendChild(div);
+    });
+}
+
+// Aplicar textura seleccionada a la capa transparente correspondiente
+function aplicarTextura(urlImagen) {
+    const capa = document.getElementById(zonaSeleccionada === 'piso' ? 'capa-piso' : 'capa-paredes');
+    capa.style.backgroundImage = `url(${urlImagen})`;
+    capa.style.backgroundRepeat = 'repeat';
+    capa.style.backgroundSize = '100px 100px'; // Simula la escala de las piezas
+}
+
+// Lógica de cálculo de materiales (Considerando formato estándar de caja de 1.44 m²)
+function calcularMateriales() {
+    const largo = parseFloat(document.getElementById('input-largo').value) || 0;
+    const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
+    const alto = parseFloat(document.getElementById('input-alto').value) || 0;
+    const desperdicio = parseFloat(document.getElementById('select-desperdicio').value);
+    
+    if (largo <= 0 || ancho <= 0) {
+        alert('Por favor, ingresa medidas válidas para el área.');
+        return;
+    }
+
+    // Metros cuadrados de piso
+    const m2Piso = largo * ancho;
+    const totalM2PisoConDesperdicio = m2Piso * desperdicio;
+    const cajasPiso = Math.ceil(totalM2PisoConDesperdicio / 1.44); // 1.44m² por caja estándar
+
+    let textoPiso = `<strong>Área de Piso:</strong> ${m2Piso.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPiso} cajas</strong> (${totalM2PisoConDesperdicio.toFixed(2)} m² con desperdicio).`;
+    document.getElementById('texto-resultado-piso').innerHTML = textoPiso;
+
+    const divResultado = document.getElementById('resultado-calculo');
+    const textoParedes = document.getElementById('texto-resultado-pared');
+
+    // Si es baño, calcular también paredes
+    if (ambienteActual === 'bano' && alto > 0) {
+        const perimetro = (largo + ancho) * 2;
+        const m2Paredes = perimetro * alto;
+        const totalM2ParedConDesperdicio = m2Paredes * desperdicio;
+        const cajasPared = Math.ceil(totalM2ParedConDesperdicio / 1.44);
+
+        textoParedes.innerHTML = `<strong>Área de Paredes:</strong> ${m2Paredes.toFixed(2)} m².<br>Necesitarás aprox. <strong>${cajasPared} cajas</strong> (${totalM2ParedConDesperdicio.toFixed(2)} m² con desperdicio).`;
+        textoParedes.classList.remove('oculto');
+    } else {
+        textoParedes.classList.add('oculto');
+    }
+
+    divResultado.classList.remove('oculto');
 }
