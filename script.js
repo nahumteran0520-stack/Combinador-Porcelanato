@@ -194,7 +194,8 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10; 
+    const areaPisoConDesperdicio = areaPiso * 1.10; // 10% de desperdicio
+
     const m2PorCaja = 1.44; 
     const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
 
@@ -215,6 +216,7 @@ function calcularMateriales() {
     }
 
     const grupoParedes = document.getElementById('grupo-paredes');
+    
     if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
         const perimetro = 2 * (largo + ancho);
         const areaParedes = perimetro * alto;
@@ -236,6 +238,7 @@ function calcularMateriales() {
         if (textoPegoPared) textoPegoPared.style.display = 'none';
     }
 
+    // FORZAR LA VISIBILIDAD DEL CONTENEDOR DE RESULTADOS
     const resultadoDiv = document.getElementById('resultado-calculo');
     if (resultadoDiv) {
         resultadoDiv.classList.remove('oculto');
