@@ -27,6 +27,38 @@ body {
 /* Menú Principal */
 .menu-container {
     text-align: center;
+    /* Asegurar que el contenedor del escenario permita posicionar elementos flotantes */
+.escenario-container {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Forzar la visibilidad y posición exacta de los botones de rotación */
+.controles-rotacion {
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    display: flex !important;
+    gap: 5px !important;
+    z-index: 9999 !important;
+}
+
+.controles-rotacion button {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid #bbb !important;
+    padding: 6px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+}
+
+.controles-rotacion button:hover {
+    background: #ffffff !important;
+    border-color: #3498db !important;
+    color: #3498db !important;
+}
     max-width: 900px;
 }
 
