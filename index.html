@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -46,77 +46,80 @@
                     <div id="capa-piso" class="capa-superficie"></div>
                     <!-- Capa de paredes (si aplica para el baño) -->
                     <div id="capa-paredes" class="capa-superficie"></div>
-                    <!-- Capa superior con tu PNG transparente de Photopea -->
+                    <!-- Capa superior con tu PNG transparente -->
                     <div class="capa-imagen-base"></div>
                 </div>
 
-                <!-- Catálogo Lateral -->
+                <!-- Catálogo Lateral y Controles -->
                 <aside class="catalogo-lateral">
                     <h3>Catálogo de Porcelanatos</h3>
                     <div id="selector-zona" class="selector-zona">
                         <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
                         <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
                     </div>
+                    
+                    <!-- Selector de colores de pared en tonos pasteles -->
+                    <div class="selector-color-pared" style="margin: 10px 0; text-align: center;">
+                        <span style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px;">Color de Pared:</span>
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+                            <button onclick="cambiarColorPared('#EAE8E4')" style="background: #EAE8E4; border: 1px solid #ccc; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Gris</button>
+                            <button onclick="cambiarColorPared('#F5F0EB')" style="background: #F5F0EB; border: 1px solid #ccc; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Beige</button>
+                            <button onclick="cambiarColorPared('#EAF2F8')" style="background: #EAF2F8; border: 1px solid #ccc; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Azul</button>
+                            <button onclick="cambiarColorPared('#F9EBEA')" style="background: #F9EBEA; border: 1px solid #ccc; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Rosa</button>
+                            <button onclick="cambiarColorPared('#F4F6F6')" style="background: #F4F6F6; border: 1px solid #ccc; padding: 4px 8px; font-size: 0.8rem; cursor: pointer; border-radius: 4px;">Blanco</button>
+                        </div>
+                    </div>
+
                     <div class="grid-catalogo" id="grid-catalogo">
                         <!-- Las opciones del catálogo se inyectan por JS -->
                     </div>
                 </aside>
+            </div>
+        </div>
     </section>
-   <!-- Selector de colores de pared en tonos pasteles -->
-<div class="selector-color-pared" style="margin: 10px 0; text-align: center;">
-    <span style="font-weight: bold; margin-right: 8px;">Color de Pared:</span>
-    <button onclick="cambiarColorPared('#EAE8E4')" style="background: #EAE8E4; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer;">Gris Pastel</button>
-    <button onclick="cambiarColorPared('#F5F0EB')" style="background: #F5F0EB; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer;">Beige Crema</button>
-    <button onclick="cambiarColorPared('#EAF2F8')" style="background: #EAF2F8; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer;">Azul Cielo Suave</button>
-    <button onclick="cambiarColorPared('#F9EBEA')" style="background: #F9EBEA; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer;">Rosa / Arena Suave</button>
-    <button onclick="cambiarColorPared('#F4F6F6')" style="background: #F4F6F6; border: 1px solid #ccc; padding: 5px 10px; cursor: pointer;">Blanco Lino</button>
-</div>
-                <button onclick="girarTexturaPiso()" class="btn-girar" style="margin: 10px 0; padding: 8px 12px; background: #333; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
-    🔄 Girar Vetas / Patrón
-</button>
 
-<!-- VISTA 3: CALCULADORA DE MATERIALES -->
-<section id="vista-calculadora" class="vista">
-    <div class="calc-container">
-        <button class="btn-secundario" onclick="volverVisualizador()">← Volver al Simulador</button>
-        <h2>Calculadora de Materiales</h2>
-        <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
-        
-        <div class="form-calculadora">
-            <div class="grupo-input">
-                <label>Largo de la estancia (metros):</label>
-                <input type="number" id="input-largo" step="0.01" placeholder="Ej. 4.0">
-            </div>
-            <div class="grupo-input">
-                <label>Ancho de la estancia (metros):</label>
-                <input type="number" id="input-ancho" step="0.01" placeholder="Ej. 3.0">
-            </div>
-            <div id="grupo-paredes" class="grupo-input oculto">
-                <label>Altura de las paredes (metros):</label>
-                <input type="number" id="input-alto" step="0.01" placeholder="Ej. 2.5">
-            </div>
+    <!-- VISTA 3: CALCULADORA DE MATERIALES -->
+    <section id="vista-calculadora" class="vista">
+        <div class="calc-container">
+            <button class="btn-secundario" onclick="volverVisualizador()">← Volver al Simulador</button>
+            <h2>Calculadora de Materiales</h2>
+            <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
             
-            <!-- Selector de tipo de pego -->
-            <div class="grupo-input">
-                <label>Presentación de Pego:</label>
-                <select id="select-pego">
-                    <option value="14">Saco de 14 kg (Cubre 1.5 m²)</option>
-                    <option value="10">Saco de 10 kg (Cubre 1.0 m²)</option>
-                </select>
+            <div class="form-calculadora">
+                <div class="grupo-input">
+                    <label>Largo de la estancia (metros):</label>
+                    <input type="number" id="input-largo" step="0.01" placeholder="Ej. 4.0">
+                </div>
+                <div class="grupo-input">
+                    <label>Ancho de la estancia (metros):</label>
+                    <input type="number" id="input-ancho" step="0.01" placeholder="Ej. 3.0">
+                </div>
+                <div id="grupo-paredes" class="grupo-input oculto">
+                    <label>Altura de las paredes (metros):</label>
+                    <input type="number" id="input-alto" step="0.01" placeholder="Ej. 2.5">
+                </div>
+                
+                <!-- Selector de tipo de pego -->
+                <div class="grupo-input">
+                    <label>Presentación de Pego:</label>
+                    <select id="select-pego">
+                        <option value="14">Saco de 14 kg (Cubre 1.5 m²)</option>
+                        <option value="10">Saco de 10 kg (Cubre 1.0 m²)</option>
+                    </select>
+                </div>
+
+                <button class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
             </div>
 
-            <button class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
+            <div id="resultado-calculo" class="resultado-calculo oculto">
+                <h3>Resultados Estimados:</h3>
+                <p id="texto-resultado-piso"></p>
+                <p id="texto-resultado-pego-piso"></p>
+                <p id="texto-resultado-pared"></p>
+                <p id="texto-resultado-pego-pared"></p>
+            </div>
         </div>
-
-        <div id="resultado-calculo" class="resultado-calculo oculto">
-            <h3>Resultados Estimados:</h3>
-            <p id="texto-resultado-piso"></p>
-            <p id="texto-resultado-pego-piso"></p>
-            <p id="texto-resultado-pared"></p>
-            <p id="texto-resultado-pego-pared"></p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <script src="script.js"></script>
 </body>
