@@ -1,5 +1,4 @@
-<style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     body { background-color: #121212; color: #ffffff; padding: 15px; }
     
     .app-container {
@@ -29,7 +28,7 @@
     /* Visualizador Estilo Escena Real */
     .preview-section { display: flex; flex-direction: column; align-items: center; }
     
-  .habitacion {
+    .habitacion {
       width: 100%;
       height: 560px;
       border-radius: 8px;
@@ -37,23 +36,37 @@
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: #ff0000; /* <-- Ponemos esto temporalmente en rojo brillante */
+      background-color: #151515; /* Fondo oscuro original limpio */
     }
-    /* Hacemos que la zona del piso comience mucho más arriba y tenga más altura */
-    #piso {
+
+    /* 1. PARED DE FONDO */
+    .escena-base {
       position: absolute;
-      top: 35%; /* Subimos el inicio para ganar más espacio visual */
+      top: 0;
       left: 0;
       width: 100%;
-      height: 65%; /* Ocupará las dos terceras partes inferiores de la escena */
-      background-size: 160px 160px;
+      height: 100%;
+      background-image: url('habitacion.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+
+    /* 2. PISO INTERACTIVO: Amplio para que luzca excelente */
+    #piso {
+      position: absolute;
+      top: 30%; /* Comienza más arriba para ganar una gran área de visualización */
+      left: 0;
+      width: 100%;
+      height: 70%; /* Ocupa holgadamente toda la parte inferior */
+      background-size: 150px 150px;
       z-index: 2;
-      opacity: 0.95;
-      transform: perspective(300px) rotateX(40deg);
+      opacity: 1;
+      transform: perspective(350px) rotateX(42deg);
       transform-origin: top center;
     }
 
-    /* AQUÍ ESTÁ EL SECRETO: Usamos contain para que la imagen se vea COMPLETA y no corte la base */
+    /* 3. CAMA / MUEBLES ENCIMA */
     .cama-encima {
       display: block;
       position: absolute;
@@ -61,7 +74,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain; 
+      object-fit: cover; 
       z-index: 3;
       pointer-events: none;
     }
@@ -87,16 +100,3 @@
     .res-box { margin-top: 12px; padding: 10px; background: #282828; border-left: 4px solid #00adb5; display: none; font-size: 0.8rem; }
     .res-box p { margin-bottom: 4px; color: #ddd; }
     .res-box span { font-weight: bold; color: #00adb5; }
-  </style>
-.cama-encima {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 3;
-      pointer-events: none;
-      mix-blend-mode: lighten; /* Esto hace que el fondo negro de tu imagen desaparezca mágicamente y deje ver el piso abajo */
-    }
