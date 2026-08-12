@@ -1,6 +1,6 @@
 // Variables de estado global
 let ambienteActual = '';
-let zonaSeleccionada = 'piso'; // 'piso' o 'pared'
+let zonaSeleccionada = 'piso';
 
 // Base de datos simulada del catálogo de porcelanatos
 const catalogoPorcelanatos = [
@@ -14,7 +14,13 @@ const catalogoPorcelanatos = [
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
 ];
 
-// Cambiar entre vistas principales de manera segura
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCalcular = document.querySelector('.btn-calcular');
+    if (btnCalcular) {
+        btnCalcular.addEventListener('click', calcularMateriales);
+    }
+});
+
 function cambiarVista(idVista) {
     const vistas = document.querySelectorAll('.vista');
     vistas.forEach(v => {
@@ -29,7 +35,6 @@ function cambiarVista(idVista) {
     }
 }
 
-// Iniciar ambiente seleccionado sin bloqueos
 function cambiarAmbiente(ambiente) {
     ambienteActual = ambiente;
     const escenario = document.getElementById('escenario');
@@ -84,7 +89,6 @@ function volverVisualizador() {
     cambiarVista('vista-visualizador');
 }
 
-// Control de selección de zona (Piso o Pared)
 function seleccionarZona(zona) {
     if (ambienteActual !== 'bano' && zona === 'pared') {
         zona = 'piso';
@@ -102,7 +106,6 @@ function seleccionarZona(zona) {
     }
 }
 
-// Cargar elementos en el catálogo lateral de manera dinámica
 function cargarCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
@@ -152,7 +155,6 @@ function cambiarColorPared(colorHex) {
     }
 }
 
-// Rotación instantánea del patrón sin espacios en blanco
 let estadoRotacion = 0;
 
 function girarPiso(accion) {
@@ -175,12 +177,16 @@ function girarPiso(accion) {
     capaPiso.style.transition = 'none';
 }
 
-// Calculadora de materiales exacta
 function calcularMateriales() {
-    const largo = parseFloat(document.getElementById('input-largo').value) || 0;
-    const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
-    const alto = parseFloat(document.getElementById('input-alto').value) || 0;
-    const pesoSacoPego = parseInt(document.getElementById('select-pego').value) || 14;
+    const largoInput = document.getElementById('input-largo');
+    const anchoInput = document.getElementById('input-ancho');
+    const altoInput = document.getElementById('input-alto');
+    const selectPego = document.getElementById('select-pego');
+
+    const largo = parseFloat(largoInput ? largoInput.value : 0) || 0;
+    const ancho = parseFloat(anchoInput ? anchoInput.value : 0) || 0;
+    const alto = parseFloat(altoInput ? altoInput.value : 0) || 0;
+    const pesoSacoPego = parseInt(selectPego ? selectPego.value : 14) || 14;
 
     if (largo <= 0 || ancho <= 0) {
         alert("Por favor, ingresa un largo y un ancho válidos para la estancia.");
@@ -222,14 +228,13 @@ function calcularMateriales() {
         textoPared.style.display = 'block';
         textoPegoPared.style.display = 'block';
     } else {
-        textoPared.style.display = 'none';
-        textoPegoPared.style.display = 'none';
+        if(textoPared) textoPared.style.display = 'none';
+        if(textoPegoPared) textoPegoPared.style.display = 'none';
     }
 
-    resultadoDiv.classList.remove('oculto');
+    if(resultadoDiv) resultadoDiv.classList.remove('oculto');
 }
 
-// Función auxiliar para determinar el rendimiento del pego seleccionado
 function pesoGrisSaco(peso) {
     if (peso === 14) {
         return 1.5; 
