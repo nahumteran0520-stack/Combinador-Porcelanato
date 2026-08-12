@@ -95,8 +95,15 @@ function cargarCatalogo() {
 
 function aplicarTextura(urlImagen) {
     const capa = document.getElementById(zonaSeleccionada === 'piso' ? 'capa-piso' : 'capa-paredes');
-    capa.style.backgroundImage = `url(${urlImagen})`;
-    capa.style.backgroundRepeat = 'repeat';
+    if (capa) {
+        capa.style.backgroundImage = `url('${urlImagen}')`;
+        capa.style.backgroundRepeat = 'repeat';
+        capa.style.backgroundSize = '110px 110px'; 
+        capa.style.backgroundPosition = 'center bottom';
+    } else {
+        console.error("No se encontró la capa activa para aplicar la textura.");
+    }
+}
     
     // Un tamaño inicial adecuado para que la perspectiva 3D lo Distorsione de forma natural
     capa.style.backgroundSize = '150px 150px'; 
