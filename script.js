@@ -1,7 +1,7 @@
 const datosAmbientes = {
   sala: {
     titulo: "Visualizador - Sala",
-    fondo: "habitacion.png",
+    fondo: "sala.png",
     muebles: "muebles-encima.png",
     permitePared: false
   },
