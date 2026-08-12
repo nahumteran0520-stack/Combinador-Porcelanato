@@ -121,8 +121,7 @@ body {
     width: 160%;
     height: 170;  /* Subimos la altura para que tape el espacio blanco de arriba */
     z-index: 1;
-    
-    background-repeat: repeat !important;
+   background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
     transform-origin: bottom center;
@@ -130,12 +129,7 @@ body {
     
     mask-image: none;
     -webkit-mask-image: none;
-}
 
-.escenario-habitacion .capa-imagen-base {
-    mix-blend-mode: multiply;
-}
-    -webkit-mask-image: none;
 }
     /* Efecto 3D de profundidad */
     transform-origin: bottom center;
