@@ -10,11 +10,11 @@ const catalogoPorcelanatos = [
     { id: 4, nombre: 'Marmoleado Gris', tipo: 'patron', url: 'piso-marmoleadogris-347.jpg' },
     { id: 5, nombre: 'Marmoleado Negro', tipo: 'patron', url: 'piso-marmoleadonegro-358.jpg' },
     { id: 6, nombre: 'Super Blanco', tipo: 'patron', url: 'piso-superblanco-345.jpg' },
-    { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supernegro-346.jpg' },
+    { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supenegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
 ];
 
-// Cambiar entre vistas principales (Corregido para evitar bloqueos)
+// Cambiar entre vistas principales de manera segura
 function cambiarVista(idVista) {
     const vistas = document.querySelectorAll('.vista');
     vistas.forEach(v => {
@@ -29,6 +29,7 @@ function cambiarVista(idVista) {
     }
 }
 
+// Iniciar ambiente seleccionado sin bloqueos
 function cambiarAmbiente(ambiente) {
     ambienteActual = ambiente;
     const escenario = document.getElementById('escenario');
@@ -39,20 +40,22 @@ function cambiarAmbiente(ambiente) {
         escenario.classList.add(`escenario-${ambiente}`);
     }
 
-    // Solo el baño permite cambiar pared y piso. Sala y habitación solo usan piso.
-    if (ambiente === 'bano') {
-        btnZonaPared.classList.remove('oculto');
-    } else {
-        btnZonaPared.classList.add('oculto');
+    if (btnZonaPared) {
+        if (ambiente === 'bano') {
+            btnZonaPared.classList.remove('oculto');
+        } else {
+            btnZonaPared.classList.add('oculto');
+        }
     }
+
+    // Forzar siempre que al entrar a un ambiente se seleccione el piso por defecto
+    zonaSeleccionada = 'piso';
+
+    const tituloAmbiente = document.getElementById('titulo-ambiente');
+    if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
     
-    // Forzar siempre que al cambiar de ambiente se seleccione el piso por defecto
-    seleccionarZona('piso');
-
-    document.getElementById('titulo-ambiente').innerText = `Simulador de ${ambiente.toUpperCase()}`;
-    document.getElementById('span-nombre-ambiente').innerText = ambiente;
-
-}
+    const spanNombre = document.getElementById('span-nombre-ambiente');
+    if (spanNombre) spanNombre.innerText = ambiente;
 
     cargarCatalogo();
     cambiarVista('vista-visualizador');
@@ -84,8 +87,14 @@ function volverVisualizador() {
 
 // Control de selección de zona (Piso o Pared)
 function seleccionarZona(zona) {
+    // Si no es baño, bloquear intento de seleccionar pared por seguridad
+    if (ambienteActual !== 'bano' && zona === 'pared') {
+        zona = 'piso';
+    }
+    
     zonaSeleccionada = zona;
     document.querySelectorAll('.btn-zona').forEach(b => b.classList.remove('activo'));
+    
     if(zona === 'piso') {
         const primerBtn = document.querySelector('.selector-zona button:first-child');
         if(primerBtn) primerBtn.classList.add('activo');
@@ -95,7 +104,7 @@ function seleccionarZona(zona) {
     }
 }
 
-// Cargar elementos en el catálogo lateral
+// Cargar elementos en el catálogo lateral de manera dinámica
 function cargarCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
@@ -109,23 +118,35 @@ function cargarCatalogo() {
             <img src="${item.url}" alt="${item.nombre}">
             <span>${item.nombre}</span>
         `;
-        div.addEventListener('click', () => aplicarTextura(item.url));
+        
+        div.addEventListener('click', function() {
+            aplicarTextura(item.url);
+        });
+        
         grid.appendChild(div);
     });
 }
 
+// Aplicar textura con validación de seguridad para habitaciones y salas
 function aplicarTextura(urlImagen) {
-    const idCapa = zonaSeleccionada === 'piso' ? 'capa-piso' : 'capa-paredes';
-    const capa = document.getElementById(idCapa);
-    
+    // Protección estricta: Si estamos en sala o habitación, forzar que la capa destino sea siempre el piso
+    let capaId = 'capa-piso';
+    if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
+        capaId = 'capa-paredes';
+    }
+
+    const capa = document.getElementById(capaId);
     if (capa) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '110px 110px'; 
+        capa.style.backgroundSize = '100px 100px'; 
         capa.style.backgroundPosition = 'center bottom';
+    } else {
+        console.warn("Capa no encontrada:", capaId);
     }
 }
 
+// Cambiar color de fondo de pared en habitaciones/salas
 function cambiarColorPared(colorHex) {
     const escenario = document.getElementById('escenario');
     if (escenario) {
