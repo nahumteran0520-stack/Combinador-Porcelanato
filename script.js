@@ -17,20 +17,18 @@ const catalogoPorcelanatos = [
 document.addEventListener('DOMContentLoaded', () => {
     const btnCalcular = document.querySelector('.btn-calcular');
     if (btnCalcular) {
-        btnCalcular.addEventListener('click', calcularMateriales);
+        btnCalcular.addEventListener('click', (e) => {
+            e.preventDefault();
+            calcularMateriales();
+        });
     }
 });
 
 function cambiarVista(idVista) {
     const vistas = document.querySelectorAll('.vista');
-    vistas.forEach(v => {
-        v.classList.remove('activa');
-    });
-    
+    vistas.forEach(v => v.classList.remove('activa'));
     const vistaDestino = document.getElementById(idVista);
-    if (vistaDestino) {
-        vistaDestino.classList.add('activa');
-    }
+    if (vistaDestino) vistaDestino.classList.add('activa');
 }
 
 function cambiarAmbiente(ambiente) {
@@ -52,7 +50,6 @@ function cambiarAmbiente(ambiente) {
     }
 
     zonaSeleccionada = 'piso';
-
     const tituloAmbiente = document.getElementById('titulo-ambiente');
     if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
     
@@ -82,7 +79,6 @@ function abrirCalculadora() {
         }
     }
     
-    // Ocultar resultados previos al abrir
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) {
         resultadoCalculo.classList.add('oculto');
@@ -105,7 +101,6 @@ function seleccionarZona(zona) {
     if (ambienteActual !== 'bano' && zona === 'pared') {
         zona = 'piso';
     }
-    
     zonaSeleccionada = zona;
     document.querySelectorAll('.btn-zona').forEach(b => b.classList.remove('activo'));
     
@@ -121,7 +116,6 @@ function seleccionarZona(zona) {
 function cargarCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
-    
     grid.innerHTML = '';
 
     catalogoPorcelanatos.forEach(item => {
@@ -131,11 +125,7 @@ function cargarCatalogo() {
             <img src="${item.url}" alt="${item.nombre}">
             <span>${item.nombre}</span>
         `;
-        
-        div.addEventListener('click', function() {
-            aplicarTextura(item.url);
-        });
-        
+        div.addEventListener('click', () => aplicarTextura(item.url));
         grid.appendChild(div);
     });
 }
@@ -204,8 +194,7 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10; // 10% de desperdicio
-
+    const areaPisoConDesperdicio = areaPiso * 1.10; 
     const m2PorCaja = 1.44; 
     const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
 
@@ -226,7 +215,6 @@ function calcularMateriales() {
     }
 
     const grupoParedes = document.getElementById('grupo-paredes');
-    
     if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
         const perimetro = 2 * (largo + ancho);
         const areaParedes = perimetro * alto;
@@ -248,16 +236,9 @@ function calcularMateriales() {
         if (textoPegoPared) textoPegoPared.style.display = 'none';
     }
 
-    // FUERZA LA VISIBILIDAD DEL CONTENEDOR DE RESULTADOS EN EL MODAL
     const resultadoDiv = document.getElementById('resultado-calculo');
     if (resultadoDiv) {
         resultadoDiv.classList.remove('oculto');
         resultadoDiv.style.display = 'block'; 
     }
 }
-// Detectar el clic directamente en el botón de cálculo por su texto o clase
-document.addEventListener('click', function(event) {
-    if (event.target && event.target.classList.contains('btn-calcular')) {
-        calcularMateriales();
-    }
-});
