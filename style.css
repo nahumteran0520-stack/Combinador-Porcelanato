@@ -96,7 +96,7 @@ h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500;
 #pared-interactiva {
   position: absolute;
   top: 0; left: 0;
-  width: 100%; height: 60%;
+  width: 100%; height: 55%; /* Ajustado para hacer buen match con el piso */
   background-size: 140px 140px;
   background-repeat: repeat;
   z-index: 2;
@@ -106,12 +106,12 @@ h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500;
 
 #piso-interactivo {
   position: absolute;
-  top: 55%; left: 0;
-  width: 100%; height: 45%;
+  top: 50%; left: -10%; /* Ligeramente extendido a los lados para evitar cortes con la perspectiva */
+  width: 120%; height: 55%;
   background-size: 140px 140px;
   background-repeat: repeat;
   z-index: 3;
-  transform: perspective(350px) rotateX(45deg);
+  transform: perspective(400px) rotateX(55deg);
   transform-origin: top center;
 }
 
@@ -122,7 +122,7 @@ h3 { color: #e0e0e0; font-size: 0.85rem; margin: 10px 0 8px 0; font-weight: 500;
   width: 100%; height: 100%;
   object-fit: cover;
   z-index: 4;
-  pointer-events: none;
+  pointer-events: none; /* Esto permite que los clics atraviesen los muebles y actúen sobre el visor */
 }
 
 /* Catálogo y Formularios */
