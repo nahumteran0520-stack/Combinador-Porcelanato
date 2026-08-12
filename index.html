@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -36,17 +36,20 @@
             <header class="vis-header">
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
                 <h2 id="titulo-ambiente">Ambiente</h2>
+                
+                <!-- Botones de rotación ubicados de forma visible y limpia en la cabecera -->
+                <div class="controles-rotacion" style="display: flex; gap: 5px;">
+                    <button onclick="girarPiso('izquierda')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Izq ↺</button>
+                    <button onclick="girarPiso('reset')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Frente ⏹</button>
+                    <button onclick="girarPiso('derecha')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Der ↻</button>
+                </div>
+
                 <button class="btn-principal" onclick="irACalculadora()">Calcular Materiales →</button>
             </header>
 
             <div class="vis-content">
                 <!-- Lienzo de la Imagen Base y Capas -->
                 <div class="escenario-container" id="escenario">
-                    <div class="controles-rotacion" style="text-align: center; margin-bottom: 10px;">
-    <button onclick="girarPiso('izquierda')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Girar Izquierda ↺</button>
-    <button onclick="girarPiso('reset')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Vista Frontal ⏹</button>
-    <button onclick="girarPiso('derecha')" style="padding: 8px 12px; cursor: pointer;">Girar Derecha ↻</button>
-</div>
                     <!-- Capa de piso (queda al fondo) -->
                     <div id="capa-piso" class="capa-superficie"></div>
                     <!-- Capa de paredes (si aplica para el baño) -->
@@ -68,14 +71,14 @@
                         <span style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px;">Color de Pared:</span>
                         <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
                             <button class="btn-color" style="background-color: #F2EFE9;" onclick="cambiarColorPared('#F2EFE9')" title="Marfil Suave"></button>
-    <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')" title="Beige Claro"></button>
-    <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')" title="Arena"></button>
-    <button class="btn-color" style="background-color: #9C897B;" onclick="cambiarColorPared('#9C897B')" title="Taupe"></button>
-    <button class="btn-color" style="background-color: #B89781;" onclick="cambiarColorPared('#B89781')" title="Terracota Suave"></button>
-    <button class="btn-color" style="background-color: #966C52;" onclick="cambiarColorPared('#966C52')" title="Caramelo"></button>
-    <button class="btn-color" style="background-color: #6E493B;" onclick="cambiarColorPared('#6E493B')" title="Café Moka"></button>
-    <button class="btn-color" style="background-color: #4D3126;" onclick="cambiarColorPared('#4D3126')" title="Chocolate"></button>
-    <button class="btn-color" style="background-color: #261611;" onclick="cambiarColorPared('#261611')" title="Café Oscuro"></button>
+                            <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')" title="Beige Claro"></button>
+                            <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')" title="Arena"></button>
+                            <button class="btn-color" style="background-color: #9C897B;" onclick="cambiarColorPared('#9C897B')" title="Taupe"></button>
+                            <button class="btn-color" style="background-color: #B89781;" onclick="cambiarColorPared('#B89781')" title="Terracota Suave"></button>
+                            <button class="btn-color" style="background-color: #966C52;" onclick="cambiarColorPared('#966C52')" title="Caramelo"></button>
+                            <button class="btn-color" style="background-color: #6E493B;" onclick="cambiarColorPared('#6E493B')" title="Café Moka"></button>
+                            <button class="btn-color" style="background-color: #4D3126;" onclick="cambiarColorPared('#4D3126')" title="Chocolate"></button>
+                            <button class="btn-color" style="background-color: #261611;" onclick="cambiarColorPared('#261611')" title="Café Oscuro"></button>
                         </div>
                     </div>
 
@@ -130,6 +133,9 @@
         </div>
     </section>
 
+    <script src="script.js"></script>
+</body>
+</html>
     <script src="script.js"></script>
 </body>
 </html>
