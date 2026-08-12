@@ -30,15 +30,16 @@
     
     .habitacion {
       width: 100%;
-      height: 560px;
+      /* Cambiamos la proporción para que gane más altura vertical */
+      aspect-ratio: 4 / 3; 
+      max-height: 720px;     /* Aumentamos el límite para que baje hasta la línea azul */
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      background-color: #151515; /* Fondo oscuro original limpio */
+      background-color: #151515;
     }
-
     /* 1. PARED DE FONDO */
     .escena-base {
       position: absolute;
