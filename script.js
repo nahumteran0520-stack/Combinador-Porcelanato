@@ -255,3 +255,9 @@ function calcularMateriales() {
         resultadoDiv.style.display = 'block'; 
     }
 }
+// Detectar el clic directamente en el botón de cálculo por su texto o clase
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('btn-calcular')) {
+        calcularMateriales();
+    }
+});
