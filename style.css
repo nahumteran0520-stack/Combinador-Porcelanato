@@ -94,36 +94,38 @@ body {
     height: calc(100% - 60px);
 }
 
-/* Escenario */
+/* Escenario y Capas Transparentes */
 .escenario-container {
     position: relative;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
 }
 
 #escenario {
     background-color: #F4F6F6;
 }
 
-/* Capa del piso original */
+/* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
     bottom: -25px;
-    left: -30%;
-    width: 160%;
-    height: 100%;
+    left: -40%;
+    width: 200%;
+    height: 160%;
     z-index: 1;
+    
     background-repeat: repeat !important;
-    background-size: 180px 180px !important; 
-    transform: perspective(350px) rotateX(42deg);
+    background-size: 200px 200px !important; 
+    
+    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
     transform-origin: bottom center;
+    
     mask-image: none;
     -webkit-mask-image: none;
 }
-
-/* Capa de la imagen PNG transparente con los muebles */
+/* Capa de la imagen PNG transparente con los muebles (Ordenada al frente con z-index: 5) */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -138,6 +140,7 @@ body {
     display: block !important;
 }
 
+/* Coordenadas para paredes (solo baño) */
 #capa-paredes {
     position: absolute;
     top: 0;
@@ -147,7 +150,7 @@ body {
     z-index: 1;
 }
 
-/* Imágenes específicas para cada ambiente */
+/* Imágenes PNG transparentes específicas para cada ambiente */
 .escenario-sala .capa-imagen-base {
     background-image: url('sala.png') !important;
 }
@@ -203,6 +206,32 @@ body {
     gap: 10px;
     overflow-y: auto;
     flex: 1;
+}
+
+.item-porcelanato {
+    border: 2px solid transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.item-porcelanato:hover {
+    border-color: #3498db;
+}
+
+/* Miniaturas del catálogo con el tamaño mejorado */
+.grid-catalogo .item-porcelanato img {
+    width: 100%;
+    height: 105px;
+    object-fit: cover;
+}
+
+.item-porcelanato span {
+    font-size: 0.8rem;
+    display: block;
+    padding: 5px;
 }
 
 /* Calculadora */
@@ -267,3 +296,93 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* ============================================================
+   ADAPTACIÓN PARA MÓVILES
+   ============================================================ */
+@media screen and (max-width: 768px) {
+    #vista-visualizador {
+        display: block !important;
+        padding: 5px !important;
+        box-sizing: border-box;
+    }
+
+    .vis-content {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+        gap: 10px !important;
+    }
+
+    .escenario-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 250px !important;
+        min-height: 250px !important;
+        background-color: #f9f9f9;
+        overflow: hidden !important;
+        border: 1px solid #ddd;
+        display: block !important;
+    }
+
+    .capa-imagen-base {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 5;
+        pointer-events: none !important;
+    }
+
+    .catalogo-lateral,
+    .calc-container {
+        width: 100% !important;
+        margin-top: 0 !important;
+        padding: 8px !important;
+        z-index: 10 !important;
+        pointer-events: auto !important;
+    }
+
+    .grid-catalogo {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        max-height: 180px !important;
+        overflow-y: auto !important;
+        padding: 5px !important;
+        pointer-events: auto !important;
+    }
+
+    .grid-catalogo .item-porcelanato {
+        padding: 4px !important;
+        font-size: 11px !important;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .grid-catalogo .item-porcelanato img {
+        height: 50px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        margin-bottom: 2px !important;
+        border-radius: 3px;
+    }
+
+    .vis-header h2, 
+    .catalogo-lateral h3 {
+        font-size: 16px !important;
+        margin: 5px 0 !important;
+    }
+
+    #capa-piso {
+        height: 130% !important;
+        background-size: 80px 80px !important; 
+        background-repeat: repeat !important;
+        transform: perspective(250px) rotateX(25deg) !important;
+    }
