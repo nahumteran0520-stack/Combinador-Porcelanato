@@ -119,16 +119,28 @@ body {
     bottom: -20px; /* Lo bajamos un poquito más para ganar margen */
     left: -30%;
     width: 160%;
-    height: 150;  /* Subimos la altura para que tape el espacio blanco de arriba */
+    height: 170;  /* Subimos la altura para que tape el espacio blanco de arriba */
     z-index: 1;
+    
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.35) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 2px, transparent 2px),
+        /* Aquí va la textura de tu porcelanato (reemplaza o mantén la que usas) */
+        var(--textura-piso, inherit) !important;
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
     transform-origin: bottom center;
-    transform: perspective(350px) rotateX(40px); /* Ajustamos ligeramente para alinear la perspectiva */
+    transform: perspective(350px) rotateX(40deg);
     
     mask-image: none;
+    -webkit-mask-image: none;
+}
+
+.escenario-habitacion .capa-imagen-base {
+    mix-blend-mode: multiply;
+}
     -webkit-mask-image: none;
 }
     /* Efecto 3D de profundidad */
