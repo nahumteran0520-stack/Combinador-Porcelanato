@@ -44,7 +44,7 @@
                     <button onclick="girarPiso('derecha')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Der ↻</button>
                 </div>
 
-                <button class="btn-principal" onclick="irACalculadora()">Calcular Materiales →</button>
+                <button class="btn-principal" onclick="abrirCalculadora()">Calcular Materiales →</button>
             </header>
 
             <div class="vis-content">
@@ -90,10 +90,10 @@
         </div>
     </section>
 
-    <!-- VISTA 3: CALCULADORA DE MATERIALES -->
-    <section id="vista-calculadora" class="vista">
+    <!-- MODAL CALCULADORA DE MATERIALES -->
+    <div id="modal-calculadora" class="modal-calculadora oculto">
         <div class="calc-container">
-            <button class="btn-secundario" onclick="volverVisualizador()">← Volver al Simulador</button>
+            <button class="btn-secundario" onclick="cerrarCalculadora()">← Volver al Simulador</button>
             <h2>Calculadora de Materiales</h2>
             <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
             
@@ -120,7 +120,7 @@
                     </select>
                 </div>
 
-                <button class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
+                <button type="button" class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
             </div>
 
             <div id="resultado-calculo" class="resultado-calculo oculto" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
@@ -131,7 +131,7 @@
                 <p id="texto-resultado-pego-pared" style="margin: 5px 0; display: none;"></p>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="script.js"></script>
 </body>
