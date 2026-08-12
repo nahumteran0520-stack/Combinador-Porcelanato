@@ -29,9 +29,9 @@
     /* Visualizador Estilo Escena Real */
     .preview-section { display: flex; flex-direction: column; align-items: center; }
     
-   .habitacion {
+  .habitacion {
       width: 100%;
-      height: 560px; /* Aumentamos un poco la altura para que entre completa la imagen */
+      height: 560px; /* Ampliamos la altura total del visualizador */
       border-radius: 8px;
       overflow: hidden;
       position: relative;
@@ -40,17 +40,18 @@
       background-color: #151515;
     }
 
-    /* El piso interactivo abarca toda la mitad inferior de lado a lado */
+    /* Hacemos que la zona del piso comience mucho más arriba y tenga más altura */
     #piso {
       position: absolute;
-      top: 45%;
+      top: 35%; /* Subimos el inicio para ganar más espacio visual */
       left: 0;
       width: 100%;
-      height: 55%;
-      background-size: 150px 150px;
+      height: 65%; /* Ocupará las dos terceras partes inferiores de la escena */
+      background-size: 160px 160px;
       z-index: 2;
-      opacity: 1;
-      transform: none;
+      opacity: 0.95;
+      transform: perspective(300px) rotateX(40deg);
+      transform-origin: top center;
     }
 
     /* AQUÍ ESTÁ EL SECRETO: Usamos contain para que la imagen se vea COMPLETA y no corte la base */
