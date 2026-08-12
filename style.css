@@ -123,9 +123,11 @@ body {
     height: 100%;
     z-index: 1;
     background-repeat: repeat !important;
-    /* Tamaño proporcional optimizado para que cubra bien sin verse gigante */
-    background-size: 110px 110px !important; 
-    transform: none !important;
+    background-size: 100px 100px !important; 
+    
+    /* Efecto visual sutil de profundidad: se aclara/desvanece un poco hacia la parte superior */
+    mask-image: linear-gradient(to top, rgba(0,0,0,1) 30%, rgba(0,0,0,0.4) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 30%, rgba(0,0,0,0.4) 100%);
 }
 
 /* Coordenadas para paredes (solo baño) */
