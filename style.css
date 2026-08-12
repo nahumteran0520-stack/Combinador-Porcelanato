@@ -110,10 +110,10 @@ body {
 /* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
-    bottom: -25px;
-    left: -5%;
-    width: 110%;
-    height: 95%;
+    bottom: -35px;
+    left: -12%;
+    width: 124;
+    height: 100%;
     z-index: 1;
     
     background-repeat: repeat !important;
