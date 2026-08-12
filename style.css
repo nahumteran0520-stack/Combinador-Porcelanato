@@ -406,3 +406,14 @@ body {
 #escenario {
     background-color: #F4F6F6; /* Color base por defecto */
 }
+/* --- Ajustes para el color de pared en la habitación --- */
+
+/* Asegurar que el fondo del escenario de la habitación reciba el color correctamente */
+.escenario-habitacion {
+    background-color: transparent !important;
+}
+
+/* Permitir que la imagen de la habitación se adapte al color sin ocultarlo */
+.escenario-habitacion .capa-imagen-base {
+    background-color: transparent !important;
+}
