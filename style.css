@@ -30,15 +30,26 @@
     
     .habitacion {
       width: 100%;
-      /* Cambiamos la proporción para que gane más altura vertical */
-      aspect-ratio: 4 / 3; 
-      max-height: 720px;     /* Aumentamos el límite para que baje hasta la línea azul */
+      aspect-ratio: 16 / 9; /* Mantiene la proporción original exacta de tu foto */
+      max-height: 520px;
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       background-color: #151515;
+    }
+
+    .cama-encima {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Vuelve a cover para que cubra todo el cuadro sin dejar bordes extraños */
+      z-index: 3;
+      pointer-events: none;
     }
     /* 1. PARED DE FONDO */
     .escena-base {
