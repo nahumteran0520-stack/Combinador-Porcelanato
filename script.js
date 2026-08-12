@@ -158,3 +158,16 @@ function cambiarColorPared(colorHex) {
 
 // Asegúrate de incluirla en tus enlaces globales al final del script si los usas:
 window.cambiarColorPared = cambiarColorPared;
+let anguloPiso = 0;
+
+function girarTexturaPiso() {
+    // Suma 90 grados cada vez que se presiona (0 -> 90 -> 180 -> 270 -> 0)
+    anguloPiso = (anguloPiso + 90) % 360;
+    
+    const capaPiso = document.getElementById('capa-piso');
+    if (capaPiso) {
+        // Aplicamos la rotación al contenedor del piso
+        capaPiso.style.transform = `rotate(${anguloPiso}deg)`;
+        capaPiso.style.transition = 'transform 0.3s ease'; // Transición suave
+    }
+}
