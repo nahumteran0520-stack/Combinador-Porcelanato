@@ -116,17 +116,18 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -20px; /* Lo bajamos un poco para que cubra el borde inferior */
+    /* Ajusta este valor en píxeles si necesitas subirlo o bajarlo milimétricamente */
+    top: 80%; 
     left: 0;
     width: 100%;
-    height: 180px; /* Aumentamos la altura para compensar el giro 3D */
+    height: 120px;
     background-repeat: repeat;
     background-size: 260px 140px; 
     
-    /* Perspectiva 3D con un giro más suave para que no se encoja tanto */
+    /* Giro con perspectiva anclado arriba para que pegue del mueble */
     transform: perspective(400px) rotateX(45deg);
-    transform-origin: center bottom; /* Anclado desde la base inferior */
-}
+    transform-origin: top center;
+
 }
     
     /* Magia para la perspectiva 3D */
