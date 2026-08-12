@@ -110,22 +110,21 @@ body {
 /* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
-    bottom: -20px;
-    left: 0;
-    width: 100%;
-    height: 90%;
+    bottom: -25px;
+    left: -5%;
+    width: 110%;
+    height: 95%;
     z-index: 1;
     
     background-repeat: repeat !important;
     background-size: 130px 130px !important; 
     
-    transform: perspective(350px) rotateX(42deg) scaleX(1.22);
+    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
     transform-origin: bottom center;
     
     mask-image: none;
     -webkit-mask-image: none;
 }
-
 /* Capa de la imagen PNG transparente con los muebles (Ordenada al frente con z-index: 5) */
 .capa-imagen-base {
     position: absolute;
