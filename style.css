@@ -301,39 +301,44 @@ body {
     transform: perspective(350px) rotateX(40deg); /* Ajusta el ángulo de inclinación 3D */
 }
 /* ==========================================
+   /* ==========================================
    DISEÑO RESPONSIVO PARA TELÉFONOS (Móviles)
    ================================---------- */
 @media screen and (max-width: 768px) {
-    /* Apila la imagen arriba y el catálogo/colores abajo */
+    /* Forzar vista vertical en pantallas chicas */
     .vis-content {
-        flex-direction: column !important;
         display: flex !important;
-    }
-
-    /* Ajusta el contenedor de la sala/habitación para que ocupe todo el ancho del celular */
-    .escenario-container {
+        flex-direction: column !important;
         width: 100% !important;
-        height: 280px !important; /* Altura adaptable para pantallas pequeñas */
-        min-height: 250px;
+        height: auto !important;
     }
 
-    /* Hace que la barra lateral del catálogo se adapte al ancho del teléfono */
+    /* Contenedor del escenario visible y adaptado al ancho del móvil */
+    .escenario-container {
+        position: relative !important;
+        width: 100% !important;
+        height: 250px !important; /* Altura fija visible para celular */
+        min-height: 250px !important;
+        overflow: hidden !important;
+        display: block !important;
+    }
+
+    /* Asegurar que la imagen PNG base y las capas ocupen todo el escenario */
+    .escenario-container img, 
+    .capa-imagen-base, 
+    .capa-superficie {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    /* Asegurar que el catálogo y los controles aparezcan debajo */
     .catalogo-lateral {
         width: 100% !important;
-        box-sizing: border-box;
-        padding: 10px;
-    }
-
-    /* Permite que las tarjetas de porcelanato se acomoden mejor en pantallas chicas */
-    .grid-catalogo {
-        max-height: 220px;
-        overflow-y: auto;
-    }
-
-    /* Reduce un poco los márgenes del encabezado para ganar espacio */
-    .vis-header {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
+        margin-top: 15px !important;
+        box-sizing: border-box !important;
     }
 }
