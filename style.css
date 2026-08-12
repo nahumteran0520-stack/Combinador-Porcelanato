@@ -390,4 +390,12 @@ body {
         font-size: 16px !important;
         margin: 5px 0 !important;
     }
+}@media screen and (max-width: 768px) {
+    /* ... lo que ya tienes de tu catálogo y simulador ... */
+
+    /* Forzamos que la textura del piso se vea más pequeña (achicada) en el celular */
+    #capa-piso {
+        background-size: 60px 60px !important; /* Ajusta este valor si lo quieres más chico o más grande */
+        background-repeat: repeat !important;
+    }
 }
