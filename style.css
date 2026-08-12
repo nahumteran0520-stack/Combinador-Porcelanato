@@ -103,24 +103,18 @@ body {
     box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
 }
 
-/* Capa del porcelanato (Se ubica al fondo, z-index: 1) */
-.capa-superficie {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    transition: background 0.3s ease;
+#escenario {
+    background-color: #F4F6F6;
 }
 
+/* Capa del piso unificada y ajustada a la línea verde */
 #capa-piso {
     position: absolute;
     bottom: -10px;
     left: -50%;
     width: 200%;
-    height: 125%; /* Mantenemos una altura limpia para que no suba de más */
-    z-index: 1;   /* Dejamos el piso en su nivel correcto debajo de los muebles */
+    height: 125%; 
+    z-index: 1;
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
@@ -132,24 +126,17 @@ body {
     -webkit-mask-image: none;
 }
 
-}
-    /* Efecto 3D de profundidad */
-    transform-origin: bottom center;
-    transform: perspective(350px) rotateX(38deg);
-    
-    /* Difuminado superior para integrarse con el mueble */
-    mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-}
 /* Coordenadas para paredes (solo baño) */
 #capa-paredes {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
 }
 
-/* Capa de la imagen PNG transparente (Se ubica arriba, z-index: 2) */
+/* Capa de la imagen PNG transparente */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -160,16 +147,23 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     z-index: 2;
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
 /* Imágenes PNG transparentes específicas para cada ambiente */
 .escenario-sala .capa-imagen-base {
     background-image: url('sala.png');
 }
+
+.escenario-habitacion {
+    background-color: transparent !important;
+}
+
 .escenario-habitacion .capa-imagen-base {
     background-image: url('habitacion.png');
+    background-color: transparent !important;
 }
+
 .escenario-bano .capa-imagen-base {
     background-image: url('baño.png');
 }
@@ -182,6 +176,7 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    z-index: 10;
 }
 
 .selector-zona {
@@ -246,6 +241,7 @@ body {
     width: 100%;
     max-width: 600px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
 .form-calculadora {
@@ -337,22 +333,26 @@ body {
         top: 0 !important;
         left: 0 !important;
         z-index: 5;
-        pointer-events: none;
+        pointer-events: none !important;
     }
 
-    .catalogo-lateral {
+    .catalogo-lateral,
+    .calc-container {
         width: 100% !important;
         margin-top: 0 !important;
-        padding: 5px !important;
+        padding: 8px !important;
+        z-index: 10 !important;
+        pointer-events: auto !important;
     }
 
     .grid-catalogo {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 6px !important;
-        max-height: 200px !important;
+        max-height: 180px !important;
         overflow-y: auto !important;
         padding: 5px !important;
+        pointer-events: auto !important;
     }
 
     .grid-catalogo .item-porcelanato {
@@ -379,66 +379,11 @@ body {
         margin: 5px 0 !important;
     }
 
-    /* Textura más pequeña en celulares para mejor proporción */
+    /* Textura y perspectiva adaptadas para móviles */
     #capa-piso {
-        background-size: 70px 70px !important; 
+        height: 130% !important;
+        background-size: 80px 80px !important; 
         background-repeat: repeat !important;
+        transform: perspective(250px) rotateX(25deg) !important;
     }
-}
-#capa-piso {
-    position: absolute;
-    bottom: -10px;
-    left: -30%;
-    width: 160%;
-    height: 65%;
-    z-index: 1;
-    
-    background-repeat: repeat !important;
-    background-size: 160px 160px !important; 
-    
-    transform-origin: bottom center;
-    transform: perspective(350px) rotateX(42deg);
-    
-    /* Quitamos el difuminado agresivo para que el porcelanato se vea sólido y completo hasta atrás */
-    mask-image: none;
-    -webkit-mask-image: none;
-}
-
-/* Hacemos que el fondo de la habitación sea transparente para que los colores pasteles no creen cuadros extraños */
-.escenario-habitacion {
-    background-color: transparent !important;
-}
-
-/* Si tu imagen PNG de la habitación tiene ese fondo blanco central, 
-   esta regla ayuda a que el color de la pared se pinte uniformemente detrás de todo el escenario */
-#escenario {
-    background-color: #F4F6F6; /* Color base por defecto */
-}
-/* --- Ajustes para el color de pared en la habitación --- */
-
-/* Asegurar que el fondo del escenario de la habitación reciba el color correctamente */
-.escenario-habitacion {
-    background-color: transparent !important;
-}
-
-/* Permitir que la imagen de la habitación se adapte al color sin ocultarlo */
-.escenario-habitacion .capa-imagen-base {
-    background-color: transparent !important;
-}
-#capa-piso {
-    position: absolute;
-    bottom: -10px;
-    left: -30%;
-    width: 160%;
-    height: 70%; /* Altura generosa para asegurar que cubra toda la base */
-    z-index: 2;   /* Subimos el z-index para que el piso quede por encima del fondo blanco */
-    
-    background-repeat: repeat !important;
-    background-size: 160px 160px !important; 
-    
-    transform-origin: bottom center;
-    transform: perspective(350px) rotateX(40deg);
-    
-    mask-image: none;
-    -webkit-mask-image: none;
 }
