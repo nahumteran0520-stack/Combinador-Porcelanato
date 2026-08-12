@@ -107,14 +107,13 @@ body {
     background-color: #F4F6F6;
 }
 
-/* Capa del piso unificada y ajustada con perspectiva diagonal */
-#capa-piso {
+/* Capa del piso con perspectiva frontal alineada */
 #capa-piso {
     position: absolute;
     bottom: -15px;
     left: 0;
     width: 100%;
-    height: 75%;
+    height: 65%;
     z-index: 1;
     
     background-repeat: repeat !important;
@@ -380,7 +379,6 @@ body {
         margin: 5px 0 !important;
     }
 
-    /* Textura y perspectiva adaptadas para móviles */
     #capa-piso {
         height: 130% !important;
         background-size: 80px 80px !important; 
