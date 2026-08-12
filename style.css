@@ -53,30 +53,29 @@
     }
 
     /* 2. PISO INTERACTIVO: Amplio para que luzca excelente */
-    #piso {
+   piso {
       position: absolute;
-      top: 30%; /* Comienza más arriba para ganar una gran área de visualización */
+      top: 60%;
       left: 0;
       width: 100%;
-      height: 70%; /* Ocupa holgadamente toda la parte inferior */
+      height: 40%;
       background-size: 150px 150px;
-      z-index: 2;
-      opacity: 1;
-      transform: perspective(350px) rotateX(42deg);
+      z-index: 1; /* Al fondo */
+      transform: perspective(300px) rotateX(50deg);
       transform-origin: top center;
     }
 
     /* 3. CAMA / MUEBLES ENCIMA */
-    .cama-encima {
-      display: block;
+    piso {
       position: absolute;
-      top: 0;
+      top: 60%;
       left: 0;
       width: 100%;
-      height: 100%;
-      object-fit: cover; 
-      z-index: 3;
-      pointer-events: none;
+      height: 40%;
+      background-size: 150px 150px;
+      z-index: 1; /* Al fondo */
+      transform: perspective(300px) rotateX(50deg);
+      transform-origin: top center;
     }
 
     #pared-fondo { display: none; }
