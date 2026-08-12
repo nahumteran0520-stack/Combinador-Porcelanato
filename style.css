@@ -301,83 +301,46 @@ body {
     transform: perspective(350px) rotateX(40deg); /* Ajusta el ángulo de inclinación 3D */
 }
 /* ==========================================
-   /* ==========================================
-   DISEÑO RESPONSIVO PARA TELÉFONOS (Móviles)
-   ================================---------- */
-@media screen and (max-width: 768px) {
-    /* Forzar vista vertical en pantallas chicas */
-    .vis-content {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    /* Contenedor del escenario visible y adaptado al ancho del móvil */
-    .escenario-container {
-        position: relative !important;
-        width: 100% !important;
-        height: 250px !important; /* Altura fija visible para celular */
-        min-height: 250px !important;
-        overflow: hidden !important;
-        display: block !important;
-    }
-
-    /* Asegurar que la imagen PNG base y las capas ocupen todo el escenario */
-    .escenario-container img, 
-    .capa-imagen-base, 
-    .capa-superficie {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-    }
-
-    /* Asegurar que el catálogo y los controles aparezcan debajo */
-    .catalogo-lateral {
-        width: 100% !important;
-        margin-top: 15px !important;
-        box-sizing: border-box !important;
-    }
-    /* ==========================================
-   FORZAR VISIBILIDAD EN MÓVILES (Celular)
+   AJUSTE DE TARJETAS EXCLUSIVO PARA MÓVILES
    ========================================== */
 @media screen and (max-width: 768px) {
-    /* Forzamos que la sección del visualizador se muestre siempre si está activa */
-    #vista-visualizador {
-        display: block !important;
-        width: 100% !important;
+    /* Forzar el catálogo en 2 columnas y hacerlo más compacto */
+    .grid-catalogo {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Define 2 columnas iguales */
+        gap: 10px !important; /* Reduce el espacio entre cuadros */
+        max-height: 250px !important; /* Altura máxima con scroll */
+        overflow-y: auto !important; /* Activa el scroll si hay muchos */
         padding: 5px !important;
-        box-sizing: border-box !important;
     }
 
-    /* Contenedor general del contenido alineado en columna */
-    .vis-content {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        gap: 15px !important;
+    /* Estilo de cada tarjeta individual */
+    .grid-catalogo .tarjeta-porcelanato,
+    .grid-catalogo .item-catalogo { /* Ajusta el selector según tu HTML */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 5px !important; /* Reduce el relleno interno */
+        text-align: center;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    /* Contenedor del escenario con tamaño visible forzado */
-    .escenario-container {
-        position: relative !important;
-        width: 100% !important;
-        height: 260px !important;
-        display: block !important;
-        background-color: #e0e0e0; /* Respaldo por si el color de pared falla */
+    /* Control estricto del tamaño de la imagen miniatura */
+    .grid-catalogo .tarjeta-porcelanato img,
+    .grid-catalogo .item-catalogo img {
+        height: 60px !important; /* Fija la altura de la imagen */
+        width: 100% !important; /* Ocupa todo el ancho de la tarjeta */
+        object-fit: cover !important; /* Recorta la imagen para que no se deforme */
+        border-radius: 4px;
+        margin-bottom: 4px;
     }
 
-    /* Aseguramos que la imagen base de la sala/habitación no colapse */
-    .capa-imagen-base {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        z-index: 5;
-        pointer-events: none;
+    /* Ajuste del texto debajo de la imagen */
+    .grid-catalogo .tarjeta-porcelanato p,
+    .grid-catalogo .item-catalogo span {
+        font-size: 11px !important; /* Letra más pequeña para que quepa en una línea */
+        line-height: 1.2;
+        margin: 0;
+        font-weight: 600;
     }
 }
