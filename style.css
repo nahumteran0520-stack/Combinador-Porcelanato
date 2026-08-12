@@ -116,9 +116,9 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -10px;
-    left: -30%;
-    width: 160%;
+    bottom: -20px;
+    left: -35%;
+    width: 200%;
     height: 600%; /* Mantenemos una altura limpia para que no suba de más */
     z-index: 1;   /* Dejamos el piso en su nivel correcto debajo de los muebles */
     
