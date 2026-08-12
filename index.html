@@ -60,19 +60,18 @@
       z-index: 1;
     }
 
-    /* 2. PISO INTERACTIVO: Ampliado para que ocupe más espacio y se luzca el porcelanato */
+    /* 2. PISO INTERACTIVO: Ubicado exactamente en la franja del suelo */
     #piso {
       position: absolute;
-      top: 35%; /* Comienza mucho más arriba para ganar área visual */
+      top: 60%; 
       left: 0;
       width: 100%;
-      height: 65%; /* Ocupa gran parte de la escena hacia abajo */
-      background-size: 160px 160px;
+      height: 40%; 
+      background-size: 150px 150px;
       z-index: 2;
       opacity: 0.98;
-      transform: perspective(350px) rotateX(42deg);
+      transform: perspective(350px) rotateX(45deg);
       transform-origin: top center;
-    }
     }
 
     /* 3. CAMA / MUEBLES ENCIMA: La imagen transparente que se coloca al frente para tapar los sobrantes */
@@ -87,8 +86,6 @@
       z-index: 3;
       pointer-events: none;
     }
-
-    #pared-fondo { display: none; }
 
     /* Controles y Botones */
     .controls-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; margin-bottom: 10px; background: #282828; padding: 5px; border-radius: 6px; }
@@ -147,10 +144,13 @@
     <section class="panel preview-section">
       <h2>Visualizador de Ambiente</h2>
       <div class="habitacion" id="habitacion">
-        <!-- 1. PISO INTERACTIVO (Queda al fondo mostrando el porcelanato) -->
+        <!-- 1. PARED DE FONDO -->
+        <div class="escena-base"></div>
+
+        <!-- 2. PISO INTERACTIVO (Muestra el porcelanato con perspectiva) -->
         <div id="piso"></div>
         
-        <!-- 2. CAPA SUPERIOR: Tu PNG transparente con la cama y muebles -->
+        <!-- 3. CAPA SUPERIOR: PNG transparente con los muebles (Asegúrate de que este archivo exista en tu GitHub) -->
         <img src="muebles-encima.png" alt="Cama y Muebles" class="cama-encima">
       </div>
     </section>
@@ -182,7 +182,7 @@
         <img src="piso-marmoleadonegro-358.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadonegro-358.jpg')" alt="Negro">
         <img src="piso-griscemento-350.jpg" class="tile-card" onclick="cambiarPiso('piso-griscemento-350.jpg')" alt="Gris Cemento">
         <img src="piso-marmoleadoazul-357.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadoazul-357.jpg')" alt="Azul">
-        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPiso('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
+        <img src="piso-marmoleadogris-347.jpg" class="tile-card" onclick="cambiarPares('piso-marmoleadogris-347.jpg')" alt="Gris Marmoleado">
         <img src="piso-superblanco-345.jpg" class="tile-card" onclick="cambiarPiso('piso-superblanco-345.jpg')" alt="Súper Blanco">
         <img src="piso-supernegro-346.jpg" class="tile-card" onclick="cambiarPiso('piso-supernegro-346.jpg')" alt="Súper Negro">
         <img src="pisobeige-343.jpg" class="tile-card" onclick="cambiarPiso('pisobeige-343.jpg')" alt="Beige">
@@ -191,9 +191,6 @@
 
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
   <script src="script.js"></script>
 </body>
 </html>
