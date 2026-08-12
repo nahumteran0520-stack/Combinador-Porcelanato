@@ -1,153 +1,89 @@
-// --- CONFIGURACIÓN Y VARIABLES ---
-const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw7CEmtB5yelhe07mk3PjF1I1RWuW3_7nJIFA7cno1vwITWLSsEpC49LdwhnqxWSga0/exec";
-let paredActual = "piso-marmoleadoblanco-344.jpg";
-let pisoActual = "piso-marmoleadonegro-358.jpg";
-
-// --- REGISTRO EN GOOGLE SHEETS ---
-function registrarVisitaEnSheets(pared, piso) {
-    if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_URL")) return;
-    const datos = { pared: pared, piso: piso };
-
-    fetch(GOOGLE_WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
-    }).catch(error => console.error("Error al registrar:", error));
-}
-
-// --- CONFIGURACIÓN Y VARIABLES ---
-const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw7CEmtB5yelhe07mk3PjF1I1RWuW3_7nJIFA7cno1vwITWLSsEpC49LdwhnqxWSga0/exec";
-let paredActual = "piso-marmoleadoblanco-344.jpg";
-let pisoActual = "piso-marmoleadonegro-358.jpg";
-
-// --- REGISTRO EN GOOGLE SHEETS ---
-function registrarVisitaEnSheets(pared, piso) {
-    if (!GOOGLE_WEB_APP_URL || GOOGLE_WEB_APP_URL.includes("TU_URL")) return;
-    const datos = { pared: pared, piso: piso };
-
-    fetch(GOOGLE_WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
-    }).catch(error => console.error("Error al registrar:", error));
-}
-
-// --- TEXTURAS ---
-function cambiarPares(imagen) {
-    paredActual = imagen;
-    
-    // Si en el futuro deseas que la pared también cambie de imagen de fondo de manera dinámica,
-    // puedes descomentar la línea de abajo asegurándote de tener un elemento con id 'escena-base' o similar:
-    // const escenaBase = document.querySelector('.escena-base');
-    // if (escenaBase) { escenaBase.style.backgroundImage = `url('${imagen}')`; }
-
-    registrarVisitaEnSheets(paredActual, pisoActual);
-}
-
-function cambiarPiso(imagen) {
-    pisoActual = imagen;
-    const pisoEl = document.getElementById('piso');
-    if (pisoEl) {
-        pisoEl.style.backgroundImage = `url('${imagen}')`;
-    }
-    registrarVisitaEnSheets(paredActual, pisoActual);
-}
-
-// --- ILUMINACIÓN ---
-function cambiarLuz(tipo, boton) {
-    document.querySelectorAll('.btn-luz').forEach(btn => btn.classList.remove('activo'));
-    boton.classList.add('activo');
-    const hab = document.getElementById('habitacion');
-    if (!hab) return;
-    hab.className = 'habitacion'; 
-    hab.classList.add('modo-' + tipo);
-}
-
-// --- CALCULADORA DE MATERIALES ---
-function calcularMaterialesTotales() {
-    const getVal = (id, def) => {
-        const el = document.getElementById(id);
-        if (!el || !el.value) return def;
-        return parseFloat(el.value.toString().replace(',', '.')) || def;
-    };
-    
-    const areaPared = getVal('pared-alto', 0) * getVal('pared-ancho', 0);
-    const areaPiso = getVal('piso-largo', 0) * getVal('piso-ancho', 0);
-    const selectPego = document.getElementById('tipo-pego');
-    const rendimientoPego = selectPego ? parseFloat(selectPego.value) : 1.5;
-
-    if (areaPared === 0 && areaPiso === 0) {
-        alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
-        return;
-    }
-
-    document.getElementById('res-area-pared').innerText = areaPared.toFixed(2);
-    document.getElementById('res-cajas-pared').innerText = Math.ceil(areaPared / getVal('pared-caja', 1.44));
-    document.getElementById('res-area-piso').innerText = areaPiso.toFixed(2);
-    document.getElementById('res-cajas-piso').innerText = Math.ceil(areaPiso / getVal('piso-caja', 1.44));
-    
-    const sacos = Math.ceil((areaPared + areaPiso) / rendimientoPego);
-    const labelSacos = rendimientoPego === 1.5 ? "14 kg" : "10 kg";
-    document.getElementById('res-total-pego').innerText = `${sacos} sacos (${labelSacos})`;
-    document.getElementById('resultado-calculo').style.display = 'block';
-}
-
-// Inicialización
-window.onload = () => {
-    cambiarPiso(pisoActual);
+const datosAmbientes = {
+  sala: {
+    titulo: "Visualizador - Sala",
+    fondo: "habitacion.png",
+    muebles: "muebles-encima.png",
+    permitePared: false
+  },
+  bano: {
+    titulo: "Visualizador - Baño",
+    fondo: "bano-fondo.png",
+    muebles: "bano-encima.png",
+    permitePared: true
+  },
+  habitacion: {
+    titulo: "Visualizador - Habitación",
+    fondo: "habitacion.png",
+    muebles: "muebles-encima.png",
+    permitePared: false
+  }
 };
 
-function cambiarPiso(imagen) {
-    pisoActual = imagen;
-    const pisoEl = document.getElementById('piso');
-    if (pisoEl) {
-        pisoEl.style.backgroundImage = `url('${imagen}')`;
-    }
-    registrarVisitaEnSheets(paredActual, pisoActual);
+function iniciarSimulador(tipo) {
+  const config = datosAmbientes[tipo];
+  
+  document.getElementById('titulo-visor').textContent = config.titulo;
+  document.getElementById('escena-fondo').style.backgroundImage = `url('${config.fondo}')`;
+  document.getElementById('muebles-capa').src = config.muebles;
+
+  const elementosPared = document.querySelectorAll('.seccion-pared-calc');
+  const paredInteractiva = document.getElementById('pared-interactiva');
+
+  if (config.permitePared) {
+    elementosPared.forEach(el => el.style.display = 'block');
+    paredInteractiva.style.display = 'block';
+  } else {
+    elementosPared.forEach(el => el.style.display = 'none');
+    paredInteractiva.style.display = 'none';
+  }
+
+  document.getElementById('selector-ambiente').style.display = 'none';
+  document.getElementById('app-principal').style.display = 'block';
 }
 
-// --- ILUMINACIÓN ---
-function cambiarLuz(tipo, boton) {
-    document.querySelectorAll('.btn-luz').forEach(btn => btn.classList.remove('activo'));
-    boton.classList.add('activo');
-    const hab = document.getElementById('habitacion');
-    if (!hab) return;
-    hab.className = 'habitacion'; 
-    hab.classList.add('modo-' + tipo);
+function volverAlMenu() {
+  document.getElementById('app-principal').style.display = 'none';
+  document.getElementById('selector-ambiente').style.display = 'block';
+  document.getElementById('resultado-calculo').style.display = 'none';
 }
 
-// --- CALCULADORA DE MATERIALES ---
+function cambiarPiso(imagenUrl) {
+  document.getElementById('piso-interactivo').style.backgroundImage = `url('${imagenUrl}')`;
+}
+
+function cambiarPared(imagenUrl) {
+  document.getElementById('pared-interactiva').style.backgroundImage = `url('${imagenUrl}')`;
+}
+
 function calcularMaterialesTotales() {
-    const getVal = (id, def) => {
-        const el = document.getElementById(id);
-        if (!el || !el.value) return def;
-        return parseFloat(el.value.toString().replace(',', '.')) || def;
-    };
+  const usaPared = document.getElementById('pared-interactiva').style.display === 'block';
+  
+  let areaPared = 0, cajasPared = 0;
+  if (usaPared) {
+    const pAlto = parseFloat(document.getElementById('pared-alto').value) || 0;
+    const pAncho = parseFloat(document.getElementById('pared-ancho').value) || 0;
+    const pCaja = parseFloat(document.getElementById('pared-caja').value) || 1.44;
+    areaPared = pAlto * pAncho;
+    cajasPared = Math.ceil(areaPared / pCaja);
     
-    const areaPared = getVal('pared-alto', 0) * getVal('pared-ancho', 0);
-    const areaPiso = getVal('piso-largo', 0) * getVal('piso-ancho', 0);
-    const selectPego = document.getElementById('tipo-pego');
-    const rendimientoPego = selectPego ? parseFloat(selectPego.value) : 1.5;
+    document.getElementById('res-area-pared').textContent = areaPared.toFixed(2);
+    document.getElementById('res-cajas-pared').textContent = cajasPared;
+  }
+  
+  const piLargo = parseFloat(document.getElementById('piso-largo').value) || 0;
+  const piAncho = parseFloat(document.getElementById('piso-ancho').value) || 0;
+  const piCaja = parseFloat(document.getElementById('piso-caja').value) || 1.44;
+  const pegoRendimiento = parseFloat(document.getElementById('tipo-pego').value) || 1.5;
 
-    if (areaPared === 0 && areaPiso === 0) {
-        alert("Por favor, ingresa al menos las medidas de Pared o Piso.");
-        return;
-    }
+  const areaPiso = piLargo * piAncho;
+  const cajasPiso = Math.ceil(areaPiso / piCaja);
 
-    document.getElementById('res-area-pared').innerText = areaPared.toFixed(2);
-    document.getElementById('res-cajas-pared').innerText = Math.ceil(areaPared / getVal('pared-caja', 1.44));
-    document.getElementById('res-area-piso').innerText = areaPiso.toFixed(2);
-    document.getElementById('res-cajas-piso').innerText = Math.ceil(areaPiso / getVal('piso-caja', 1.44));
-    
-    const sacos = Math.ceil((areaPared + areaPiso) / rendimientoPego);
-    const labelSacos = rendimientoPego === 1.5 ? "14 kg" : "10 kg";
-    document.getElementById('res-total-pego').innerText = `${sacos} sacos (${labelSacos})`;
-    document.getElementById('resultado-calculo').style.display = 'block';
+  const totalArea = areaPared + areaPiso;
+  const sacosPego = Math.ceil(totalArea / pegoRendimiento);
+
+  document.getElementById('res-area-piso').textContent = areaPiso.toFixed(2);
+  document.getElementById('res-cajas-piso').textContent = cajasPiso;
+  document.getElementById('res-total-pego').textContent = sacosPego;
+
+  document.getElementById('resultado-calculo').style.display = 'block';
 }
-
-// Inicialización
-window.onload = () => {
-    cambiarPiso(pisoActual);
-};
