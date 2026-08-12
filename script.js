@@ -149,3 +149,12 @@ function calcularMateriales() {
 
     divResultado.classList.remove('oculto');
 }
+function cambiarColorPared(colorHex) {
+    const escenario = document.getElementById('escenario');
+    if (escenario) {
+        escenario.style.backgroundColor = colorHex;
+    }
+}
+
+// Asegúrate de incluirla en tus enlaces globales al final del script si los usas:
+window.cambiarColorPared = cambiarColorPared;
