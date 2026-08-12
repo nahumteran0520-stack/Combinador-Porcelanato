@@ -93,12 +93,18 @@ function cargarCatalogo() {
     });
 }
 
-// Aplicar textura seleccionada a la capa transparente correspondiente
 function aplicarTextura(urlImagen) {
     const capa = document.getElementById(zonaSeleccionada === 'piso' ? 'capa-piso' : 'capa-paredes');
     capa.style.backgroundImage = `url(${urlImagen})`;
     capa.style.backgroundRepeat = 'repeat';
-    capa.style.backgroundSize = '100px 100px'; // Simula la escala de las piezas
+    
+    // Aquí cambiamos el tamaño para que simule perspectiva y proporción real
+    // Puedes cambiar '180px auto' ajustando el primer número (más grande = piezas más grandes)
+    capa.style.backgroundSize = '220px auto'; 
+    
+    // Esto ayuda a alinear el punto de fuga de la textura con la perspectiva de la sala
+    capa.style.backgroundPosition = 'center bottom';
+}
 }
 
 // Lógica de cálculo de materiales (Considerando formato estándar de caja de 1.44 m²)
