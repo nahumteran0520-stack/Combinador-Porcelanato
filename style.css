@@ -102,46 +102,15 @@ body {
     padding: 15px;
     color: #2c3e50;
 }
-/* Ampliamos el contenedor general para que use todo el ancho disponible */
+
+/* Visualizador */
 .visualizador-container {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    max-width: 95vw;      /* Ocupa casi el 95% del ancho de tu monitor */
-    margin: 0 auto;
-    padding: 10px 20px;
-    box-sizing: border-box;
 }
 
-/* Hacemos que el contenido interior expanda las columnas */
-.vis-content {
-    display: flex;
-    gap: 25px;
-    flex: 1;
-    align-items: stretch;
-    height: 75vh;         /* Ocupa el 75% de la altura de tu pantalla */
-}
-
-/* Forzamos un tamaño grande y protagonista para la imagen de la habitación */
-.escenario-container {
-    flex: 3;              /* Mucho más espacio para la foto */
-    height: 100%;         
-    min-height: 600px;    /* Altura grande asegurada */
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-/* Ajustamos el catálogo lateral para que guarde proporción */
-.catalogo-lateral {
-    flex: 1.2;
-    height: 100%;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    overflow-y: auto;
-}
 .vis-header {
     display: flex;
     justify-content: space-between;
@@ -486,6 +455,15 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+.grid-catalogo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 5px;
 }
 
 .grid-catalogo {
