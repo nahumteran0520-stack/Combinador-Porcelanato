@@ -42,6 +42,11 @@
             <div class="vis-content">
                 <!-- Lienzo de la Imagen Base y Capas -->
                 <div class="escenario-container" id="escenario">
+                    <div class="controles-rotacion" style="text-align: center; margin-bottom: 10px;">
+    <button onclick="girarPiso('izquierda')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Girar Izquierda ↺</button>
+    <button onclick="girarPiso('reset')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Vista Frontal ⏹</button>
+    <button onclick="girarPiso('derecha')" style="padding: 8px 12px; cursor: pointer;">Girar Derecha ↻</button>
+</div>
                     <!-- Capa de piso (queda al fondo) -->
                     <div id="capa-piso" class="capa-superficie"></div>
                     <!-- Capa de paredes (si aplica para el baño) -->
@@ -49,11 +54,7 @@
                     <!-- Capa superior con tu PNG transparente -->
                     <div class="capa-imagen-base"></div>
                 </div>
-<div class="controles-rotacion" style="text-align: center; margin-bottom: 10px;">
-    <button onclick="girarPiso('izquierda')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Girar Izquierda ↺</button>
-    <button onclick="girarPiso('reset')" style="padding: 8px 12px; cursor: pointer; margin-right: 5px;">Vista Frontal ⏹</button>
-    <button onclick="girarPiso('derecha')" style="padding: 8px 12px; cursor: pointer;">Girar Derecha ↻</button>
-</div>
+
                 <!-- Catálogo Lateral y Controles -->
                 <aside class="catalogo-lateral">
                     <h3>Catálogo de Porcelanatos</h3>
