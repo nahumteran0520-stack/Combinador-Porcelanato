@@ -103,11 +103,12 @@ body {
     color: #2c3e50;
 }
 ./* Contenedor principal de la vista del simulador */
-.visualizador-container {
+..visualizador-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    padding: 10px 20px;
+    max-width: 1400px;    /* Amplía el límite para pantallas grandes */
+    margin: 0 auto;
+    padding: 10px 30px;
     box-sizing: border-box;
 }
 
@@ -130,11 +131,10 @@ body {
     height: calc(100% - 70px);
 }
 
-/* Contenedor del escenario (la imagen y el piso) */
+/* Aumentamos el tamaño que ocupa el escenario a la izquierda */
 .escenario-container {
-    flex: 2;
-    height: 100%;
-    min-height: 450px;
+    flex: 2.5;            /* Le damos más proporción de espacio */
+    min-height: 550px;    /* Altura mínima más grande para que la habitación luzca amplia */
     position: relative;
     overflow: hidden;
     border-radius: 8px;
