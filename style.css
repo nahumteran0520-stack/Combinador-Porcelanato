@@ -102,35 +102,55 @@ body {
     padding: 15px;
     color: #2c3e50;
 }
-
-/* Centrar el contenido y bajar un poco el escenario */
+./* Contenedor principal de la vista del simulador */
 .visualizador-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 20px; /* Separación desde arriba */
     height: 100vh;
+    padding: 10px 20px;
+    box-sizing: border-box;
 }
 
-/* Ajuste del escenario para que no sea tan gigante y se vea completo */
+/* Cabecera limpia y bien distribuida */
+.vis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Distribución en dos columnas: Izquierda el escenario, Derecha el catálogo */
+.vis-content {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    align-items: flex-start;
+    height: calc(100% - 70px);
+}
+
+/* Contenedor del escenario (la imagen y el piso) */
 .escenario-container {
-    width: 80%;       /* O ajusta al ancho que prefieras */
-    max-width: 800px;
-    height: 450px;    /* Altura fija para que no se mueva */
-    margin-top: 10px;
+    flex: 2;
+    height: 100%;
+    min-height: 450px;
     position: relative;
-    overflow: hidden; /* Evita que el patrón se desborde */
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
-/* Asegurar que las capas ocupen todo el espacio sin salirse */
-.capa-superficie {
-    width: 100%;
+/* Catálogo lateral derecho */
+.catalogo-lateral {
+    flex: 1;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    max-height: 550px;
 }
 .vis-header {
     display: flex;
