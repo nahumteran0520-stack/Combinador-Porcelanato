@@ -126,7 +126,6 @@ function cargarCatalogo() {
     });
 }
 
-// Aplicar textura con validación de seguridad
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -137,10 +136,9 @@ function aplicarTextura(urlImagen) {
     if (capa) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '100px 100px'; 
-        capa.style.backgroundPosition = 'center bottom';
-    } else {
-        console.warn("Capa no encontrada:", capaId);
+        // AUMENTA ESTE VALOR para que las piezas se vean más grandes y el giro sea notable
+        capa.style.backgroundSize = '200px 200px'; 
+        capa.style.backgroundPosition = '0px 0px';
     }
 }
 
