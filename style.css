@@ -116,17 +116,17 @@ body {
 
 #capa-piso {
     position: absolute;
-    bottom: -20px;
-    left: -35%;
+    bottom: -10px;
+    left: -50%;
     width: 200%;
-    height: 600%; /* Mantenemos una altura limpia para que no suba de más */
+    height: 125%; /* Mantenemos una altura limpia para que no suba de más */
     z-index: 1;   /* Dejamos el piso en su nivel correcto debajo de los muebles */
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
     
     transform-origin: bottom center;
-    transform: perspective(350px) rotateX(42deg);
+    transform: perspective(350px) rotateX(28deg);
     
     mask-image: none;
     -webkit-mask-image: none;
