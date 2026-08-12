@@ -137,17 +137,23 @@ body {
 }
 
 /* Capa de la imagen PNG transparente */
-.capa-imagen-base {
+.c#capa-piso {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 2;
-    pointer-events: none !important;
+    bottom: -20px;
+    left: -25%;
+    width: 150%;
+    height: 70%;
+    z-index: 1;
+    
+    background-repeat: repeat !important;
+    background-size: 140px 140px !important; 
+    
+    /* Usamos matrix3d para simular una distorsión trapezoidal en perspectiva de un solo punto */
+    transform: perspective(400px) rotateX(45deg) skewX(-15deg);
+    transform-origin: bottom center;
+    
+    mask-image: none;
+    -webkit-mask-image: none;
 }
 
 /* Imágenes PNG transparentes específicas para cada ambiente */
