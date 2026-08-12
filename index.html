@@ -3,73 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Combinador de Porcelanato</title>
-    
-    <style>
-        /* --- CONTENEDOR DEL VISUALIZADOR --- */
-        .habitacion {
-            position: relative;
-            width: 100%;
-            height: 380px;
-            overflow: hidden;
-            background-color: #111;
-            border-radius: 8px;
-        }
-
-        /* Fondo base de la escena */
-        .escena-base {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* Área Interactiva de la Pared */
-        #pared-interactiva {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            z-index: 2;
-            background-repeat: repeat;
-            background-size: 200px;
-        }
-
-        /* Área Interactiva del Piso */
-        #piso-interactivo {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            z-index: 3;
-            background-repeat: repeat;
-            background-size: 150px;
-        }
-
-        /* Capa Superior de Muebles */
-        .muebles-encima {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 4;
-            pointer-events: none;
-        }
-    </style>
+    <title>Simulador de Ambientes y Porcelanatos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="habitacion">
-        <div class="escena-base"></div>
-        <div id="pared-interactiva"></div>
-        <div id="piso-interactivo"></div>
-    </div>
+    <!-- VISTA 1: MENÚ PRINCIPAL -->
+    <section id="vista-menu" class="vista activa">
+        <div class="menu-container">
+            <h1>Selecciona un Ambiente</h1>
+            <p>Elige el espacio que deseas diseñar e interactuar con nuestros porcelanatos.</p>
+            <div class="grid-opciones">
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('sala')">
+                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=500&q=80" alt="Sala">
+                    <h3>Sala</h3>
+                </div>
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('habitacion')">
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=500&q=80" alt="Habitación">
+                    <h3>Habitación</h3>
+                </div>
+                <div class="tarjeta-opcion" onclick="cambiarAmbiente('bano')">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=500&q=80" alt="Baño">
+                    <h3>Baño</h3>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
+    <section id="vista-visualizador" class="vista">
+        <div class="visualizador-container">
+            <header class="vis-header">
+                <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
+                <h2 id="titulo-ambiente">Ambiente</h2>
+                <button class="btn-principal" onclick="irACalculadora()">Calcular Materiales →</button>
+            </header>
+
+            <div class="vis-content">
+                <!-- Lienzo de la Imagen Base con Capas Transparentes -->
+                <div class="escenario-container" id="escenario">
+                    <!-- Las paredes solo aparecerán activas en el baño -->
+                    <div id="capa-paredes" class="capa-superficie transparente"></div>
+                    <!-- El piso está disponible en todos los ambientes -->
+                    <div id="capa-piso" class="capa-superficie transparente"></div>
+                </div>
+
+                <!-- Catálogo Lateral -->
+                <aside class="catalogo-lateral">
+                    <h3>Catálogo de Porcelanatos</h3>
+                    <div id="selector-zona" class="selector-zona">
+                        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
+                        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+                    </div>
+                    <div class="grid-catalogo" id="grid-catalogo">
+                        <!-- Las opciones del catálogo se inyectan por JS -->
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISTA 3: CALCULADORA DE MATERIALES -->
+    <section id="vista-calculadora" class="vista">
+        <div class="calc-container">
+            <button class="btn-secundario" onclick="volverVisualizador()">← Volver al Simulador</button>
+            <h2>Calculadora de Materiales</h2>
+            <p>Calcula la cantidad exacta de cajas de porcelanato necesarias para tu <span id="span-nombre-ambiente">espacio</span>.</p>
+            
+            <div class="form-calculadora">
+                <div class="grupo-input">
+                    <label>Largo de la estancia (metros):</label>
+                    <input type="number" id="input-largo" step="0.01" placeholder="Ej. 4.0">
+                </div>
+                <div class="grupo-input">
+                    <label>Ancho de la estancia (metros):</label>
+                    <input type="number" id="input-ancho" step="0.01" placeholder="Ej. 3.0">
+                </div>
+                <div id="grupo-paredes" class="grupo-input oculto">
+                    <label>Altura de las paredes (metros):</label>
+                    <input type="number" id="input-alto" step="0.01" placeholder="Ej. 2.5">
+                </div>
+                <div class="grupo-input">
+                    <label>Porcentaje de desperdicio / corte:</label>
+                    <select id="select-desperdicio">
+                        <option value="1.05">5% (Estándar)</option>
+                        <option value="1.10" selected>10% (Recomendado)</option>
+                        <option value="1.15">15% (Muchos recortes)</option>
+                    </select>
+                </div>
+                <button class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Cajas</button>
+            </div>
+
+            <div id="resultado-calculo" class="resultado-calculo oculto">
+                <h3>Resultados Estimados:</h3>
+                <p id="texto-resultado-piso"></p>
+                <p id="texto-resultado-pared"></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
 </body>
 </html>
