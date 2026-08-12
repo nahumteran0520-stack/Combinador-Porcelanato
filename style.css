@@ -125,8 +125,7 @@ body {
     background-image: 
         linear-gradient(to right, rgba(255, 255, 255, 0.35) 2px, transparent 2px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 2px, transparent 2px),
-        /* Aquí va la textura de tu porcelanato (reemplaza o mantén la que usas) */
-        var(--textura-piso, inherit) !important;
+
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
