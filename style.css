@@ -107,7 +107,7 @@ body {
     background-color: #F4F6F6;
 }
 
-/* Aseguramos el orden correcto: piso al fondo (z-index: 1) */
+/* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
     bottom: -30px;
@@ -126,24 +126,7 @@ body {
     -webkit-mask-image: none;
 }
 
-/* Forzamos que la imagen base de la habitación esté arriba (z-index: 3) */
-.escenario-habitacion .capa-imagen-base {
-    background-image: url('habitacion.png');
-    background-color: transparent !important;
-    z-index: 3 !important;
-    display: block !important;
-}
-}
-
-/* Selector de colores de pared (miniaturas del catálogo de pared) más grandes */
-.grid-catalogo .item-porcelanato img {
-    width: 100%;
-    height: 105px; /* Aumentamos el tamaño visual de las muestras */
-    object-fit: cover;
-}
-}
-
-/* Capa de la imagen PNG transparente con los muebles */
+/* Capa de la imagen PNG transparente con los muebles (Ordenada al frente con z-index: 5) */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -153,8 +136,9 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 3;
+    z-index: 5 !important;
     pointer-events: none !important;
+    display: block !important;
 }
 
 /* Coordenadas para paredes (solo baño) */
@@ -169,7 +153,7 @@ body {
 
 /* Imágenes PNG transparentes específicas para cada ambiente */
 .escenario-sala .capa-imagen-base {
-    background-image: url('sala.png');
+    background-image: url('sala.png') !important;
 }
 
 .escenario-habitacion {
@@ -177,12 +161,12 @@ body {
 }
 
 .escenario-habitacion .capa-imagen-base {
-    background-image: url('habitacion.png');
+    background-image: url('habitacion.png') !important;
     background-color: transparent !important;
 }
 
 .escenario-bano .capa-imagen-base {
-    background-image: url('baño.png');
+    background-image: url('baño.png') !important;
 }
 
 /* Catálogo Lateral */
@@ -238,9 +222,10 @@ body {
     border-color: #3498db;
 }
 
-.item-porcelanato img {
+/* Miniaturas del catálogo con el tamaño mejorado */
+.grid-catalogo .item-porcelanato img {
     width: 100%;
-    height: 80px;
+    height: 105px;
     object-fit: cover;
 }
 
