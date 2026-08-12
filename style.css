@@ -391,17 +391,18 @@ body {
     transform-origin: bottom center;
     transform: perspective(350px) rotateX(42deg);
     
-    mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+    /* Quitamos el difuminado agresivo para que el porcelanato se vea sólido y completo hasta atrás */
+    mask-image: none;
+    -webkit-mask-image: none;
 }
 
-/* Ajuste específico para que el fondo de la habitación no muestre ese rectángulo blanco */
+/* Hacemos que el fondo de la habitación sea transparente para que los colores pasteles no creen cuadros extraños */
 .escenario-habitacion {
     background-color: transparent !important;
 }
 
-.escenario-habitacion .capa-imagen-base {
-    /* Asegura que la imagen de la habitación cubra todo el fondo correctamente */
-    background-size: cover;
-    background-position: center;
+/* Si tu imagen PNG de la habitación tiene ese fondo blanco central, 
+   esta regla ayuda a que el color de la pared se pinte uniformemente detrás de todo el escenario */
+#escenario {
+    background-color: #F4F6F6; /* Color base por defecto */
 }
