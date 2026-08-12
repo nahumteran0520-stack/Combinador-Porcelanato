@@ -119,7 +119,7 @@ body {
     bottom: -10px;
     left: -30%;
     width: 160%;
-    height: 400%; /* Mantenemos una altura limpia para que no suba de más */
+    height: 600%; /* Mantenemos una altura limpia para que no suba de más */
     z-index: 1;   /* Dejamos el piso en su nivel correcto debajo de los muebles */
     
     background-repeat: repeat !important;
