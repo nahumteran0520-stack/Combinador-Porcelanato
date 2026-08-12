@@ -409,37 +409,19 @@ body {
     transition: transform 0.3s ease;
 }
 /* ==========================================
-   CORRECCIÓN DE PERSPECTIVA DEL PISO (3D)
-   ========================================== */
-
-/* Contenedor que le da la perspectiva a la escena */
-.escenario-container {
-    /* Esto le dice al navegador que los elementos dentro tendrán perspectiva */
-    perspective: 1000px !important; 
-    overflow: hidden !important; /* Mantiene la textura dentro del marco */
-    position: relative;
-}
-
-/* La capa del piso donde aplicamos la textura */
+   /* --- CONFIGURACIÓN DE PISO (MODO ANTERIOR) --- */
 #capa-piso {
     position: absolute;
-    bottom: 0; /* Alineado a la parte inferior */
+    top: 0;
     left: 0;
     width: 100%;
-    height: 50%; /* Ocupa la mitad inferior de la sala */
+    height: 100%;
     z-index: 1;
     
-    /* --- APLICA ESTO PARA LA PERSPECTIVA --- */
-    /* Define el punto de fuga desde donde se ve el piso */
-    transform-origin: bottom center !important;
-    
-    /* Aplica una inclinación (rotación en X) para simular que el piso se aleja */
-    transform: rotateX(60deg) !important; 
-    
-    /* Ajusta el tamaño de las baldosas para que se vean más pequeñas al fondo */
-    background-size: 100px 100px !important; 
+    /* Esto es lo que controla que se vea lleno */
     background-repeat: repeat !important;
+    background-size: 300px 300px !important; /* Ajusta este valor si quieres cuadros más grandes o pequeños */
     
-    /* Opcional: Añade un ligero degradado para oscurecer la parte lejana del piso */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 100%);
+    /* Eliminamos cualquier rotación o transformación */
+    transform: none !important;
 }
