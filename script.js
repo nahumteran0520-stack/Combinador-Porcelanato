@@ -158,6 +158,8 @@ function cambiarColorPared(colorHex) {
             escenario.style.setProperty('background-color', colorHex, 'important');
         }
     }
+} // <--- ¡Aquí estaba faltando esta llave que cerraba cambiarColorPared!
+
 // Variable para almacenar el ángulo de rotación actual del piso
 let anguloRotacionZ = 0;
 
@@ -173,5 +175,7 @@ function girarPiso(direccion) {
     }
     
     // Aplicamos la rotación Z combinada con tu perspectiva y rotación X fija
-    capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotateZ(${anguloRotacionZ}deg)`;
+    if (capaPiso) {
+        capaPiso.style.transform = `perspective(350px) rotateX(42deg) rotateZ(${anguloRotacionZ}deg)`;
+    }
 }
