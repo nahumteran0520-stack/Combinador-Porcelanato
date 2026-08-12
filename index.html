@@ -40,12 +40,14 @@
             </header>
 
             <div class="vis-content">
-                <!-- Lienzo de la Imagen Base con Capas Transparentes -->
+                <!-- Lienzo de la Imagen Base y Capas -->
                 <div class="escenario-container" id="escenario">
-                    <!-- Las paredes solo aparecerán activas en el baño -->
-                    <div id="capa-paredes" class="capa-superficie transparente"></div>
-                    <!-- El piso está disponible en todos los ambientes -->
-                    <div id="capa-piso" class="capa-superficie transparente"></div>
+                    <!-- Capa de piso (queda al fondo) -->
+                    <div id="capa-piso" class="capa-superficie"></div>
+                    <!-- Capa de paredes (si aplica para el baño) -->
+                    <div id="capa-paredes" class="capa-superficie"></div>
+                    <!-- Capa superior con tu PNG transparente de Photopea -->
+                    <div class="capa-imagen-base"></div>
                 </div>
 
                 <!-- Catálogo Lateral -->
