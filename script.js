@@ -194,7 +194,7 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10; // 10% de desperdicio
+    const areaPisoConDesperdicio = areaPiso * 1.10; 
 
     const m2PorCaja = 1.44; 
     const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
@@ -238,7 +238,6 @@ function calcularMateriales() {
         if (textoPegoPared) textoPegoPared.style.display = 'none';
     }
 
-    // FORZAR LA VISIBILIDAD DEL CONTENEDOR DE RESULTADOS
     const resultadoDiv = document.getElementById('resultado-calculo');
     if (resultadoDiv) {
         resultadoDiv.classList.remove('oculto');
