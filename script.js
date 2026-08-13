@@ -176,7 +176,6 @@ function girarPiso(accion) {
     capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
     capaPiso.style.transition = 'none';
 }
-
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
@@ -200,7 +199,7 @@ function calcularMateriales() {
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
 
-    // Actualiza los textos directamente en pantalla
+    // Actualiza los textos en pantalla
     const textoPiso = document.getElementById('texto-resultado-piso');
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
 
@@ -210,5 +209,12 @@ function calcularMateriales() {
     
     if (textoPegoPiso) {
         textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
+    }
+
+    // Fuerza la visibilidad del contenedor de resultados
+    const resultadoCalculo = document.getElementById('resultado-calculo');
+    if (resultadoCalculo) {
+        resultadoCalculo.classList.remove('oculto');
+        resultadoCalculo.style.display = 'block';
     }
 }
