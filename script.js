@@ -182,11 +182,10 @@ function calcularMateriales() {
         return;
     }
 
-    const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10; 
+    const areaPiso = largo * ancho; 
 
     const m2PorCaja = 1.44; 
-    const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
+    const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
@@ -200,7 +199,7 @@ function calcularMateriales() {
     }
     
     if (textoPegoPiso) {
-        textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
+        textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pesoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
     }
 
     // Asegura la visibilidad del bloque de resultados
