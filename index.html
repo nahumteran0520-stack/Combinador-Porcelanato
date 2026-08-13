@@ -119,17 +119,29 @@
                     </select>
                 </div>
 
-               <button type="button" class="btn-principal btn-calcular" onclick="alert('¡Botón presionado!'); calcularMateriales();">Calcular Materiales</button>
-            </div><div id="resultado-calculo" class="resultado-calculo" style="display: none; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
-                <h3 style="margin-bottom: 10px; color: #333;">Resultados Estimados:</h3>
-                <p id="texto-resultado-piso" style="margin: 5px 0;"></p>
-                <p id="texto-resultado-pego-piso" style="margin: 5px 0;"></p>
-                <p id="texto-resultado-pared" style="margin: 5px 0; display: none;"></p>
-                <p id="texto-resultado-pego-pared" style="margin: 5px 0; display: none;"></p>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+              <button type="button" class="btn-principal btn-calcular" onclick="
+    let l = parseFloat(document.getElementById('input-largo').value) || 0;
+    let a = parseFloat(document.getElementById('input-ancho').value) || 0;
+    let pego = parseInt(document.getElementById('select-pego').value) || 14;
+    
+    if(l <= 0 || a <= 0) {
+        alert('Por favor, ingresa un largo y un ancho válidos.');
+        return;
+    }
+    
+    let areaPiso = l * a;
+    let areaPisoConDesperdicio = areaPiso * 1.10;
+    let cajasPiso = Math.ceil(areaPisoConDesperdicio / 1.44);
+    let rendimientoPego = pego === 14 ? 1.5 : 1.0;
+    let sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
+    
+    document.getElementById('texto-resultado-piso').innerHTML = '<strong>Piso:</strong> Área de ' + areaPiso.toFixed(2) + ' m² (con 10% de desperdicio: ' + areaPisoConDesperdicio.toFixed(2) + ' m²) = <strong>' + cajasPiso + ' cajas</strong> de porcelanato.';
+    document.getElementById('texto-resultado-pego-piso').innerHTML = '<strong>Pego para Piso (' + pego + ' kg):</strong> Necesitarás <strong>' + sacosPegoPiso + ' sacos</strong>.';
+    
+    let resultadoDiv = document.getElementById('resultado-calculo');
+    if(resultadoDiv) {
+        resultadoDiv.style.display = 'block';
+        resultadoDiv.style.visibility = 'visible';
+        resultadoDiv.style.opacity = '1';
+    }
+">Calcular Materiales</button>
