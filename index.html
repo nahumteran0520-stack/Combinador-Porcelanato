@@ -37,7 +37,6 @@
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
                 <h2 id="titulo-ambiente" style="margin: 0; font-size: 1.2rem;">Ambiente</h2>
                 
-                <!-- Botones de rotación y cálculo ordenados y limpios en la cabecera -->
                 <div style="display: flex; gap: 5px; align-items: center; flex-wrap: wrap;">
                     <button onclick="girarPiso('izquierda')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Izq ↺</button>
                     <button onclick="girarPiso('reset')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Frente ⏹</button>
@@ -47,17 +46,12 @@
             </header>
 
             <div class="vis-content">
-                <!-- Lienzo de la Imagen Base y Capas -->
                 <div class="escenario-container" id="escenario">
-                    <!-- Capa de piso (queda al fondo) -->
                     <div id="capa-piso" class="capa-superficie"></div>
-                    <!-- Capa de paredes (si aplica para el baño) -->
                     <div id="capa-paredes" class="capa-superficie"></div>
-                    <!-- Capa superior con tu PNG transparente -->
                     <div class="capa-imagen-base"></div>
                 </div>
 
-                <!-- Catálogo Lateral y Controles -->
                 <aside class="catalogo-lateral">
                     <h3>Catálogo de Porcelanatos</h3>
                     <div id="selector-zona" class="selector-zona">
@@ -65,7 +59,6 @@
                         <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
                     </div>
                     
-                    <!-- Selector de colores de pared en tonos pasteles -->
                     <div class="selector-color-pared" style="margin: 10px 0; text-align: center;">
                         <span style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px;">Color de Pared:</span>
                         <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
@@ -81,9 +74,7 @@
                         </div>
                     </div>
 
-                    <div class="grid-catalogo" id="grid-catalogo">
-                        <!-- Las opciones del catálogo se inyectan por JS -->
-                    </div>
+                    <div class="grid-catalogo" id="grid-catalogo"></div>
                 </aside>
             </div>
         </div>
@@ -110,7 +101,6 @@
                     <input type="number" id="input-alto" step="0.01" placeholder="Ej. 2.5">
                 </div>
                 
-                <!-- Selector de tipo de pego -->
                 <div class="grupo-input">
                     <label>Presentación de Pego:</label>
                     <select id="select-pego">
@@ -122,13 +112,13 @@
                 <button type="button" class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
             </div>
 
-           <!-- BLOQUE DE RESULTADOS SIEMPRE VISIBLE PERO VACÍO/EN CERO -->
-<div id="resultado-calculo" class="resultado-calculo" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
-    <p id="texto-resultado-piso"><strong>Piso:</strong> 0 m² = <strong>0 cajas</strong></p>
-    <p id="texto-resultado-pego-piso"><strong>Pego para Piso:</strong> 0 sacos</p>
-    <p id="texto-resultado-pared" style="display: none;"><strong>Paredes:</strong> 0 m² = <strong>0 cajas</strong></p>
-    <p id="texto-resultado-pego-pared" style="display: none;"><strong>Pego para Pared:</strong> 0 sacos</p>
-</div>
+            <!-- BLOQUE DE RESULTADOS CORRECTAMENTE DENTRO DEL CONTENEDOR -->
+            <div id="resultado-calculo" class="resultado-calculo" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
+                <p id="texto-resultado-piso"><strong>Piso:</strong> 0 m² = <strong>0 cajas</strong></p>
+                <p id="texto-resultado-pego-piso"><strong>Pego para Piso:</strong> 0 sacos</p>
+                <p id="texto-resultado-pared" style="display: none;"><strong>Paredes:</strong> 0 m² = <strong>0 cajas</strong></p>
+                <p id="texto-resultado-pego-pared" style="display: none;"><strong>Pego para Pared:</strong> 0 sacos</p>
+            </div>
         </div>
     </div>
 
