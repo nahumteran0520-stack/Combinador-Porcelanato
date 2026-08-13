@@ -12,12 +12,18 @@ body {
 
 .vista {
     display: none;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .vista.activa {
+    display: block; /* Muestra la vista de forma natural sin forzar un flex centrado global */
+}
+
+/* Permitir que el menú principal sí use flex centrado de forma específica */
+#vista-menu.vista.activa {
     display: flex;
     flex-direction: column;
     justify-content: center;
