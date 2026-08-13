@@ -14,16 +14,6 @@ const catalogoPorcelanatos = [
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const btnCalcular = document.querySelector('.btn-calcular');
-    if (btnCalcular) {
-        btnCalcular.addEventListener('click', (e) => {
-            e.preventDefault();
-            calcularMateriales();
-        });
-    }
-});
-
 function cambiarVista(idVista) {
     const vistas = document.querySelectorAll('.vista');
     vistas.forEach(v => v.classList.remove('activa'));
@@ -79,10 +69,11 @@ function abrirCalculadora() {
         }
     }
     
+    // Garantiza que el contenedor de resultados esté visible al abrir la ventana
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) {
-        resultadoCalculo.classList.add('oculto');
-        resultadoCalculo.style.display = 'none';
+        resultadoCalculo.classList.remove('oculto');
+        resultadoCalculo.style.display = 'block';
     }
 
     if (modal) {
@@ -176,6 +167,7 @@ function girarPiso(accion) {
     capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
     capaPiso.style.transition = 'none';
 }
+
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
@@ -199,7 +191,7 @@ function calcularMateriales() {
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
 
-    // Actualiza los textos en pantalla
+    // Rellena los datos calculados de forma inmediata
     const textoPiso = document.getElementById('texto-resultado-piso');
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
 
@@ -211,7 +203,7 @@ function calcularMateriales() {
         textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
     }
 
-    // Fuerza la visibilidad del contenedor de resultados
+    // Asegura la visibilidad del bloque de resultados
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) {
         resultadoCalculo.classList.remove('oculto');
