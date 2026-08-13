@@ -14,6 +14,16 @@ const catalogoPorcelanatos = [
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
 ];
 
+document.addEventListener('DOMContentLoaded', () => {
+    const btnCalcular = document.querySelector('.btn-calcular');
+    if (btnCalcular) {
+        btnCalcular.addEventListener('click', (e) => {
+            e.preventDefault();
+            calcularMateriales();
+        });
+    }
+});
+
 function cambiarVista(idVista) {
     const vistas = document.querySelectorAll('.vista');
     vistas.forEach(v => v.classList.remove('activa'));
@@ -69,7 +79,6 @@ function abrirCalculadora() {
         }
     }
     
-    // Garantiza que el contenedor de resultados esté visible al abrir la ventana
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) {
         resultadoCalculo.classList.remove('oculto');
@@ -182,27 +191,26 @@ function calcularMateriales() {
         return;
     }
 
-    const areaPiso = largo * ancho; 
+    const areaPiso = largo * ancho;
 
     const m2PorCaja = 1.44; 
+    // Se calcula directo con el área real (sin multiplicar por 1.10)
     const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
     const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
 
-    // Rellena los datos calculados de forma inmediata
     const textoPiso = document.getElementById('texto-resultado-piso');
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
 
     if (textoPiso) {
-        textoPiso.innerHTML = `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² (con 10% de desperdicio: ${areaPisoConDesperdicio.toFixed(2)} m²) = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
+        textoPiso.innerHTML = `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
     }
     
     if (textoPegoPiso) {
         textoPegoPiso.innerHTML = `<strong>Pego para Piso (${pesoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
     }
 
-    // Asegura la visibilidad del bloque de resultados
     const resultadoCalculo = document.getElementById('resultado-calculo');
     if (resultadoCalculo) {
         resultadoCalculo.classList.remove('oculto');
