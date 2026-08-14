@@ -484,6 +484,6 @@ body {
         background-size: 90px 90px !important; /* Reduce el patrón para que se vea más real y pequeño */
         bottom: -15px !important;
         left: -30% !important;
-        width: 90% !important;
+        width: 160% !important;
     }
 }
