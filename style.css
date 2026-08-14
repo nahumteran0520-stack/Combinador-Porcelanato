@@ -180,13 +180,21 @@ body {
 }
 
 /* Capa del piso con cobertura completa y la perspectiva exacta */
-   #capa-piso {
+   .escenario-sala #capa-piso {
     position: absolute;
     bottom: -10px;
     left: -15%;
     width: 130%;
     height: 700px;
     z-index: 1;
+    .escenario-habitacion #capa-piso {
+    bottom: -20px;
+    left: -35% !important;
+    width: 170% !important;
+    height: 260px !important; /* Se extiende más hacia el fondo */
+    background-size: 170px 170px !important; 
+    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
+}
     
     background-repeat: repeat !important;
     background-size: 160px 160px !important; 
