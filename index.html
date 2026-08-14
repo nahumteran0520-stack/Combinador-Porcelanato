@@ -78,20 +78,18 @@
                     <div class="capa-imagen-base"></div>
                 </div>
 
-                <!-- Columna Derecha: Catálogo de Porcelanatos -->
-                <aside class="catalogo-lateral">
-                    <h3>Catálogo de Materiales</h3>
-                    <div class="selector-zona">
-                        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
-                        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
-                    </div>
-                    <!-- Pestañas internas para Porcelanatos y Cerámicas -->
-                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
-                        <button class="btn-secundario" style="flex:1; padding:4px; font-size:11px;" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
-                        <button class="btn-secundario" style="flex:1; padding:4px; font-size:11px;" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
-                    </div>
-                    <div class="grid-catalogo" id="grid-catalogo"></div>
-                </aside>
+               <!-- Columna Derecha: Catálogo de Materiales Limpio -->
+<aside class="catalogo-lateral">
+    <h3>Catálogo de Materiales</h3>
+    <div class="selector-zona">
+        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
+        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+    </div>
+    
+    <!-- Aquí estaba el div duplicado, lo hemos eliminado -->
+    
+    <div class="grid-catalogo" id="grid-catalogo"></div>
+</aside>
             </div>
         </div>
     </section>
