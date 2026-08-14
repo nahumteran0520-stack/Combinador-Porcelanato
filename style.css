@@ -184,8 +184,8 @@ body {
     position: absolute;
     bottom: -50px;
     left: -50%;
-    width: 220%;
-    height: 300%;
+    width: 200%;
+    height: 350%;
     z-index: 1;
     
     background-repeat: repeat !important;
