@@ -182,23 +182,23 @@ body {
 /* 1. Configuración base general del piso */
 #capa-piso {
     position: absolute;
-    bottom: 0px;            /* <--- Cambiado de -10px a 0px */
+    bottom: 0px;
     left: -15%;
     width: 130%;
-    height: 110px;          /* <--- Reducido de 180px a 110px para que no suba tanto */
+    height: 110px;
     z-index: 2; 
     background-repeat: repeat !important;
-    background-size: 140px 140px !important; /* <--- Cuadrículas un poco más pequeñas y proporcionadas */
+    background-size: 140px 140px !important;
     background-position: center bottom !important;
-    transform: perspective(300px) rotateX(55deg) scaleX(1.1); /* <--- Mayor perspectiva para que se acueste mejor */
+    transform: perspective(300px) rotateX(55deg) scaleX(1.1);
     transform-origin: bottom center;
     mask-image: none;
     -webkit-mask-image: none;
     pointer-events: none !important;
 }
 
-/* 2. Parámetros exclusivos para la SALA */
-escenario-sala #capa-piso {
+/* 2. Parámetros exclusivos para la SALA (Corregido el selector) */
+.escenario-sala #capa-piso {
     position: absolute;
     bottom: -10px;
     left: -15%;
@@ -206,8 +206,8 @@ escenario-sala #capa-piso {
     height: 700px;
     z-index: 1;
     background-size: 170px 170px !important; 
-    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;   
-
+    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
+}
 
 /* 3. Parámetros exclusivos para la HABITACIÓN */
 .escenario-habitacion #capa-piso {
@@ -229,7 +229,7 @@ escenario-sala #capa-piso {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 1 !important; /* Detrás del piso simulado */
+    z-index: 1 !important;
     pointer-events: none !important;
     display: block !important;
 }
