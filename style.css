@@ -198,14 +198,16 @@ body {
 }
 
 /* 2. Parámetros exclusivos para la SALA */
-.escenario-sala #capa-piso {
-    bottom: 0px;            /* <--- Alineado al borde inferior */
-    left: -10%;
-    width: 120%;
-    height: 120px;          /* <--- Altura controlada para que quede bajo el mueble */
-    background-size: 140px 140px !important;
-    transform: perspective(300px) rotateX(56deg) scaleX(1.15);
-}
+escenario-sala #capa-piso {
+    position: absolute;
+    bottom: -10px;
+    left: -15%;
+    width: 130%;
+    height: 700px;
+    z-index: 1;
+    background-size: 170px 170px !important; 
+    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;   
+
 
 /* 3. Parámetros exclusivos para la HABITACIÓN */
 .escenario-habitacion #capa-piso {
