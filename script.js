@@ -157,17 +157,19 @@ function cambiarColorPared(colorHex) {
 
 let estadoRotacion = 0;
 
-function girarPiso(accion) {
+function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
-    if (!capaPiso) return;
-
-    if (accion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 1 + 4) % 4;
-    } else if (accion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 1) % 4;
-    } else if (accion === 'reset') {
-        estadoRotacion = 0;
+    
+    // Dependiendo de cómo apliques la rotación (clases o estilos en línea),
+    // asegúrate de conservar siempre el background-size original:
+    if (direccion === 'izquierda') {
+        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(90deg)";
+    } else if (direccion === 'derecha') {
+        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(-90deg)";
+    } else {
+        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(0deg)";
     }
+}
 
     const posicionesX = ['0px', '90px', '180px', '270px'];
     const posicionesY = ['0px', '90px', '180px', '270px'];
