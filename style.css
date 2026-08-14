@@ -182,15 +182,15 @@ body {
 /* 1. Configuración base general del piso */
 #capa-piso {
     position: absolute;
-    bottom: -10px;
+    bottom: 0px;            /* <--- Cambiado de -10px a 0px */
     left: -15%;
     width: 130%;
-    height: 180px;
-    z-index: 2; /* Por encima de la imagen base para que tape el piso original de la foto */
+    height: 110px;          /* <--- Reducido de 180px a 110px para que no suba tanto */
+    z-index: 2; 
     background-repeat: repeat !important;
-    background-size: 190px 190px !important; 
+    background-size: 140px 140px !important; /* <--- Cuadrículas un poco más pequeñas y proporcionadas */
     background-position: center bottom !important;
-    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
+    transform: perspective(300px) rotateX(55deg) scaleX(1.1); /* <--- Mayor perspectiva para que se acueste mejor */
     transform-origin: bottom center;
     mask-image: none;
     -webkit-mask-image: none;
@@ -199,12 +199,12 @@ body {
 
 /* 2. Parámetros exclusivos para la SALA */
 .escenario-sala #capa-piso {
-    bottom: -10px;
-    left: -15%;
-    width: 130%;
-    height: 700px;
-    background-size: 175px 175px !important;
-    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
+    bottom: 0px;            /* <--- Alineado al borde inferior */
+    left: -10%;
+    width: 120%;
+    height: 120px;          /* <--- Altura controlada para que quede bajo el mueble */
+    background-size: 140px 140px !important;
+    transform: perspective(300px) rotateX(56deg) scaleX(1.15);
 }
 
 /* 3. Parámetros exclusivos para la HABITACIÓN */
