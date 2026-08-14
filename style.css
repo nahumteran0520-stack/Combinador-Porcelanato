@@ -197,7 +197,7 @@ body {
     pointer-events: none !important;
 }
 
-/* 2. Parámetros exclusivos para la SALA (Corregido el selector) */
+/* 2. Parámetros exclusivos para la SALA */
 .escenario-sala #capa-piso {
     position: absolute;
     bottom: -10px;
@@ -207,39 +207,6 @@ body {
     z-index: 1;
     background-size: 170px 170px !important; 
     transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
-}
-
-escenario-sala #capa-piso {
-    position: absolute;
-    bottom: -5px;
-    left: -15%;
-    width: 130%;
-    height: 700px;
-    z-index: 1;
-    background-size: 170px 170px !important; 
-    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;   
-    /* 3. Parámetros exclusivos para la HABITACIÓN */
-.escenario-habitacion {
-    background-color: transparent !important;
-}
-
-.escenario-habitacion .capa-imagen-base {
-    background-image: url('habitacion.png') !important;
-    background-color: transparent !important;
-    display: block !important;
-    z-index: 1 !important;
-}
-
-.escenario-habitacion #capa-piso {
-    position: absolute !important;
-    bottom: 12% !important;     /* Altura exacta del suelo de la habitación */
-    left: 12% !important;       /* Margen izquierdo para ajustarlo al marco */
-    width: 76% !important;      /* Ancho exacto del piso horizontal */
-    height: 14% !important;     /* Grosor justo de la franja del piso */
-    z-index: 2 !important;
-    background-size: 130px 130px !important; 
-    transform: none !important; 
-    display: block !important;
 }
 
 /* Capa de la imagen de fondo (Sala, Habitación, Baño) */
