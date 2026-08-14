@@ -1,6 +1,7 @@
 // Variables de estado global
 let ambienteActual = '';
 let zonaSeleccionada = 'piso';
+let estadoRotacion = 0; // Variable para llevar el control de la rotación de la textura (0, 90, 180, 270 grados)
 
 // Catálogo de porcelanatos
 const catalogoPorcelanatos = [
@@ -21,6 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             calcularMateriales();
         });
+    }
+
+    // Enlazar eventos de clic y táctiles para que los botones respondan perfecto en PC y Móvil
+    const btnGirarIzq = document.querySelector('button[onclick*="izquierda"]') || document.getElementById('btn-girar-izq');
+    const btnGirarDer = document.querySelector('button[onclick*="derecha"]') || document.getElementById('btn-girar-der');
+    const btnFrente = document.querySelector('button[onclick*="frente"]') || document.getElementById('btn-girar-frente');
+
+    if (btnGirarIzq) {
+        btnGirarIzq.addEventListener('click', () => girarPiso('izquierda'));
+        btnGirarIzq.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('izquierda'); }, { passive: false });
+    }
+
+    if (btnGirarDer) {
+        btnGirarDer.addEventListener('click', () => girarPiso('derecha'));
+        btnGirarDer.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('derecha'); }, { passive: false });
+    }
+
+    if (btnFrente) {
+        btnFrente.addEventListener('click', () => girarPiso('frente'));
+        btnFrente.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('frente'); }, { passive: false });
     }
 });
 
@@ -155,10 +176,7 @@ function cambiarColorPared(colorHex) {
     }
 }
 
-// Variable para llevar el control de la rotación de la textura (0, 90, 180, 270 grados)
-let estadoRotacion = 0;
-
-ffunction girarPiso(direccion) {
+function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
@@ -173,14 +191,7 @@ ffunction girarPiso(direccion) {
     const posicionesX = ['0px', '100px', '200px', '300px'];
     const posicionesY = ['0px', '100px', '200px', '300px'];
     
-    // Solo actualizamos la posición del fondo para simular el giro, 
-    // dejando que el CSS controle el tamaño y la perspectiva responsiva.
     capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-}
-    
-    // Mantenemos la perspectiva fija sin deformaciones ni cortes raros
-    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
-    capaPiso.style.transformOrigin = "bottom center";
 }
 
 function calcularMateriales() {
@@ -220,26 +231,4 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
-    // Enlazar eventos de clic y táctiles para que funcione perfectamente en PC y Móvil
-document.addEventListener('DOMContentLoaded', () => {
-    // ... tus otros códigos de carga ...
-
-    const btnGirarIzq = document.querySelector('button[onclick*="izquierda"]') || document.getElementById('btn-girar-izq');
-    const btnGirarDer = document.querySelector('button[onclick*="derecha"]') || document.getElementById('btn-girar-der');
-    const btnFrente = document.querySelector('button[onclick*="frente"]') || document.getElementById('btn-girar-frente');
-
-    if (btnGirarIzq) {
-        btnGirarIzq.addEventListener('click', () => girarPiso('izquierda'));
-        btnGirarIzq.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('izquierda'); }, { passive: false });
-    }
-
-    if (btnGirarDer) {
-        btnGirarDer.addEventListener('click', () => girarPiso('derecha'));
-        btnGirarDer.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('derecha'); }, { passive: false });
-    }
-
-    if (btnFrente) {
-        btnFrente.addEventListener('click', () => girarPiso('frente'));
-        btnFrente.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('frente'); }, { passive: false });
-    }
-});
+}
