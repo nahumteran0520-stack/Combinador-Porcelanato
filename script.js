@@ -1,13 +1,12 @@
 // Variables de estado global
 let ambienteActual = '';
 let zonaSeleccionada = 'piso';
-let estadoRotacion = 0; // Control de rotación en grados
-let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
-let materialActivoActual = null; // Referencia del material seleccionado
+let estadoRotacion = 0; 
+let tipoMaterialSeleccionado = 'porcelanato'; 
+let materialActivoActual = null; 
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
-    // Porcelanatos (1.44 m² por caja)
     { id: 1, nombre: 'Gris Cemento', tipo: 'porcelanato', url: 'piso-griscemento-350.jpg' },
     { id: 2, nombre: 'Marmoleado Azul', tipo: 'porcelanato', url: 'piso-marmoleadoazul-357.jpg' },
     { id: 3, nombre: 'Marmoleado Blanco', tipo: 'porcelanato', url: 'piso-marmoleadoblanco-344.jpg' },
@@ -17,13 +16,10 @@ const catalogoMateriales = [
     { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
     
-    // Cerámicas (1.77 m² por caja)
-   { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
-   { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
-   { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
-   { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
-    
-   // Cerámica tipo madera formato tablón
+    { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
+    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
+    { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
+    { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
     { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg', formato: 'tablon' },
 ]; 
 
@@ -49,11 +45,11 @@ function cambiarAmbiente(ambiente) {
     const escenario = document.getElementById('escenario');
     const btnZonaPared = document.getElementById('btn-zona-pared');
     const capaPiso = document.getElementById('capa-piso');
+    const capaParedes = document.getElementById('capa-paredes');
     
-    // EL PISO NACE LIMPIO AL CAMBIAR DE AMBIENTE
-    if (capaPiso) {
-        capaPiso.style.backgroundImage = 'none';
-    }
+    // Inicia limpio y en blanco
+    if (capaPiso) capaPiso.style.backgroundImage = 'none';
+    if (capaParedes) capaParedes.style.backgroundImage = 'none';
     
     if (escenario) {
         escenario.className = 'escenario-container';
@@ -76,12 +72,12 @@ function cambiarAmbiente(ambiente) {
     if (spanNombre) spanNombre.innerText = ambiente;
 
     estadoRotacion = 0;
+    
     if (capaPiso) {
         capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(0deg)`;
         capaPiso.style.transformOrigin = 'bottom center';
     }
 
-    // Dejamos seleccionada la pestaña por defecto sin aplicar textura forzada para que inicie limpio
     tipoMaterialSeleccionado = 'porcelanato';
     materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
 
@@ -246,7 +242,7 @@ function girarPiso(direccion) {
     capaPiso.style.transformOrigin = "bottom center";
 
     const bgImageStyle = capaPiso.style.backgroundImage;
-    if (!bgImageStyle) return;
+    if (!bgImageStyle || bgImageStyle === 'none') return;
     
     const urlMatch = bgImageStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
     if (!urlMatch) return;
