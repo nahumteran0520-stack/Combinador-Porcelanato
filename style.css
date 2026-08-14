@@ -183,8 +183,8 @@ body {
 #capa-piso {
     position: absolute;
     bottom: -10px;
-    left: -18%;
-    width: 155%;
+    left: -15%;
+    width: 150%;
     height: 900px;
     z-index: 1;
     
