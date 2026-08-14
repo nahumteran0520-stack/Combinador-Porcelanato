@@ -22,6 +22,7 @@ const catalogoMateriales = [
    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
    { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
    { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
+    
    // Ejemplo de la nueva cerámica tipo madera formato tablón (0.24 x 1.20)
     { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
 ]; 
