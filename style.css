@@ -180,7 +180,6 @@ body {
 }
 
 /* Capa del piso con cobertura completa y la perspectiva exacta */
-#capa-piso {
    #capa-piso {
     position: absolute;
     bottom: -10px;
