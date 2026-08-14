@@ -220,5 +220,26 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
-}
+    // Enlazar eventos de clic y táctiles para que funcione perfectamente en PC y Móvil
+document.addEventListener('DOMContentLoaded', () => {
+    // ... tus otros códigos de carga ...
 
+    const btnGirarIzq = document.querySelector('button[onclick*="izquierda"]') || document.getElementById('btn-girar-izq');
+    const btnGirarDer = document.querySelector('button[onclick*="derecha"]') || document.getElementById('btn-girar-der');
+    const btnFrente = document.querySelector('button[onclick*="frente"]') || document.getElementById('btn-girar-frente');
+
+    if (btnGirarIzq) {
+        btnGirarIzq.addEventListener('click', () => girarPiso('izquierda'));
+        btnGirarIzq.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('izquierda'); }, { passive: false });
+    }
+
+    if (btnGirarDer) {
+        btnGirarDer.addEventListener('click', () => girarPiso('derecha'));
+        btnGirarDer.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('derecha'); }, { passive: false });
+    }
+
+    if (btnFrente) {
+        btnFrente.addEventListener('click', () => girarPiso('frente'));
+        btnFrente.addEventListener('touchstart', (e) => { e.preventDefault(); girarPiso('frente'); }, { passive: false });
+    }
+});
