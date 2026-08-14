@@ -158,25 +158,25 @@ function cambiarColorPared(colorHex) {
 // Variable para llevar el control de la rotación de la textura (0, 90, 180, 270 grados)
 let estadoRotacion = 0;
 
-function girarPiso(direccion) {
+ffunction girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
-    // Controlamos el índice de rotación de la textura
     if (direccion === 'izquierda') {
         estadoRotacion = (estadoRotacion + 1) % 4;
     } else if (direccion === 'derecha') {
         estadoRotacion = (estadoRotacion - 3 + 4) % 4;
     } else {
-        estadoRotacion = 0; // Frente / Reset
+        estadoRotacion = 0; 
     }
 
-    // Array con las posiciones para desplazar el patrón y simular el giro del diseño
     const posicionesX = ['0px', '100px', '200px', '300px'];
     const posicionesY = ['0px', '100px', '200px', '300px'];
     
-    // Aplicamos el desplazamiento de la textura manteniendo intacta la perspectiva fija
+    // Solo actualizamos la posición del fondo para simular el giro, 
+    // dejando que el CSS controle el tamaño y la perspectiva responsiva.
     capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+}
     
     // Mantenemos la perspectiva fija sin deformaciones ni cortes raros
     capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
