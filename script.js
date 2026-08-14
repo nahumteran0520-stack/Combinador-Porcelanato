@@ -169,7 +169,6 @@ function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
-    // Incrementa o disminuye los grados de giro (90° por cada toque)
     if (direccion === 'izquierda') {
         estadoRotacion = (estadoRotacion - 90) % 360;
     } else if (direccion === 'derecha') {
@@ -178,30 +177,14 @@ function girarPiso(direccion) {
         estadoRotacion = 0; // Frente / Reset
     }
 
-    // Usamos background-image combinada con rotate() aplicada directo en el estilo de fondo si es compatible,
-    // o aplicamos la rotación manteniendo la perspectiva 3D del contenedor de forma limpia:
-    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45)`;
-    capaPiso.style.transformOrigin = 'bottom center';
-
-    // Rotamos la textura interna usando la propiedad de rotación de imagen de fondo de CSS3
-    // Nota: background-image soporta transformaciones en navegadores modernos, 
-    // o podemos rotar el elemento completo manteniendo el contenedor fijo con overflow oculto.
-    
-    // Aplicación limpia rotando el contenedor con un wrapper o usando transformacion de rotacion 2D interna:
-    // Si tu capa tiene la imagen de fondo aplicada, aplicamos la rotación de la siguiente manera:
-    const urlActual = capaPiso.style.backgroundImage;
-    if (urlActual) {
-        capaPiso.style.backgroundImage = urlActual;
-        capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = '200px 200px';
+    // Ajusta la escala horizontal dinámicamente para que cubra todo el espacio al girar
+    let escalaX = 1.45;
+    if (Math.abs(estadoRotacion) === 90 || Math.abs(estadoRotacion) === 270) {
+        escalaX = 2.2;
     }
-    
-    // Forzamos el giro real de la loseta aplicando la rotación de canvas/fondo con transformaciones compuestas:
-    capaPiso.style.filter = `hue-rotate(0deg)`; // Truco para refrescar renderizado en algunos navegadores
-    
-    // Ajuste directo con transformacion de rotacion de la textura del fondo:
-    // Manteniendo la perspectiva 3D del piso y sumando la rotación de la loseta:
-    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(${estadoRotacion}deg)`;
+
+    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(${escalaX}) rotate(${estadoRotacion}deg)`;
+    capaPiso.style.transformOrigin = 'bottom center';
 }
 
 function calcularMateriales() {
