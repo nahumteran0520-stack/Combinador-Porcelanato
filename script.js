@@ -8,23 +8,23 @@ let materialActivoActual = null; // Referencia del material seleccionado
 // Catálogo unificado de materiales
 const catalogoMateriales = [
     // Porcelanatos (1.44 m² por caja)
-    { id: 1, nombre: 'Gris Cemento', tipo: 'porcelanato', url: 'piso-griscemento-350.jpg' },
-    { id: 2, nombre: 'Marmoleado Azul', tipo: 'porcelanato', url: 'piso-marmoleadoazul-357.jpg' },
-    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'porcelanato', url: 'piso-marmoleadoblanco-344.jpg' },
-    { id: 4, nombre: 'Marmoleado Gris', tipo: 'porcelanato', url: 'piso-marmoleadogris-347.jpg' },
-    { id: 5, nombre: 'Marmoleado Negro', tipo: 'porcelanato', url: 'piso-marmoleadonegro-358.jpg' },
-    { id: 6, nombre: 'Super Blanco', tipo: 'porcelanato', url: 'piso-superblanco-345.jpg' },
-    { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
-    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
+    { id: 1, nombre: 'Gris Cemento', tipo: 'porcelanato', url: 'piso-griscemento-350.jpg', formato: 'cuadrado' },
+    { id: 2, nombre: 'Marmoleado Azul', tipo: 'porcelanato', url: 'piso-marmoleadoazul-357.jpg', formato: 'cuadrado' },
+    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'porcelanato', url: 'piso-marmoleadoblanco-344.jpg', formato: 'cuadrado' },
+    { id: 4, nombre: 'Marmoleado Gris', tipo: 'porcelanato', url: 'piso-marmoleadogris-347.jpg', formato: 'cuadrado' },
+    { id: 5, nombre: 'Marmoleado Negro', tipo: 'porcelanato', url: 'piso-marmoleadonegro-358.jpg', formato: 'cuadrado' },
+    { id: 6, nombre: 'Super Blanco', tipo: 'porcelanato', url: 'piso-superblanco-345.jpg', formato: 'cuadrado' },
+    { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg', formato: 'cuadrado' },
+    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg', formato: 'cuadrado' },
     
-    // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
-   { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
-   { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
-   { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
-   { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
+    // Cerámicas (1.77 m² por caja)
+    { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg', formato: 'cuadrado' },
+    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg', formato: 'cuadrado' },
+    { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg', formato: 'cuadrado' },
+    { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg', formato: 'cuadrado' },
     
-   // Ejemplo de la nueva cerámica tipo madera formato tablón (0.24 x 1.20)
-    { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
+    // Cerámica tipo madera formato tablón (0.24 x 1.20)
+    { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg', formato: 'tablon', anchoM: 0.24, largoM: 1.20 },
 ]; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -70,18 +70,18 @@ function cambiarAmbiente(ambiente) {
     if (spanNombre) spanNombre.innerText = ambiente;
 
     estadoRotacion = 0;
-    const capaPiso = document.getElementById('capa-piso');
-    if (capaPiso) {
-        capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(0deg)`;
-        capaPiso.style.transformOrigin = 'bottom center';
-    }
-
-    // Por defecto inicia en porcelanato y selecciona el primero
+    
+    // Por defecto inicia en porcelanato y selecciona el primero de forma segura
     tipoMaterialSeleccionado = 'porcelanato';
-    materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
+    materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato') || catalogoMateriales[0];
 
     cargarCatalogo();
     cambiarVista('vista-visualizador');
+    
+    // Aplicar textura inicial por defecto para que nunca cargue en blanco
+    if (materialActivoActual) {
+        aplicarTextura(materialActivoActual.url);
+    }
 }
 
 function volverMenu() {
@@ -188,6 +188,7 @@ function renderizarGridCatalogo() {
         `;
         div.addEventListener('click', () => {
             materialActivoActual = item;
+            estadoRotacion = 0; // Reinicia la rotación al cambiar de material
             aplicarTextura(item.url);
         });
         grid.appendChild(div);
@@ -205,12 +206,10 @@ function aplicarTextura(urlImagen) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
         
-        // Verificamos si el material activo es el formato tablón alargado (0.24 x 1.20)
+        // Asignación de tamaño basada estrictamente en el formato del material activo
         if (materialActivoActual && materialActivoActual.formato === 'tablon') {
-            // Proporción rectangular ajustada para que luzca como listón de madera en perspectiva
             capa.style.backgroundSize = '120px 300px'; 
         } else {
-            // Tamaño estándar para los formatos cuadrados o cerámicas normales
             capa.style.backgroundSize = '200px 200px'; 
         }
         
@@ -240,19 +239,12 @@ function girarPiso(direccion) {
         estadoRotacion = 0; 
     }
 
-    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
-    capaPiso.style.transformOrigin = "bottom center";
-
-    const bgImageStyle = capaPiso.style.backgroundImage;
+    const bgImageStyle = materialActivoActual ? materialActivoActual.url : '';
     if (!bgImageStyle) return;
     
-    const urlMatch = bgImageStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
-    if (!urlMatch) return;
-    
-    const imgUrl = urlMatch[1];
     const img = new Image();
     img.crossOrigin = "anonymous";
-    img.src = imgUrl;
+    img.src = bgImageStyle;
     
     img.onload = function() {
         const canvas = document.createElement('canvas');
@@ -275,7 +267,13 @@ function girarPiso(direccion) {
         
         capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = '200px 200px';
+        
+        // Mantiene el tamaño correcto del patrón según el formato tras rotar
+        if (materialActivoActual && materialActivoActual.formato === 'tablon') {
+            capaPiso.style.backgroundSize = estadoRotacion === 90 || estadoRotacion === 270 ? '300px 120px' : '120px 300px';
+        } else {
+            capaPiso.style.backgroundSize = '200px 200px';
+        }
     };
 }
 
@@ -295,7 +293,6 @@ function calcularMateriales() {
 
     const areaPiso = largo * ancho;
     
-    // Si no ha seleccionado ninguna aún, toma por defecto porcelanato
     const esCeramica = materialActivoActual && materialActivoActual.tipo === 'ceramica';
     const m2PorCaja = esCeramica ? 1.77 : 1.44; 
     const nombreMaterial = esCeramica ? 'Cerámica' : 'Porcelanato';
