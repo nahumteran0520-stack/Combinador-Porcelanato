@@ -30,18 +30,18 @@
         </div>
     </section>
 
-    <!-- VISTA 2: VISUALIZADOR INTERACTIVO (DISTRIBUCIÓN DE 3 COLUMNAS EN PC) -->
+    <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
     <section id="vista-visualizador" class="vista">
         <div class="visualizador-container">
             <header class="vis-header">
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
                 <h2 id="titulo-ambiente">Ambiente</h2>
-                <div></div> <!-- Espaciador estético -->
+                <div></div>
             </header>
 
             <div class="vis-content">
                 
-                <!-- COLUMNA 1: PANEL DE CONTROLES (IZQUIERDA) -->
+                <!-- COLUMNA 1: PANEL DE CONTROLES -->
                 <div class="panel-controles-izq">
                     <div class="tarjeta-panel">
                         <h3>Rotación del Piso</h3>
@@ -55,15 +55,15 @@
                     <div class="tarjeta-panel">
                         <h3>Color de Pared</h3>
                         <div class="selector-color-pared">
-                            <button class="btn-color" style="background-color: #F2EFE9;" onclick="cambiarColorPared('#F2EFE9')" title="Marfil Suave"></button>
-                            <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')" title="Beige Claro"></button>
-                            <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')" title="Arena"></button>
-                            <button class="btn-color" style="background-color: #9C897B;" onclick="cambiarColorPared('#9C897B')" title="Taupe"></button>
-                            <button class="btn-color" style="background-color: #B89781;" onclick="cambiarColorPared('#B89781')" title="Terracota Suave"></button>
-                            <button class="btn-color" style="background-color: #966C52;" onclick="cambiarColorPared('#966C52')" title="Caramelo"></button>
-                            <button class="btn-color" style="background-color: #6E493B;" onclick="cambiarColorPared('#6E493B')" title="Café Moka"></button>
-                            <button class="btn-color" style="background-color: #4D3126;" onclick="cambiarColorPared('#4D3126')" title="Chocolate"></button>
-                            <button class="btn-color" style="background-color: #261611;" onclick="cambiarColorPared('#261611')" title="Café Oscuro"></button>
+                            <button class="btn-color" style="background-color: #F2EFE9;" onclick="cambiarColorPared('#F2EFE9')"></button>
+                            <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')"></button>
+                            <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')"></button>
+                            <button class="btn-color" style="background-color: #9C897B;" onclick="cambiarColorPared('#9C897B')"></button>
+                            <button class="btn-color" style="background-color: #B89781;" onclick="cambiarColorPared('#B89781')"></button>
+                            <button class="btn-color" style="background-color: #966C52;" onclick="cambiarColorPared('#966C52')"></button>
+                            <button class="btn-color" style="background-color: #6E493B;" onclick="cambiarColorPared('#6E493B')"></button>
+                            <button class="btn-color" style="background-color: #4D3126;" onclick="cambiarColorPared('#4D3126')"></button>
+                            <button class="btn-color" style="background-color: #261611;" onclick="cambiarColorPared('#261611')"></button>
                         </div>
                     </div>
 
@@ -73,17 +73,21 @@
                     </div>
                 </div>
 
-                <!-- COLUMNA 2: EL ESCENARIO (CENTRO) -->
+                <!-- COLUMNA 2: EL ESCENARIO -->
                 <div class="escenario-container" id="escenario">
                     <div id="capa-piso" class="capa-superficie"></div>
                     <div id="capa-paredes" class="capa-superficie"></div>
                     <div class="capa-imagen-base"></div>
                 </div>
 
-                <!-- COLUMNA 3: CATÁLOGO DE PORCELANATOS (DERECHA) -->
+                <!-- COLUMNA 3: CATÁLOGO -->
                 <aside class="catalogo-lateral">
-                    <h3>Catálogo de Porcelanatos</h3>
-                    <div id="selector-zona" class="selector-zona">
+                    <h3>Catálogo de Materiales</h3>
+                    <div id="selector-tipo-material" class="selector-zona" style="margin-bottom: 12px; display: flex; gap: 8px;">
+                        <button type="button" id="tab-porcelanato" class="btn-zona activo" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
+                        <button type="button" id="tab-ceramica" class="btn-zona" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
+                    </div>
+                    <div class="selector-zona">
                         <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
                         <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
                     </div>
@@ -94,12 +98,12 @@
         </div>
     </section>
 
-    <!-- MODAL CALCULADORA DE MATERIALES -->
+    <!-- MODAL CALCULADORA -->
     <div id="modal-calculadora" class="modal-calculadora oculto">
         <div class="calc-container">
             <button class="btn-secundario" onclick="cerrarCalculadora()">← Volver al Simulador</button>
             <h2>Calculadora de Materiales</h2>
-            <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
+            <p>Calcula la cantidad exacta para tu <span id="span-nombre-ambiente">espacio</span>.</p>
             
             <div class="form-calculadora">
                 <div class="grupo-input">
@@ -123,14 +127,12 @@
                     </select>
                 </div>
 
-                <button type="button" class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
+                <button type="button" class="btn-principal btn-calcular">Calcular Materiales</button>
             </div>
 
             <div id="resultado-calculo" class="resultado-calculo" style="display: block; margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
                 <p id="texto-resultado-piso"><strong>Piso:</strong> 0 m² = <strong>0 cajas</strong></p>
                 <p id="texto-resultado-pego-piso"><strong>Pego para Piso:</strong> 0 sacos</p>
-                <p id="texto-resultado-pared" style="display: none;"><strong>Paredes:</strong> 0 m² = <strong>0 cajas</strong></p>
-                <p id="texto-resultado-pego-pared" style="display: none;"><strong>Pego para Pared:</strong> 0 sacos</p>
             </div>
         </div>
     </div>
