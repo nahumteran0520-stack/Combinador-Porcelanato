@@ -1,489 +1,193 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+// --- BASE DE DATOS DEL CATÁLOGO ---
+const catalogoPorcelanatos = [
+    { id: 'p1', nombre: 'Porcelanato Beige', tipo: 'piso', imagen: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80', m2PorCaja: 1.44 },
+    { id: 'p2', nombre: 'Porcelanato Gris Mármol', tipo: 'piso', imagen: 'https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=300&q=80', m2PorCaja: 1.44 },
+    { id: 'p3', nombre: 'Mármol Carrara Blanco', tipo: 'piso', imagen: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80', m2PorCaja: 1.44 },
+    { id: 'pared1', nombre: 'Cerámica Pared Blanca', tipo: 'pared', imagen: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=300&q=80', m2PorCaja: 1.50 }
+];
 
-body {
-    background-color: #f4f7f6;
-    color: #333;
-}
+let ambienteActual = 'sala';
+let zonaSeleccionada = 'piso';
+let anguloGiro = 0;
+let productoPisoSeleccionado = catalogoPorcelanatos[0];
+let productoParedSeleccionado = null;
 
-.vista {
-    display: none;
-    min-height: 100vh;
-    width: 100vw;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.vista.activa {
-    display: block; /* Muestra la vista de forma natural sin forzar un flex centrado global */
-}
-
-/* Permitir que el menú principal sí use flex centrado de forma específica */
-#vista-menu.vista.activa {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Menú Principal */
-.menu-container {
-    text-align: center;
-    max-width: 900px;
-}
-
-.menu-container h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #2c3e50;
-}
-
-.menu-container p {
-    color: #7f8c8d;
-    margin-bottom: 30px;
-}
-
-.grid-opciones {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.tarjeta-opcion {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.tarjeta-opcion:hover {
-    transform: translateY(-5px);
-}
-
-.tarjeta-opcion img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.tarjeta-opcion h3 {
-    padding: 15px;
-    color: #2c3e50;
-}
-
-/* Visualizador */
-#vista-visualizador {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.visualizador-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.vis-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 15px;
-}
-
-.vis-content {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 20px;
-    flex: 1;
-    height: calc(100% - 60px);
-}
-
-/* Controles de Rotación Flotantes */
-.controles-rotacion {
-    position: absolute !important;
-    top: 15px !important;
-    right: 15px !important;
-    display: flex !important;
-    gap: 5px !important;
-    z-index: 9999 !important;
-}
-
-.controles-rotacion button {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid #bbb !important;
-    padding: 6px 10px !important;
-    border-radius: 5px !important;
-    cursor: pointer !important;
-    font-size: 11px !important;
-    font-weight: bold !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
-}
-
-.controles-rotacion button:hover {
-    background: #ffffff !important;
-    border-color: #3498db !important;
-    color: #3498db !important;
-}
-
-/* Escenario y Capas Transparentes */
-.escenario-container {
-    position: relative !important;
-    background-color: #F4F6F6;
-    border-radius: 10px;
-    overflow: hidden !important;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-}
-
-#capa-piso {
-    position: absolute;
-    bottom: -25px;
-    left: -40%;
-    width: 190%;
-    height: 200%;
-    z-index: 1;
-    background-repeat: repeat !important;
-    background-size: 230px 230px !important; 
-    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
-    transform-origin: bottom center;
-}
-
-.capa-imagen-base {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: 5 !important;
-    pointer-events: none !important;
-    display: block !important;
-}
-
-#capa-paredes {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.escenario-sala .capa-imagen-base {
-    background-image: url('sala.png') !important;
-}
-
-.escenario-habitacion {
-    background-color: transparent !important;
-}
-
-.escenario-habitacion .capa-imagen-base {
-    background-image: url('habitacion.png') !important;
-    background-color: transparent !important;
-}
-
-.escenario-bano .capa-imagen-base {
-    background-image: url('baño.png') !important;
-}
-
-/* Catálogo Lateral */
-.catalogo-lateral {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    z-index: 10;
-}
-
-.selector-zona {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.btn-zona {
-    flex: 1;
-    padding: 8px;
-    background: #e0e0e0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn-zona.activo {
-    background: #3498db;
-    color: white;
-}
-
-.grid-catalogo {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 5px;
-}
-
-.item-porcelanato {
-    border: 2px solid transparent;
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    background: #f9f9f9;
-    text-align: center;
-}
-
-.item-porcelanato:hover {
-    border-color: #3498db;
-}
-
-.grid-catalogo .item-porcelanato img {
-    width: 100%;
-    height: 105px;
-    object-fit: cover;
-}
-
-.item-porcelanato span {
-    font-size: 0.8rem;
-    display: block;
-    padding: 5px;
-}
-
-/* Calculadora */
-.calc-container {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    z-index: 10;
-}
-
-.form-calculadora {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.grupo-input label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.grupo-input input, .grupo-input select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.resultado-calculo {
-    margin-top: 20px;
-    padding: 15px;
-    background: #e8f8f5;
-    border-left: 5px solid #2ecc71;
-    border-radius: 4px;
-}
-
-/* Utilidades */
-.oculto {
-    display: none !important;
-}
-
-.btn-principal {
-    background: #2ecc71;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn-secundario {
-    background: #95a5a6;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.btn-color {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.btn-color:hover {
-    transform: scale(1.1);
-}
-/* Corrección de la Vista Calculadora para que sea un modal centrado con scroll */
-#vista-calculadora.vista.activa {
-    display: flex !important;
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6) !important;
-    z-index: 100000 !important;
-    justify-content: center !important;
-    align-items: center !important;
-    overflow-y: auto !important;
-    padding: 20px !important;
-}
-
-.calc-container {
-    background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 550px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    z-index: 100001;
-    margin: auto;
-}
-.modal-calculadora {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6) !important;
-    z-index: 999999 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    padding: 20px !important;
-}
-
-.modal-calculadora.oculto {
-    display: none !important;
-}
-/* ========================================================== */
-/* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
-/* ========================================================== */
-@media screen and (max-width: 768px) {
-    /* 1. Ajustes generales de vistas */
-    .vista {
-        padding: 10px;
-        box-sizing: border-box;
+// --- NAVEGACIÓN ENTRE VISTAS ---
+function cambiarAmbiente(ambiente) {
+    ambienteActual = ambiente;
+    
+    const vistaMenu = document.getElementById('vista-menu');
+    const vistaVis = document.getElementById('vista-visualizador');
+    
+    if (vistaMenu) vistaMenu.classList.remove('activa');
+    if (vistaVis) vistaVis.classList.add('activa');
+    
+    const titulo = document.getElementById('titulo-ambiente');
+    if (titulo) {
+        titulo.textContent = 'Ambiente: ' + ambiente.charAt(0).toUpperCase() + ambiente.slice(1);
     }
-
-    /* 2. Menú principal en móviles: apilar tarjetas en 1 o 2 columnas si es necesario */
-    .grid-opciones {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        width: 100%;
-        padding: 0 10px;
+    
+    const escenario = document.getElementById('escenario');
+    if (escenario) {
+        escenario.className = 'escenario-container escenario-' + ambiente;
     }
-
-    .menu-container h1 {
-        font-size: 1.8rem;
+    
+    const btnPared = document.getElementById('btn-zona-pared');
+    const grupoParedes = document.getElementById('grupo-paredes');
+    
+    if (ambiente === 'bano') {
+        if (btnPared) btnPared.classList.remove('oculto');
+        if (grupoParedes) grupoParedes.classList.remove('oculto');
+    } else {
+        if (btnPared) btnPared.classList.add('oculto');
+        if (grupoParedes) grupoParedes.classList.add('oculto');
+        seleccionarZona('piso');
     }
+    
+    cargarCatalogo();
+}
 
-    /* 3. Visualizador interactivo: pasar de columnas a filas (escenario arriba, catálogo abajo) */
-    .vis-content {
-        grid-template-columns: 1fr !important;
-        grid-template-rows: auto auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 15px !important;
-        height: auto !important;
-        flex: none !important;
-    }
+function volverMenu() {
+    const vistaMenu = document.getElementById('vista-menu');
+    const vistaVis = document.getElementById('vista-visualizador');
+    
+    if (vistaVis) vistaVis.classList.remove('activa');
+    if (vistaMenu) vistaMenu.classList.add('activa');
+}
 
-    /* Permitir scroll en la página del visualizador en móviles */
-    #vista-visualizador {
-        height: auto !important;
-        min-height: 100vh;
-        overflow-y: auto !important;
+// --- ROTACIÓN DEL PISO ---
+function girarPiso(direccion) {
+    const capaPiso = document.getElementById('capa-piso');
+    if (!capaPiso) return;
+    
+    if (direccion === 'izquierda') {
+        anguloGiro -= 45;
+    } else if (direccion === 'derecha') {
+        anguloGiro += 45;
+    } else if (direccion === 'reset') {
+        anguloGiro = 0;
     }
+    
+    capaPiso.style.transform = `perspective(350px) rotateX(42deg) scaleX(1.45) rotate(${anguloGiro}deg)`;
+}
 
-    .visualizador-container {
-        height: auto !important;
-    }
-
-    /* 4. Reducir el alto del escenario 3D para que la pantalla del celular lo abarque bien */
-    .escenario-container {
-        width: 100% !important;
-        height: 260px !important;
-        min-height: 260px !important;
-    }
-
-    /* 5. Catálogo lateral adaptado al ancho del celular */
-    .catalogo-lateral {
-        width: 100% !important;
-        max-height: none !important;
-        box-sizing: border-box;
-    }
-
-    /* Cuadrícula del catálogo a 2 columnas para aprovechar mejor el espacio vertical */
-    .grid-catalogo {
-        grid-template-columns: repeat(2, 1fr) !important;
-        max-height: 220px !important;
-    }
-
-    /* 6. Reacomodar la barra superior (Header del visualizador) */
-    .vis-header {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 10px !important;
-    }
-
-    .vis-header h2 {
-        text-align: center;
-        font-size: 1rem !important;
-    }
-
-    .vis-header > div {
-        justify-content: center !important;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-
-    /* 7. Ajustar el modal de la calculadora en pantallas pequeñas */
-    .modal-calculadora {
-        padding: 10px !important;
-        align-items: flex-start !important;
-        overflow-y: auto !important;
-    }
-
-    .calc-container {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 20px auto !important;
-        padding: 15px !important;
-        max-height: none !important;
-    }
-    /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
-    #capa-piso {
-        background-size: 90px 90px !important; /* Reduce el patrón para que se vea más real y pequeño */
-        bottom: -15px !important;
-        left: -30% !important;
-        width: 90% !important;
+// --- CAMBIO DE COLOR DE PARED ---
+function cambiarColorPared(color) {
+    const capaParedes = document.getElementById('capa-paredes');
+    if (capaParedes) {
+        capaParedes.style.backgroundColor = color;
+        capaParedes.style.backgroundImage = 'none';
     }
 }
+
+// --- SELECCIÓN Y CÁTALOGO ---
+function seleccionarZona(zona) {
+    zonaSeleccionada = zona;
+    const btns = document.querySelectorAll('.btn-zona');
+    btns.forEach(btn => btn.classList.remove('activo'));
+    
+    if (zona === 'piso') {
+        const btnPiso = document.querySelector('.btn-zona[onclick*="piso"]');
+        if (btnPiso) btnPiso.classList.add('activo');
+    } else if (zona === 'pared') {
+        const btnPared = document.getElementById('btn-zona-pared');
+        if (btnPared) btnPared.classList.add('activo');
+    }
+    
+    cargarCatalogo();
+}
+
+function cargarCatalogo() {
+    const grid = document.getElementById('grid-catalogo');
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    const productosFiltrados = catalogoPorcelanatos.filter(item => item.tipo === zonaSeleccionada);
+    
+    productosFiltrados.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'item-porcelanato';
+        card.onclick = () => aplicarPorcelanato(prod);
+        card.innerHTML = `
+            <img src="${prod.imagen}" alt="${prod.nombre}">
+            <span>${prod.nombre}</span>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function aplicarPorcelanato(producto) {
+    if (producto.tipo === 'piso') {
+        productoPisoSeleccionado = producto;
+        const capaPiso = document.getElementById('capa-piso');
+        if (capaPiso) {
+            capaPiso.style.backgroundImage = `url('${producto.imagen}')`;
+        }
+    } else if (producto.tipo === 'pared') {
+        productoParedSeleccionado = producto;
+        const capaParedes = document.getElementById('capa-paredes');
+        if (capaParedes) {
+            capaParedes.style.backgroundImage = `url('${producto.imagen}')`;
+            capaParedes.style.backgroundColor = 'transparent';
+        }
+    }
+}
+
+// --- CALCULADORA ---
+function abrirCalculadora() {
+    const modal = document.getElementById('modal-calculadora');
+    const spanAmbiente = document.getElementById('span-nombre-ambiente');
+    if (spanAmbiente) spanAmbiente.textContent = ambienteActual;
+    if (modal) modal.classList.remove('oculto');
+}
+
+function cerrarCalculadora() {
+    const modal = document.getElementById('modal-calculadora');
+    if (modal) modal.classList.add('oculto');
+}
+
+function calcularMateriales() {
+    const largo = parseFloat(document.getElementById('input-largo')?.value) || 0;
+    const ancho = parseFloat(document.getElementById('input-ancho')?.value) || 0;
+    const alto = parseFloat(document.getElementById('input-alto')?.value) || 0;
+    const pegoTipo = parseFloat(document.getElementById('select-pego')?.value) || 14;
+    
+    const coberturaPego = pegoTipo === 14 ? 1.5 : 1.0;
+    
+    const areaPiso = largo * ancho;
+    const rendimientoPiso = productoPisoSeleccionado ? productoPisoSeleccionado.m2PorCaja : 1.44;
+    const cajasPiso = areaPiso > 0 ? Math.ceil(areaPiso / rendimientoPiso) : 0;
+    const sacosPegoPiso = areaPiso > 0 ? Math.ceil(areaPiso / coberturaPego) : 0;
+    
+    const txtPiso = document.getElementById('texto-resultado-piso');
+    const txtPegoPiso = document.getElementById('texto-resultado-pego-piso');
+    
+    if (txtPiso) txtPiso.innerHTML = `<strong>Piso:</strong> ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong>`;
+    if (txtPegoPiso) txtPegoPiso.innerHTML = `<strong>Pego para Piso:</strong> ${sacosPegoPiso} sacos`;
+    
+    if (ambienteActual === 'bano' && alto > 0) {
+        const perimetro = (largo + ancho) * 2;
+        const areaParedes = perimetro * alto;
+        const rendimientoPared = productoParedSeleccionado ? productoParedSeleccionado.m2PorCaja : 1.5;
+        const cajasPared = Math.ceil(areaParedes / rendimientoPared);
+        const sacosPegoPared = Math.ceil(areaParedes / coberturaPego);
+        
+        const txtPared = document.getElementById('texto-resultado-pared');
+        const txtPegoPared = document.getElementById('texto-resultado-pego-pared');
+        
+        if (txtPared) {
+            txtPared.style.display = 'block';
+            txtPared.innerHTML = `<strong>Paredes:</strong> ${areaParedes.toFixed(2)} m² = <strong>${cajasPared} cajas</strong>`;
+        }
+        if (txtPegoPared) {
+            txtPegoPared.style.display = 'block';
+            txtPegoPared.innerHTML = `<strong>Pego para Pared:</strong> ${sacosPegoPared} sacos`;
+        }
+    }
+}
+
+// Inicialización automática
+document.addEventListener('DOMContentLoaded', () => {
+    cargarCatalogo();
+});
+
