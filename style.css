@@ -179,45 +179,27 @@ body {
     height: 100% !important;
 }
 
-/* 1. Configuración base general del piso */
+/* Capa del piso corregida y simétrica */
 #capa-piso {
     position: absolute;
     bottom: -10px;
     left: -15%;
     width: 130%;
     height: 180px;
-    z-index: 2; /* Por encima de la imagen base para que tape el piso original de la foto */
+    z-index: 1;
+    
     background-repeat: repeat !important;
     background-size: 190px 190px !important; 
     background-position: center bottom !important;
+    
     transform: perspective(320px) rotateX(50deg) scaleX(1.2);
     transform-origin: bottom center;
+    
     mask-image: none;
     -webkit-mask-image: none;
     pointer-events: none !important;
 }
 
-/* 2. Parámetros exclusivos para la SALA */
-.escenario-sala #capa-piso {
-    bottom: -10px;
-    left: -15%;
-    width: 130%;
-    height: 700px;
-    background-size: 175px 175px !important;
-    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
-}
-
-/* 3. Parámetros exclusivos para la HABITACIÓN */
-.escenario-habitacion #capa-piso {
-    bottom: -20px;
-    left: -35% !important;
-    width: 170% !important;
-    height: 260px !important;
-    background-size: 170px 170px !important; 
-    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
-}
-
-/* Capa de la imagen de fondo (Sala, Habitación, Baño) */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -227,7 +209,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 1 !important; /* Detrás del piso simulado */
+    z-index: 5 !important;
     pointer-events: none !important;
     display: block !important;
 }
@@ -238,7 +220,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 3;
+    z-index: 1;
 }
 
 .escenario-sala .capa-imagen-base {
@@ -422,7 +404,7 @@ body {
 }
 
 /* ========================================================== */
-/* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
+/* ESTILOS ADAPTADOS PARA MÓVILES Y TABLETS PEQUEÑAS */
 /* ========================================================== */
 @media screen and (max-width: 768px) {
     .vista {
@@ -506,10 +488,12 @@ body {
         left: -80% !important;
         width: 260% !important;
         height: 260% !important;
-        z-index: 2 !important;
+        z-index: 1 !important;
+        
         background-repeat: repeat !important;
         background-size: 80px 80px !important;
         pointer-events: none !important;
+        
         transform: perspective(300px) rotateX(50deg) scaleX(1.8) !important;
         transform-origin: bottom center !important;
     }
