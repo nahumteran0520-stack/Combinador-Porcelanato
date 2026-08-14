@@ -199,6 +199,7 @@ function girarPiso(direccion) {
     capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
     capaPiso.style.transformOrigin = "bottom center";
 }
+
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
