@@ -160,14 +160,17 @@ let estadoRotacion = 0;
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     
-    // Dependiendo de cómo apliques la rotación (clases o estilos en línea),
-    // asegúrate de conservar siempre el background-size original:
+    // 1. Definimos la base inamovible (PERSPECTIVA + ESCALA)
+    // Usamos los valores que te funcionan bien en CSS
+    const baseTransform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    
+    // 2. Gestionamos el giro según el botón
     if (direccion === 'izquierda') {
-        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(90deg)";
+        capaPiso.style.transform = baseTransform + " rotate(90deg)";
     } else if (direccion === 'derecha') {
-        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(-90deg)";
+        capaPiso.style.transform = baseTransform + " rotate(-90deg)";
     } else {
-        capaPiso.style.transform = "perspective(300px) rotateX(50deg) scaleX(1.45) rotate(0deg)";
+        capaPiso.style.transform = baseTransform + " rotate(0deg)";
     }
 }
 
