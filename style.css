@@ -179,17 +179,23 @@ body {
     height: 100% !important;
 }
 
+/* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
     bottom: -25px;
-    left: -40%;
-    width: 190%;
-    height: 200%;
+    left: -50%;
+    width: 200%;
+    height: 160%;
     z-index: 1;
+    
     background-repeat: repeat !important;
-    background-size: 190px 190px !important; 
+    background-size: 230px 230px !important; 
+    
     transform: perspective(350px) rotateX(42deg) scaleX(1.45);
     transform-origin: bottom center;
+    
+    mask-image: none;
+    -webkit-mask-image: none;
 }
 
 .capa-imagen-base {
