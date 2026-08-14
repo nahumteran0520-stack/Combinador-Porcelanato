@@ -170,15 +170,20 @@ function girarPiso(direccion) {
     if (!capaPiso) return;
     
     if (direccion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 90) % 360;
+        estadoRotacion = (estadoRotacion + 1) % 4;
     } else if (direccion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 90) % 360;
+        estadoRotacion = (estadoRotacion - 3 + 4) % 4;
     } else {
-        estadoRotacion = 0; // Frente / Reset
+        estadoRotacion = 0; 
     }
 
-    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(${estadoRotacion}deg)`;
-    capaPiso.style.transformOrigin = 'bottom center';
+    const posicionesX = ['0px', '100px', '200px', '300px'];
+    const posicionesY = ['0px', '100px', '200px', '300px'];
+    
+    // Mueve el fondo para simular el giro respetando la perspectiva 3D fija
+    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    capaPiso.style.transformOrigin = "bottom center";
 }
 
 function calcularMateriales() {
