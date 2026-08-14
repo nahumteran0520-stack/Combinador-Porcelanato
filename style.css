@@ -209,16 +209,16 @@ body {
     transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
 }
 
-/* 3. Parámetros exclusivos para la HABITACIÓN */
-.escenario-habitacion #capa-piso {
+escenario-sala #capa-piso {
     position: absolute;
-    bottom: 0px !important;     /* Pegado al borde inferior de la imagen */
-    left: 0px !important;       /* Ocupa todo el ancho */
-    width: 100% !important;     
-    height: 31% !important;     /* Altura justa de la franja del piso inferior */
-    background-size: 140px 140px !important; 
-    transform: none !important; 
-}
+    bottom: -5px;
+    left: -15%;
+    width: 130%;
+    height: 700px;
+    z-index: 1;
+    background-size: 170px 170px !important; 
+    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;   
+
 /* Capa de la imagen de fondo (Sala, Habitación, Baño) */
 .capa-imagen-base {
     position: absolute;
