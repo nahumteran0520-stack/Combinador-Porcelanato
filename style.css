@@ -382,3 +382,101 @@ body {
 .modal-calculadora.oculto {
     display: none !important;
 }
+/* ========================================================== */
+/* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
+/* ========================================================== */
+@media screen and (max-width: 768px) {
+    /* 1. Ajustes generales de vistas */
+    .vista {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* 2. Menú principal en móviles: apilar tarjetas en 1 o 2 columnas si es necesario */
+    .grid-opciones {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .menu-container h1 {
+        font-size: 1.8rem;
+    }
+
+    /* 3. Visualizador interactivo: pasar de columnas a filas (escenario arriba, catálogo abajo) */
+    .vis-content {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        height: auto !important;
+        flex: none !important;
+    }
+
+    /* Permitir scroll en la página del visualizador en móviles */
+    #vista-visualizador {
+        height: auto !important;
+        min-height: 100vh;
+        overflow-y: auto !important;
+    }
+
+    .visualizador-container {
+        height: auto !important;
+    }
+
+    /* 4. Reducir el alto del escenario 3D para que la pantalla del celular lo abarque bien */
+    .escenario-container {
+        width: 100% !important;
+        height: 260px !important;
+        min-height: 260px !important;
+    }
+
+    /* 5. Catálogo lateral adaptado al ancho del celular */
+    .catalogo-lateral {
+        width: 100% !important;
+        max-height: none !important;
+        box-sizing: border-box;
+    }
+
+    /* Cuadrícula del catálogo a 2 columnas para aprovechar mejor el espacio vertical */
+    .grid-catalogo {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-height: 220px !important;
+    }
+
+    /* 6. Reacomodar la barra superior (Header del visualizador) */
+    .vis-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .vis-header h2 {
+        text-align: center;
+        font-size: 1rem !important;
+    }
+
+    .vis-header > div {
+        justify-content: center !important;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    /* 7. Ajustar el modal de la calculadora en pantallas pequeñas */
+    .modal-calculadora {
+        padding: 10px !important;
+        align-items: flex-start !important;
+        overflow-y: auto !important;
+    }
+
+    .calc-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 20px auto !important;
+        padding: 15px !important;
+        max-height: none !important;
+    }
+}
