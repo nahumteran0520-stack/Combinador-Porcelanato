@@ -155,16 +155,12 @@ function cambiarColorPared(colorHex) {
     }
 }
 
-let estadoRotacion = 0;
-
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
+    if (!capaPiso) return;
     
-    // 1. Definimos la base inamovible (PERSPECTIVA + ESCALA)
-    // Usamos los valores que te funcionan bien en CSS
     const baseTransform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
     
-    // 2. Gestionamos el giro según el botón
     if (direccion === 'izquierda') {
         capaPiso.style.transform = baseTransform + " rotate(90deg)";
     } else if (direccion === 'derecha') {
@@ -172,11 +168,6 @@ function girarPiso(direccion) {
     } else {
         capaPiso.style.transform = baseTransform + " rotate(0deg)";
     }
-}
-    
-    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-    capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
-    capaPiso.style.transition = 'none';
 }
 
 function calcularMateriales() {
@@ -194,9 +185,7 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-
     const m2PorCaja = 1.44; 
-    // Se calcula directo con el área real (sin multiplicar por 1.10)
     const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
@@ -219,3 +208,4 @@ function calcularMateriales() {
         resultadoCalculo.style.display = 'block';
     }
 }
+
