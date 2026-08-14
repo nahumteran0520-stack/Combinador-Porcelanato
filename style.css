@@ -521,4 +521,11 @@ body {
         -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
         mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
     }
+/* Ajuste específico para pantallas de dispositivos móviles o más estrechas */
+@media (max-width: 768px) {
+    #capa-piso {
+        bottom: -20px !important;
+        height: 150% !important;
+        transform: perspective(250px) rotateX(45deg) scaleX(1.2) !important;
+    }
 }
