@@ -30,17 +30,17 @@
         </div>
     </section>
 
-    <!-- VISTA 2: VISUALIZADOR INTERACTIVO (Diseño de 3 columnas para PC) -->
+    <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
     <section id="vista-visualizador" class="vista">
         <div class="visualizador-container">
             <header class="vis-header">
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
                 <h2 id="titulo-ambiente">Ambiente</h2>
-                <button class="btn-principal" onclick="abrirCalculadora()">Calcular Materiales →</button>
+                <div></div> <!-- Espaciador para centrar el título -->
             </header>
 
             <div class="vis-content">
-               <!-- Columna Izquierda: Botón Calculadora, Rotación y Paleta de Colores -->
+                <!-- Columna Izquierda: Botón Calculadora, Rotación y Paleta de Colores -->
                 <aside class="panel-controles-izq">
                     <div class="tarjeta-panel">
                         <button class="btn-principal" style="width: 100%; text-align: center; cursor: pointer;" onclick="abrirCalculadora()">🧮 Calcular Materiales</button>
@@ -71,7 +71,6 @@
                     </div>
                 </aside>
 
-        
                 <!-- Columna Central: Escenario 3D -->
                 <div class="escenario-container" id="escenario">
                     <div id="capa-piso"></div>
@@ -81,10 +80,15 @@
 
                 <!-- Columna Derecha: Catálogo de Porcelanatos -->
                 <aside class="catalogo-lateral">
-                    <h3>Catálogo de Porcelanatos</h3>
+                    <h3>Catálogo de Materiales</h3>
                     <div class="selector-zona">
                         <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
                         <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+                    </div>
+                    <!-- Pestañas internas para Porcelanatos y Cerámicas -->
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                        <button class="btn-secundario" style="flex:1; padding:4px; font-size:11px;" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
+                        <button class="btn-secundario" style="flex:1; padding:4px; font-size:11px;" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
                     </div>
                     <div class="grid-catalogo" id="grid-catalogo"></div>
                 </aside>
@@ -97,7 +101,7 @@
         <div class="calc-container">
             <button class="btn-secundario" onclick="cerrarCalculadora()">← Volver al Simulador</button>
             <h2>Calculadora de Materiales</h2>
-            <p>Calcula la cantidad exacta de cajas de porcelanato y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
+            <p>Calcula la cantidad exacta de cajas y sacos de pego necesarios para tu <span id="span-nombre-ambiente">espacio</span>.</p>
             
             <div class="form-calculadora">
                 <div class="grupo-input">
