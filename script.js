@@ -126,22 +126,55 @@ function seleccionarZona(zona) {
 }
 
 function cargarCatalogo() {
+    const contenedorCatalogo = document.getElementById('grid-catalogo').parentNode;
+    if (!contenedorCatalogo) return;
+
+    // Verificamos si ya existen las pestañas del selector, si no, las creamos dinámicamente arriba del grid
+    let selectorTabs = document.getElementById('selector-tipo-material');
+    if (!selectorTabs) {
+        selectorTabs = document.createElement('div');
+        selectorTabs.id = 'selector-tipo-material';
+        selectorTabs.className = 'selector-zona'; // Reutilizamos estilos de pestañas
+        selectorTabs.style.marginBottom = '10px';
+        selectorTabs.innerHTML = `
+            <button type="button" id="tab-porcelanato" class="btn-zona activo" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
+            <button type="button" id="tab-ceramica" class="btn-zona" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
+        `;
+        const grid = document.getElementById('grid-catalogo');
+        grid.parentNode.insertBefore(selectorTabs, grid);
+    }
+
+    renderizarGridCatalogo();
+}
+
+function filtrarTipoMaterial(tipo) {
+    tipoMaterialSeleccionado = tipo;
+    document.getElementById('tab-porcelanato').classList.toggle('activo', tipo === 'porcelanato');
+    document.getElementById('tab-ceramica').classList.toggle('activo', tipo === 'ceramica');
+    renderizarGridCatalogo();
+}
+
+function renderizarGridCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
     grid.innerHTML = '';
 
-    catalogoPorcelanatos.forEach(item => {
+    const filtrados = catalogoMateriales.filter(item => item.tipo === tipoMaterialSeleccionado);
+
+    filtrados.forEach(item => {
         const div = document.createElement('div');
         div.className = 'item-porcelanato';
         div.innerHTML = `
             <img src="${item.url}" alt="${item.nombre}">
             <span>${item.nombre}</span>
         `;
-        div.addEventListener('click', () => aplicarTextura(item.url));
+        div.addEventListener('click', () => {
+            materialActivoActual = item; // Guardamos el material activo para la calculadora
+            aplicarTextura(item.url);
+        });
         grid.appendChild(div);
     });
 }
-
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -235,7 +268,11 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-    const m2PorCaja = 1.44; 
+    
+    // Asignación dinámica de rendimiento según el material seleccionado
+    const m2PorCaja = (materialActivoActual && materialActivoActual.tipo === 'ceramica') ? 1.77 : 1.44; 
+    const nombreMaterial = (materialActivoActual && materialActivoActual.tipo === 'ceramica') ? 'Cerámica' : 'Porcelanato';
+    
     const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
@@ -245,7 +282,7 @@ function calcularMateriales() {
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
 
     if (textoPiso) {
-        textoPiso.innerHTML = `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
+        textoPiso.innerHTML = `<strong>${nombreMaterial}:</strong> Área de ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong> (${m2PorCaja} m²/caja).`;
     }
     
     if (textoPegoPiso) {
@@ -257,4 +294,5 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
+}
 }
