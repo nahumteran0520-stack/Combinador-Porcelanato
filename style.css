@@ -511,7 +511,7 @@ body {
     }
   /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
     #capa-piso {
-        background-size: 80px 80px !important; /* Reduce el patrón para que se vea más real y pequeño */
+        background-size: 50px 50px !important; /* Reduce el patrón para que se vea más real y pequeño */
         bottom: -15px !important;
         left: -30% !important;
         width: 160% !important;
