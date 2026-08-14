@@ -22,8 +22,9 @@ const catalogoMateriales = [
    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
    { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
    { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
-   { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
-];
+   // Ejemplo de la nueva cerámica tipo madera formato tablón (0.24 x 1.20)
+    { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
+]; 
 
 document.addEventListener('DOMContentLoaded', () => {
     const btnCalcular = document.querySelector('.btn-calcular');
@@ -202,8 +203,17 @@ function aplicarTextura(urlImagen) {
     if (capa) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '200px 200px'; 
-        capa.style.backgroundPosition = '0px 0px';
+        
+        // Verificamos si el material activo es el formato tablón alargado (0.24 x 1.20)
+        if (materialActivoActual && materialActivoActual.formato === 'tablon') {
+            // Proporción rectangular ajustada para que luzca como listón de madera en perspectiva
+            capa.style.backgroundSize = '120px 300px'; 
+        } else {
+            // Tamaño estándar para los formatos cuadrados o cerámicas normales
+            capa.style.backgroundSize = '200px 200px'; 
+        }
+        
+        capa.style.backgroundPosition = 'center bottom';
     }
 }
 
