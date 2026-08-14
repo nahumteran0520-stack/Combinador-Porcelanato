@@ -426,7 +426,7 @@ body {
         box-sizing: border-box;
     }
 
-    /* 2. Menú principal en móviles: apilar tarjetas en 1 o 2 columnas si es necesario */
+    /* 2. Menú principal en móviles */
     .grid-opciones {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -438,7 +438,7 @@ body {
         font-size: 1.8rem;
     }
 
-    /* 3. Visualizador interactivo: pasar de columnas a filas (escenario arriba, catálogo abajo) */
+    /* 3. Visualizador interactivo en filas */
     .vis-content {
         grid-template-columns: 1fr !important;
         grid-template-rows: auto auto !important;
@@ -449,7 +449,6 @@ body {
         flex: none !important;
     }
 
-    /* Permitir scroll en la página del visualizador en móviles */
     #vista-visualizador {
         height: auto !important;
         min-height: 100vh;
@@ -460,27 +459,38 @@ body {
         height: auto !important;
     }
 
-    /* 4. Reducir el alto del escenario 3D para que la pantalla del celular lo abarque bien */
+    /* 4. Alto del escenario 3D en móvil */
     .escenario-container {
         width: 100% !important;
-        height: 260px !important;
-        min-height: 260px !important;
+        height: 280px !important;
+        min-height: 280px !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
 
-    /* 5. Catálogo lateral adaptado al ancho del celular */
+    /* 5. Asegurar que los botones y controles de rotación sean clickeables y estén por encima */
+    .controles-rotacion-panel,
+    .controles-rotacion-panel button,
+    .tarjeta-panel button,
+    .vis-header button {
+        position: relative !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+    }
+
+    /* 6. Catálogo lateral adaptado */
     .catalogo-lateral {
         width: 100% !important;
         max-height: none !important;
         box-sizing: border-box;
     }
 
-    /* Cuadrícula del catálogo a 2 columnas para aprovechar mejor el espacio vertical */
     .grid-catalogo {
         grid-template-columns: repeat(2, 1fr) !important;
         max-height: 220px !important;
     }
 
-    /* 6. Reacomodar la barra superior (Header del visualizador) */
+    /* 7. Reacomodar Header */
     .vis-header {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -492,14 +502,24 @@ body {
         font-size: 1rem !important;
     }
 
-    .vis-header > div {
-        justify-content: center !important;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
+    /* 8. Ajuste definitivo y unificado de la capa de piso en móviles */
+    #capa-piso {
+        position: absolute !important;
+        bottom: -60px !important;
+        left: -80% !important;
+        width: 260% !important;
+        height: 260% !important;
+        z-index: 1 !important;
+        
+        background-repeat: repeat !important;
+        background-size: 80px 80px !important; /* Textura proporcionada para móvil */
+        pointer-events: none !important; /* Crucial: permite que los toques atraviesen el piso hacia los botones */
+        
+        transform: perspective(300px) rotateX(50deg) scaleX(1.8) !important;
+        transform-origin: bottom center !important;
     }
 
-    /* 7. Ajustar el modal de la calculadora en pantallas pequeñas */
+    /* 9. Ajuste del modal en móvil */
     .modal-calculadora {
         padding: 10px !important;
         align-items: flex-start !important;
@@ -512,24 +532,5 @@ body {
         margin: 20px auto !important;
         padding: 15px !important;
         max-height: none !important;
-    }
-  /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
-    #capa-piso {
-        background-size: 50px 50px !important; /* Reduce el patrón para que se vea más real y pequeño */
-        bottom: -15px !important;
-        left: -30% !important;
-        width: 160% !important;
-        transform: perspective(470px) rotateX(63deg) scaleX(1.95) !important;
-        transform-origin: bottom center !important;
-        
-        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
-        mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
-    }
-/* Ajuste específico para pantallas de dispositivos móviles o más estrechas */
-@media (max-width: 768px) {
-    #capa-piso {
-        bottom: -20px !important;
-        height: 150% !important;
-        transform: perspective(250px) rotateX(45deg) scaleX(1.2) !important;
     }
 }
