@@ -48,6 +48,12 @@ function cambiarAmbiente(ambiente) {
     ambienteActual = ambiente;
     const escenario = document.getElementById('escenario');
     const btnZonaPared = document.getElementById('btn-zona-pared');
+    const capaPiso = document.getElementById('capa-piso');
+    
+    // EL PISO NACE LIMPIO AL CAMBIAR DE AMBIENTE
+    if (capaPiso) {
+        capaPiso.style.backgroundImage = 'none';
+    }
     
     if (escenario) {
         escenario.className = 'escenario-container';
@@ -70,20 +76,16 @@ function cambiarAmbiente(ambiente) {
     if (spanNombre) spanNombre.innerText = ambiente;
 
     estadoRotacion = 0;
-    const capaPiso = document.getElementById('capa-piso');
     if (capaPiso) {
         capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(0deg)`;
         capaPiso.style.transformOrigin = 'bottom center';
     }
 
-    // Por defecto inicia en porcelanato y selecciona el primero
+    // Dejamos seleccionada la pestaña por defecto sin aplicar textura forzada para que inicie limpio
     tipoMaterialSeleccionado = 'porcelanato';
     materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
 
     cargarCatalogo();
-    if (materialActivoActual) {
-        aplicarTextura(materialActivoActual.url);
-    }
     cambiarVista('vista-visualizador');
 }
 
@@ -276,7 +278,6 @@ function girarPiso(direccion) {
         capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capaPiso.style.backgroundRepeat = 'repeat';
         
-        // Corrección: Respeta el tamaño del tablón o usa el estándar de 200px
         if (materialActivoActual && materialActivoActual.formato === 'tablon') {
             capaPiso.style.backgroundSize = '120px 300px';
         } else {
