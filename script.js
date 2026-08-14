@@ -18,7 +18,7 @@ const catalogoMateriales = [
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
     
     // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
-   { id: 9, nombre: 'Arce Gris', tipo: 'porcelanato', url: 'arcegris-230.jpg' },
+   { id: 1, nombre: 'Arce Gris', tipo: 'porcelanato', url: 'arcegris-230.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
