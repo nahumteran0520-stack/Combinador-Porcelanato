@@ -180,14 +180,36 @@ body {
 }
 
 /* Capa del piso con cobertura completa y la perspectiva exacta */
-   .escenario-sala #capa-piso {
+  /* 1. Configuración base general del piso (por si acaso) */
+#capa-piso {
     position: absolute;
     bottom: -10px;
     left: -15%;
     width: 130%;
-    height: 700px;
+    height: 180px;
     z-index: 1;
-    .escenario-habitacion #capa-piso {
+    background-repeat: repeat !important;
+    background-size: 190px 190px !important; 
+    background-position: center bottom !important;
+    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
+    transform-origin: bottom center;
+    mask-image: none;
+    -webkit-mask-image: none;
+    pointer-events: none !important;
+}
+
+/* 2. Parámetros exclusivos para la SALA (tal como lo tienes ahora) */
+.escenario-sala #capa-piso {
+    bottom: -10px;
+    left: -15%;
+    width: 130%;
+    height: 700px;
+    background-size: 175px 175px !important;
+    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
+}
+
+/* 3. Parámetros exclusivos para la HABITACIÓN (más profundo y ancho para cubrir toda la base de la cama) */
+.escenario-habitacion #capa-piso {
     bottom: -20px;
     left: -35% !important;
     width: 170% !important;
