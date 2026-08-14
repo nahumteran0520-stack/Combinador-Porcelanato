@@ -15,12 +15,11 @@ const catalogoMateriales = [
     { id: 6, nombre: 'Super Blanco', tipo: 'porcelanato', url: 'piso-superblanco-345.jpg' },
     { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
-    
     { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
     { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
     { id: 12, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
     { id: 13, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
-    { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg', formato: 'tablon' },
+    { id: 14, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg', formato: 'tablon' }
 ]; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,7 +46,6 @@ function cambiarAmbiente(ambiente) {
     const capaPiso = document.getElementById('capa-piso');
     const capaParedes = document.getElementById('capa-paredes');
     
-    // Inicia limpio y en blanco
     if (capaPiso) capaPiso.style.backgroundImage = 'none';
     if (capaParedes) capaParedes.style.backgroundImage = 'none';
     
@@ -141,24 +139,6 @@ function seleccionarZona(zona) {
 function cargarCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
-
-    let contenedorPadre = grid.parentNode;
-    let selectorTabs = document.getElementById('selector-tipo-material');
-    
-    if (!selectorTabs) {
-        selectorTabs = document.createElement('div');
-        selectorTabs.id = 'selector-tipo-material';
-        selectorTabs.className = 'selector-zona';
-        selectorTabs.style.marginBottom = '12px';
-        selectorTabs.style.display = 'flex';
-        selectorTabs.style.gap = '8px';
-        selectorTabs.innerHTML = `
-            <button type="button" id="tab-porcelanato" class="btn-zona activo" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
-            <button type="button" id="tab-ceramica" class="btn-zona" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
-        `;
-        contenedorPadre.insertBefore(selectorTabs, grid);
-    }
-
     renderizarGridCatalogo();
 }
 
@@ -297,11 +277,9 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-    
     const esCeramica = materialActivoActual && materialActivoActual.tipo === 'ceramica';
     const m2PorCaja = esCeramica ? 1.77 : 1.44; 
     const nombreMaterial = esCeramica ? 'Cerámica' : 'Porcelanato';
-    
     const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
