@@ -16,10 +16,9 @@ const catalogoMateriales = [
     { id: 6, nombre: 'Super Blanco', tipo: 'porcelanato', url: 'piso-superblanco-345.jpg' },
     { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
-    { id: 9, nombre: 'Arce Gris', tipo: 'porcelanato', url: 'arcegris-230.jpg' },
     
     // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
-    { id: 10, nombre: 'Baldosa Nueva', tipo: 'ceramica', url: 'tu-imagen-ceramica.jpg' }
+   { id: 9, nombre: 'Arce Gris', tipo: 'porcelanato', url: 'arcegris-230.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
