@@ -108,7 +108,7 @@ body {
 /* LA MAGIA DE LAS 3 COLUMNAS */
 .vis-content {
     display: grid !important;
-    grid-template-columns: 260px 1fr 300px !important; /* Izquierda: Controles | Centro: Escenario | Derecha: Catálogo */
+    grid-template-columns: 260px 1fr 300px !important;
     gap: 20px !important;
     align-items: stretch;
     flex: 1;
@@ -179,15 +179,14 @@ body {
     height: 100% !important;
 }
 
-/* Capa del piso con cobertura completa y la perspectiva exacta */
-  /* 1. Configuración base general del piso (por si acaso) */
+/* 1. Configuración base general del piso */
 #capa-piso {
     position: absolute;
     bottom: -10px;
     left: -15%;
     width: 130%;
     height: 180px;
-    z-index: 1;
+    z-index: 2; /* Por encima de la imagen base para que tape el piso original de la foto */
     background-repeat: repeat !important;
     background-size: 190px 190px !important; 
     background-position: center bottom !important;
@@ -198,7 +197,7 @@ body {
     pointer-events: none !important;
 }
 
-/* 2. Parámetros exclusivos para la SALA (tal como lo tienes ahora) */
+/* 2. Parámetros exclusivos para la SALA */
 .escenario-sala #capa-piso {
     bottom: -10px;
     left: -15%;
@@ -208,29 +207,17 @@ body {
     transform: perspective(320px) rotateX(50deg) scaleX(1.2);
 }
 
-/* 3. Parámetros exclusivos para la HABITACIÓN (más profundo y ancho para cubrir toda la base de la cama) */
+/* 3. Parámetros exclusivos para la HABITACIÓN */
 .escenario-habitacion #capa-piso {
     bottom: -20px;
     left: -35% !important;
     width: 170% !important;
-    height: 260px !important; /* Se extiende más hacia el fondo */
+    height: 260px !important;
     background-size: 170px 170px !important; 
     transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
 }
-    
-    background-repeat: repeat !important;
-    background-size: 160px 160px !important; 
-    background-position: center bottom !important; /* Centra perfectamente el patrón de las líneas */
-    
-    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
-    transform-origin: bottom center;
-    
-    mask-image: none;
-    -webkit-mask-image: none;
-    pointer-events: none !important;
-}
 
-
+/* Capa de la imagen de fondo (Sala, Habitación, Baño) */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -240,7 +227,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 5 !important;
+    z-index: 1 !important; /* Detrás del piso simulado */
     pointer-events: none !important;
     display: block !important;
 }
@@ -251,7 +238,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 3;
 }
 
 .escenario-sala .capa-imagen-base {
@@ -434,28 +421,15 @@ body {
     display: none !important;
 }
 
-
-/* DISEÑO DE 3 COLUMNAS SOLO PARA PC / ESCRITORIO */
-.vis-content {
-    display: grid;
-    grid-template-columns: 260px 1fr 300px; /* Izquierda: Controles | Centro: Escenario | Derecha: Catálogo */
-    gap: 20px;
-    align-items: stretch;
-    flex: 1;
-    height: calc(100vh - 75px);
-}
-
 /* ========================================================== */
 /* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
 /* ========================================================== */
 @media screen and (max-width: 768px) {
-    /* 1. Ajustes generales de vistas */
     .vista {
         padding: 10px;
         box-sizing: border-box;
     }
 
-    /* 2. Menú principal en móviles */
     .grid-opciones {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -467,7 +441,6 @@ body {
         font-size: 1.8rem;
     }
 
-    /* 3. Visualizador interactivo en filas */
     .vis-content {
         grid-template-columns: 1fr !important;
         grid-template-rows: auto auto !important;
@@ -488,7 +461,6 @@ body {
         height: auto !important;
     }
 
-    /* 4. Alto del escenario 3D en móvil */
     .escenario-container {
         width: 100% !important;
         height: 280px !important;
@@ -497,7 +469,6 @@ body {
         overflow: hidden !important;
     }
 
-    /* 5. Asegurar que los botones y controles de rotación sean clickeables y estén por encima */
     .controles-rotacion-panel,
     .controles-rotacion-panel button,
     .tarjeta-panel button,
@@ -507,7 +478,6 @@ body {
         pointer-events: auto !important;
     }
 
-    /* 6. Catálogo lateral adaptado */
     .catalogo-lateral {
         width: 100% !important;
         max-height: none !important;
@@ -519,7 +489,6 @@ body {
         max-height: 220px !important;
     }
 
-    /* 7. Reacomodar Header */
     .vis-header {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -531,24 +500,20 @@ body {
         font-size: 1rem !important;
     }
 
-    /* 8. Ajuste definitivo y unificado de la capa de piso en móviles */
     #capa-piso {
         position: absolute !important;
         bottom: -60px !important;
         left: -80% !important;
         width: 260% !important;
         height: 260% !important;
-        z-index: 1 !important;
-        
+        z-index: 2 !important;
         background-repeat: repeat !important;
-        background-size: 80px 80px !important; /* Textura proporcionada para móvil */
-        pointer-events: none !important; /* Crucial: permite que los toques atraviesen el piso hacia los botones */
-        
+        background-size: 80px 80px !important;
+        pointer-events: none !important;
         transform: perspective(300px) rotateX(50deg) scaleX(1.8) !important;
         transform-origin: bottom center !important;
     }
 
-    /* 9. Ajuste del modal en móvil */
     .modal-calculadora {
         padding: 10px !important;
         align-items: flex-start !important;
