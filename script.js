@@ -180,18 +180,18 @@ function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
+    // Controla los grados de giro (acumulando 90 grados por cada clic)
     if (direccion === 'izquierda') {
-        estadoRotacion = (estadoRotacion + 1) % 4;
+        estadoRotacion = (estadoRotacion - 90) % 360;
     } else if (direccion === 'derecha') {
-        estadoRotacion = (estadoRotacion - 3 + 4) % 4;
+        estadoRotacion = (estadoRotacion + 90) % 360;
     } else {
-        estadoRotacion = 0; 
+        estadoRotacion = 0; // Frente / Reiniciar
     }
 
-    const posicionesX = ['0px', '100px', '200px', '300px'];
-    const posicionesY = ['0px', '100px', '200px', '300px'];
-    
-    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+    // Aplica la perspectiva 3D original combinada con la rotación de grados
+    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.6) rotate(${estadoRotacion}deg)`;
+    capaPiso.style.transformOrigin = 'bottom center';
 }
 
 function calcularMateriales() {
