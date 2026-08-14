@@ -182,16 +182,16 @@ body {
 /* Capa del piso con cobertura completa y la perspectiva exacta */
 #capa-piso {
     position: absolute;
-    bottom: -50px;
-    left: -50%;
-    width: 200%;
-    height: 350%;
+    bottom: -80px;
+    left: -120%;
+    width: 340%;
+    height: 300%;
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 190px 190px !important; 
+    background-size: 80px 80px !important; 
     
-    transform: perspective(320px) rotateX(50deg) scaleX(1.6);
+    transform: perspective(280px) rotateX(48deg) scaleX(2.0);
     transform-origin: bottom center;
     
     mask-image: none;
