@@ -19,6 +19,7 @@ const catalogoMateriales = [
     
     // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
    { id: 10, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
+   { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-209.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
