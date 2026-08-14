@@ -187,7 +187,7 @@ body {
     height: 200%;
     z-index: 1;
     background-repeat: repeat !important;
-    background-size: 230px 230px !important; 
+    background-size: 190px 190px !important; 
     transform: perspective(350px) rotateX(42deg) scaleX(1.45);
     transform-origin: bottom center;
 }
