@@ -196,6 +196,9 @@ body {
     
     mask-image: none;
     -webkit-mask-image: none;
+
+    pointer-events: none !important; /* ¡Vital para que el piso no tape los clics de los botones! */
+
 }
 
 .capa-imagen-base {
