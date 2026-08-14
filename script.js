@@ -173,9 +173,6 @@ function girarPiso(direccion) {
         capaPiso.style.transform = baseTransform + " rotate(0deg)";
     }
 }
-
-    const posicionesX = ['0px', '90px', '180px', '270px'];
-    const posicionesY = ['0px', '90px', '180px', '270px'];
     
     capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
     capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
