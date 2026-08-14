@@ -396,8 +396,18 @@ body {
 }
 
 
+/* DISEÑO DE 3 COLUMNAS SOLO PARA PC / ESCRITORIO */
+.vis-content {
+    display: grid;
+    grid-template-columns: 260px 1fr 300px; /* Izquierda: Controles | Centro: Escenario | Derecha: Catálogo */
+    gap: 20px;
+    align-items: stretch;
+    flex: 1;
+    height: calc(100vh - 75px);
+}
+
 /* ========================================================== */
-/* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS)         */
+/* VERSIÓN MÓVIL (VUELVE AL DISEÑO ORIGINAL DE ANTES)          */
 /* ========================================================== */
 @media screen and (max-width: 768px) {
     .vista {
@@ -412,7 +422,7 @@ body {
         padding: 0 10px;
     }
 
-    /* Convertir las 3 columnas en una sola columna vertical para móvil */
+    /* Anulamos la grilla de PC en móviles para usar la estructura original */
     .vis-content {
         display: flex !important;
         flex-direction: column !important;
@@ -426,20 +436,18 @@ body {
         overflow-y: auto !important;
     }
 
+    /* Como en tu versión original tenías los controles arriba en el header y el catálogo abajo */
     .panel-controles-izq {
-        order: 2;
-        height: auto;
+        display: none !important; /* Ocultamos el panel izquierdo lateral en celular porque tus botones ya están arriba en el header */
     }
 
     .escenario-container {
-        order: 1;
         width: 100% !important;
-        height: 250px !important;
-        min-height: 250px !important;
+        height: 280px !important;
+        min-height: 280px !important;
     }
 
     .catalogo-lateral {
-        order: 3;
         height: auto !important;
     }
 
@@ -452,7 +460,7 @@ body {
 
     .grid-catalogo {
         grid-template-columns: repeat(2, 1fr) !important;
-        max-height: 200px !important;
+        max-height: 220px !important;
     }
 
     .vis-header {
