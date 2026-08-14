@@ -189,7 +189,7 @@ body {
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 130px 130px !important; 
+    background-size: 140px 140px !important; 
     
     transform: perspective(350px) rotateX(42deg) scaleX(1.45);
     transform-origin: bottom center;
@@ -509,16 +509,16 @@ body {
         padding: 15px !important;
         max-height: none !important;
     }
-    /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
+  /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
     #capa-piso {
         background-size: 80px 80px !important; /* Reduce el patrón para que se vea más real y pequeño */
         bottom: -15px !important;
         left: -30% !important;
         width: 160% !important;
-         transform: perspective(350px) rotateX(42deg) scaleX(1.45);
-    transform-origin: bottom center;
-    
-    mask-image: none;
-    -webkit-mask-image: none;
+        transform: perspective(500px) rotateX(55deg) scaleX(1.8) !important;
+        transform-origin: bottom center !important;
+        
+        -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
+        mask-image: linear-gradient(to top, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%) !important;
     }
 }
