@@ -19,10 +19,9 @@ body {
 }
 
 .vista.activa {
-    display: block; /* Muestra la vista de forma natural sin forzar un flex centrado global */
+    display: block; 
 }
 
-/* Permitir que el menú principal sí use flex centrado de forma específica */
 #vista-menu.vista.activa {
     display: flex;
     flex-direction: column;
@@ -77,12 +76,12 @@ body {
     color: #2c3e50;
 }
 
-/* Visualizador */
+/* Visualizador en 3 Columnas para PC */
 #vista-visualizador {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding: 20px;
+    padding: 15px 20px;
     box-sizing: border-box;
 }
 
@@ -97,66 +96,128 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
+.vis-header h2 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* LA MAGIA DE LAS 3 COLUMNAS */
 .vis-content {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 20px;
+    display: grid !important;
+    grid-template-columns: 260px 1fr 300px !important;
+    gap: 20px !important;
+    align-items: stretch;
     flex: 1;
-    height: calc(100% - 60px);
+    height: calc(100vh - 75px);
 }
 
-/* Controles de Rotación Flotantes */
-.controles-rotacion {
-    position: absolute !important;
-    top: 15px !important;
-    right: 15px !important;
-    display: flex !important;
-    gap: 5px !important;
-    z-index: 9999 !important;
+/* Panel de Controles Izquierdo */
+.panel-controles-izq {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    overflow-y: auto;
 }
 
-.controles-rotacion button {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid #bbb !important;
-    padding: 6px 10px !important;
-    border-radius: 5px !important;
-    cursor: pointer !important;
-    font-size: 11px !important;
-    font-weight: bold !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+.tarjeta-panel {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.controles-rotacion button:hover {
-    background: #ffffff !important;
-    border-color: #3498db !important;
-    color: #3498db !important;
+.tarjeta-panel h3 {
+    font-size: 0.9rem;
+    color: #2c3e50;
+    margin-bottom: 8px;
 }
 
-/* Escenario y Capas Transparentes */
+.controles-rotacion-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.controles-rotacion-panel button {
+    padding: 8px;
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.controles-rotacion-panel button:hover {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.selector-color-pared {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+/* Escenario Central */
 .escenario-container {
     position: relative !important;
     background-color: #F4F6F6;
     border-radius: 10px;
     overflow: hidden !important;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    width: 100% !important;
+    height: 100% !important;
 }
 
+/* 1. Configuración base general del piso */
 #capa-piso {
     position: absolute;
-    bottom: -25px;
-    left: -40%;
-    width: 190%;
-    height: 200%;
-    z-index: 1;
+    bottom: -10px;
+    left: -15%;
+    width: 130%;
+    height: 180px;
+    z-index: 2; /* Por encima de la imagen base para que tape el piso original de la foto */
     background-repeat: repeat !important;
-    background-size: 230px 230px !important; 
-    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
+    background-size: 190px 190px !important; 
+    background-position: center bottom !important;
+    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
     transform-origin: bottom center;
+    mask-image: none;
+    -webkit-mask-image: none;
+    pointer-events: none !important;
 }
 
+/* 2. Parámetros exclusivos para la SALA */
+.escenario-sala #capa-piso {
+    bottom: -10px;
+    left: -15%;
+    width: 130%;
+    height: 700px;
+    background-size: 175px 175px !important;
+    transform: perspective(320px) rotateX(50deg) scaleX(1.2);
+}
+
+/* 3. Parámetros exclusivos para la HABITACIÓN */
+.escenario-habitacion #capa-piso {
+    bottom: -20px;
+    left: -35% !important;
+    width: 170% !important;
+    height: 260px !important;
+    background-size: 170px 170px !important; 
+    transform: perspective(280px) rotateX(46deg) scaleX(1.35) !important;
+}
+
+/* Capa de la imagen de fondo (Sala, Habitación, Baño) */
 .capa-imagen-base {
     position: absolute;
     top: 0;
@@ -166,7 +227,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 5 !important;
+    z-index: 1 !important; /* Detrás del piso simulado */
     pointer-events: none !important;
     display: block !important;
 }
@@ -177,7 +238,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 3;
 }
 
 .escenario-sala .capa-imagen-base {
@@ -197,31 +258,39 @@ body {
     background-image: url('baño.png') !important;
 }
 
-/* Catálogo Lateral */
+/* Catálogo Lateral Derecho */
 .catalogo-lateral {
     background: #fff;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    z-index: 10;
+    height: 100%;
+    overflow: hidden;
+}
+
+.catalogo-lateral h3 {
+    font-size: 0.95rem;
+    color: #2c3e50;
+    margin-bottom: 8px;
 }
 
 .selector-zona {
     display: flex;
-    gap: 10px;
-    margin: 15px 0;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .btn-zona {
     flex: 1;
-    padding: 8px;
+    padding: 6px;
     background: #e0e0e0;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 11px;
 }
 
 .btn-zona.activo {
@@ -232,10 +301,10 @@ body {
 .grid-catalogo {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
     overflow-y: auto;
     flex: 1;
-    padding-right: 5px;
+    padding-right: 4px;
 }
 
 .item-porcelanato {
@@ -253,65 +322,22 @@ body {
 
 .grid-catalogo .item-porcelanato img {
     width: 100%;
-    height: 105px;
+    height: 85px;
     object-fit: cover;
 }
 
 .item-porcelanato span {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     display: block;
-    padding: 5px;
+    padding: 4px;
 }
 
-/* Calculadora */
-.calc-container {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    z-index: 10;
-}
-
-.form-calculadora {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.grupo-input label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
-
-.grupo-input input, .grupo-input select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.resultado-calculo {
-    margin-top: 20px;
-    padding: 15px;
-    background: #e8f8f5;
-    border-left: 5px solid #2ecc71;
-    border-radius: 4px;
-}
-
-/* Utilidades */
-.oculto {
-    display: none !important;
-}
-
+/* Botones genéricos */
 .btn-principal {
     background: #2ecc71;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
@@ -321,13 +347,14 @@ body {
     background: #95a5a6;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
 }
+
 .btn-color {
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 2px solid #fff;
     cursor: pointer;
@@ -337,34 +364,8 @@ body {
 .btn-color:hover {
     transform: scale(1.1);
 }
-/* Corrección de la Vista Calculadora para que sea un modal centrado con scroll */
-#vista-calculadora.vista.activa {
-    display: flex !important;
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6) !important;
-    z-index: 100000 !important;
-    justify-content: center !important;
-    align-items: center !important;
-    overflow-y: auto !important;
-    padding: 20px !important;
-}
 
-.calc-container {
-    background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 550px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    z-index: 100001;
-    margin: auto;
-}
+/* Modal Calculadora */
 .modal-calculadora {
     position: fixed !important;
     top: 0;
@@ -382,17 +383,53 @@ body {
 .modal-calculadora.oculto {
     display: none !important;
 }
+
+.calc-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.form-calculadora {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.grupo-input label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.grupo-input input, .grupo-input select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Utilidades */
+.oculto {
+    display: none !important;
+}
+
 /* ========================================================== */
 /* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
 /* ========================================================== */
 @media screen and (max-width: 768px) {
-    /* 1. Ajustes generales de vistas */
     .vista {
         padding: 10px;
         box-sizing: border-box;
     }
 
-    /* 2. Menú principal en móviles: apilar tarjetas en 1 o 2 columnas si es necesario */
     .grid-opciones {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -404,7 +441,6 @@ body {
         font-size: 1.8rem;
     }
 
-    /* 3. Visualizador interactivo: pasar de columnas a filas (escenario arriba, catálogo abajo) */
     .vis-content {
         grid-template-columns: 1fr !important;
         grid-template-rows: auto auto !important;
@@ -415,7 +451,6 @@ body {
         flex: none !important;
     }
 
-    /* Permitir scroll en la página del visualizador en móviles */
     #vista-visualizador {
         height: auto !important;
         min-height: 100vh;
@@ -426,27 +461,34 @@ body {
         height: auto !important;
     }
 
-    /* 4. Reducir el alto del escenario 3D para que la pantalla del celular lo abarque bien */
     .escenario-container {
         width: 100% !important;
-        height: 260px !important;
-        min-height: 260px !important;
+        height: 280px !important;
+        min-height: 280px !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
 
-    /* 5. Catálogo lateral adaptado al ancho del celular */
+    .controles-rotacion-panel,
+    .controles-rotacion-panel button,
+    .tarjeta-panel button,
+    .vis-header button {
+        position: relative !important;
+        z-index: 99999 !important;
+        pointer-events: auto !important;
+    }
+
     .catalogo-lateral {
         width: 100% !important;
         max-height: none !important;
         box-sizing: border-box;
     }
 
-    /* Cuadrícula del catálogo a 2 columnas para aprovechar mejor el espacio vertical */
     .grid-catalogo {
         grid-template-columns: repeat(2, 1fr) !important;
         max-height: 220px !important;
     }
 
-    /* 6. Reacomodar la barra superior (Header del visualizador) */
     .vis-header {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -458,14 +500,20 @@ body {
         font-size: 1rem !important;
     }
 
-    .vis-header > div {
-        justify-content: center !important;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
+    #capa-piso {
+        position: absolute !important;
+        bottom: -60px !important;
+        left: -80% !important;
+        width: 260% !important;
+        height: 260% !important;
+        z-index: 2 !important;
+        background-repeat: repeat !important;
+        background-size: 80px 80px !important;
+        pointer-events: none !important;
+        transform: perspective(300px) rotateX(50deg) scaleX(1.8) !important;
+        transform-origin: bottom center !important;
     }
 
-    /* 7. Ajustar el modal de la calculadora en pantallas pequeñas */
     .modal-calculadora {
         padding: 10px !important;
         align-items: flex-start !important;
@@ -478,12 +526,5 @@ body {
         margin: 20px auto !important;
         padding: 15px !important;
         max-height: none !important;
-    }
-    /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
-    #capa-piso {
-        background-size: 90px 90px !important; /* Reduce el patrón para que se vea más real y pequeño */
-        bottom: -15px !important;
-        left: -30% !important;
-        width: 90% !important;
     }
 }
