@@ -30,38 +30,31 @@
         </div>
     </section>
 
-    <!-- VISTA 2: VISUALIZADOR INTERACTIVO -->
+    <!-- VISTA 2: VISUALIZADOR INTERACTIVO (DISTRIBUCIÓN DE 3 COLUMNAS EN PC) -->
     <section id="vista-visualizador" class="vista">
         <div class="visualizador-container">
-            <header class="vis-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <header class="vis-header">
                 <button class="btn-secundario" onclick="volverMenu()">← Volver al Menú</button>
-                <h2 id="titulo-ambiente" style="margin: 0; font-size: 1.2rem;">Ambiente</h2>
-                
-                <div style="display: flex; gap: 5px; align-items: center; flex-wrap: wrap;">
-                    <button onclick="girarPiso('izquierda')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Izq ↺</button>
-                    <button onclick="girarPiso('reset')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Frente ⏹</button>
-                    <button onclick="girarPiso('derecha')" style="padding: 6px 10px; cursor: pointer; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 11px; font-weight: bold;">Girar Der ↻</button>
-                    <button class="btn-principal" onclick="abrirCalculadora()" style="padding: 6px 12px; font-size: 11px; font-weight: bold; cursor: pointer;">Calcular Materiales →</button>
-                </div>
+                <h2 id="titulo-ambiente">Ambiente</h2>
+                <div></div> <!-- Espaciador estético -->
             </header>
 
             <div class="vis-content">
-                <div class="escenario-container" id="escenario">
-                    <div id="capa-piso" class="capa-superficie"></div>
-                    <div id="capa-paredes" class="capa-superficie"></div>
-                    <div class="capa-imagen-base"></div>
-                </div>
-
-                <aside class="catalogo-lateral">
-                    <h3>Catálogo de Porcelanatos</h3>
-                    <div id="selector-zona" class="selector-zona">
-                        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
-                        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+                
+                <!-- COLUMNA 1: PANEL DE CONTROLES (IZQUIERDA) -->
+                <div class="panel-controles-izq">
+                    <div class="tarjeta-panel">
+                        <h3>Rotación del Piso</h3>
+                        <div class="controles-rotacion-panel">
+                            <button type="button" onclick="girarPiso('izquierda')">↺ Girar Izq</button>
+                            <button type="button" onclick="girarPiso('reset')">⬛ Frente</button>
+                            <button type="button" onclick="girarPiso('derecha')">↻ Girar Der</button>
+                        </div>
                     </div>
-                    
-                    <div class="selector-color-pared" style="margin: 10px 0; text-align: center;">
-                        <span style="font-weight: bold; font-size: 0.9rem; display: block; margin-bottom: 5px;">Color de Pared:</span>
-                        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+
+                    <div class="tarjeta-panel">
+                        <h3>Color de Pared</h3>
+                        <div class="selector-color-pared">
                             <button class="btn-color" style="background-color: #F2EFE9;" onclick="cambiarColorPared('#F2EFE9')" title="Marfil Suave"></button>
                             <button class="btn-color" style="background-color: #D9CFC4;" onclick="cambiarColorPared('#D9CFC4')" title="Beige Claro"></button>
                             <button class="btn-color" style="background-color: #C2B3A6;" onclick="cambiarColorPared('#C2B3A6')" title="Arena"></button>
@@ -74,8 +67,29 @@
                         </div>
                     </div>
 
+                    <div class="tarjeta-panel">
+                        <h3>Cálculo de Materiales</h3>
+                        <button type="button" class="btn-principal" style="width: 100%; margin-top: 5px; cursor: pointer;" onclick="abrirCalculadora()">Calcular Materiales →</button>
+                    </div>
+                </div>
+
+                <!-- COLUMNA 2: EL ESCENARIO (CENTRO) -->
+                <div class="escenario-container" id="escenario">
+                    <div id="capa-piso" class="capa-superficie"></div>
+                    <div id="capa-paredes" class="capa-superficie"></div>
+                    <div class="capa-imagen-base"></div>
+                </div>
+
+                <!-- COLUMNA 3: CATÁLOGO DE PORCELANATOS (DERECHA) -->
+                <aside class="catalogo-lateral">
+                    <h3>Catálogo de Porcelanatos</h3>
+                    <div id="selector-zona" class="selector-zona">
+                        <button class="btn-zona activo" onclick="seleccionarZona('piso')">Piso</button>
+                        <button id="btn-zona-pared" class="btn-zona oculto" onclick="seleccionarZona('pared')">Pared</button>
+                    </div>
                     <div class="grid-catalogo" id="grid-catalogo"></div>
                 </aside>
+
             </div>
         </div>
     </section>
@@ -112,7 +126,6 @@
                 <button type="button" class="btn-principal btn-calcular" onclick="calcularMateriales()">Calcular Materiales</button>
             </div>
 
-            <!-- BLOQUE DE RESULTADOS VISIBLE DESDE EL INICIO CON ESPACIOS EN CERO -->
             <div id="resultado-calculo" class="resultado-calculo" style="display: block; margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
                 <p id="texto-resultado-piso"><strong>Piso:</strong> 0 m² = <strong>0 cajas</strong></p>
                 <p id="texto-resultado-pego-piso"><strong>Pego para Piso:</strong> 0 sacos</p>
