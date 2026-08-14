@@ -479,4 +479,11 @@ body {
         padding: 15px !important;
         max-height: none !important;
     }
+    /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
+    #capa-piso {
+        background-size: 130px 130px !important; /* Reduce el patrón para que se vea más real y pequeño */
+        bottom: -15px !important;
+        left: -30% !important;
+        width: 160% !important;
+    }
 }
