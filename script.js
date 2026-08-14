@@ -1,244 +1,489 @@
-// Variables de estado global
-let ambienteActual = '';
-let zonaSeleccionada = 'piso'; // 'piso' o 'pared'
-
-// Base de datos simulada del catálogo de porcelanatos
-const catalogoPorcelanatos = [
-    { id: 1, nombre: 'Gris Cemento', tipo: 'patron', url: 'piso-griscemento-350.jpg' },
-    { id: 2, nombre: 'Marmoleado Azul', tipo: 'patron', url: 'piso-marmoleadoazul-357.jpg' },
-    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'patron', url: 'piso-marmoleadoblanco-344.jpg' },
-    { id: 4, nombre: 'Marmoleado Gris', tipo: 'patron', url: 'piso-marmoleadogris-347.jpg' },
-    { id: 5, nombre: 'Marmoleado Negro', tipo: 'patron', url: 'piso-marmoleadonegro-358.jpg' },
-    { id: 6, nombre: 'Super Blanco', tipo: 'patron', url: 'piso-superblanco-345.jpg' },
-    { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supernegro-346.jpg' },
-    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
-];
-
-// Cambiar entre vistas principales de manera segura
-function cambiarVista(idVista) {
-    const vistas = document.querySelectorAll('.vista');
-    vistas.forEach(v => {
-        v.classList.remove('activa');
-    });
-    
-    const vistaDestino = document.getElementById(idVista);
-    if (vistaDestino) {
-        vistaDestino.classList.add('activa');
-    } else {
-        console.error("No se encontró la vista:", idVista);
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-// Iniciar ambiente seleccionado sin bloqueos
-function cambiarAmbiente(ambiente) {
-    ambienteActual = ambiente;
-    const escenario = document.getElementById('escenario');
-    const btnZonaPared = document.getElementById('btn-zona-pared');
-    
-    if (escenario) {
-        escenario.className = 'escenario-container';
-        escenario.classList.add(`escenario-${ambiente}`);
-    }
-
-    if (btnZonaPared) {
-        if (ambiente === 'bano') {
-            btnZonaPared.classList.remove('oculto');
-        } else {
-            btnZonaPared.classList.add('oculto');
-        }
-    }
-
-    // Forzar siempre que al entrar a un ambiente se seleccione el piso por defecto
-    zonaSeleccionada = 'piso';
-
-    const tituloAmbiente = document.getElementById('titulo-ambiente');
-    if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
-    
-    const spanNombre = document.getElementById('span-nombre-ambiente');
-    if (spanNombre) spanNombre.innerText = ambiente;
-
-    cargarCatalogo();
-    cambiarVista('vista-visualizador');
+body {
+    background-color: #f4f7f6;
+    color: #333;
 }
 
-function volverMenu() {
-    cambiarVista('vista-menu');
+.vista {
+    display: none;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-function irACalculadora() {
-    const grupoParedes = document.getElementById('grupo-paredes');
-    if (grupoParedes) {
-        if (ambienteActual === 'bano') {
-            grupoParedes.classList.remove('oculto');
-        } else {
-            grupoParedes.classList.add('oculto');
-        }
-    }
-    
-    const resultadoCalculo = document.getElementById('resultado-calculo');
-    if (resultadoCalculo) resultadoCalculo.classList.add('oculto');
-    
-    cambiarVista('vista-calculadora');
+.vista.activa {
+    display: block; /* Muestra la vista de forma natural sin forzar un flex centrado global */
 }
 
-function volverVisualizador() {
-    cambiarVista('vista-visualizador');
+/* Permitir que el menú principal sí use flex centrado de forma específica */
+#vista-menu.vista.activa {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-// Control de selección de zona (Piso o Pared)
-function seleccionarZona(zona) {
-    if (ambienteActual !== 'bano' && zona === 'pared') {
-        zona = 'piso';
-    }
-    
-    zonaSeleccionada = zona;
-    document.querySelectorAll('.btn-zona').forEach(b => b.classList.remove('activo'));
-    
-    if(zona === 'piso') {
-        const primerBtn = document.querySelector('.selector-zona button:first-child');
-        if(primerBtn) primerBtn.classList.add('activo');
-    } else {
-        const btnPared = document.getElementById('btn-zona-pared');
-        if(btnPared) btnPared.classList.add('activo');
-    }
+/* Menú Principal */
+.menu-container {
+    text-align: center;
+    max-width: 900px;
 }
 
-// Cargar elementos en el catálogo lateral de manera dinámica
-function cargarCatalogo() {
-    const grid = document.getElementById('grid-catalogo');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-
-    catalogoPorcelanatos.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'item-porcelanato';
-        div.innerHTML = `
-            <img src="${item.url}" alt="${item.nombre}">
-            <span>${item.nombre}</span>
-        `;
-        
-        div.addEventListener('click', function() {
-            aplicarTextura(item.url);
-        });
-        
-        grid.appendChild(div);
-    });
+.menu-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #2c3e50;
 }
 
-// Aplicar textura con validación de seguridad
-function aplicarTextura(urlImagen) {
-    let capaId = 'capa-piso';
-    if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
-        capaId = 'capa-paredes';
-    }
-
-    const capa = document.getElementById(capaId);
-    if (capa) {
-        capa.style.backgroundImage = `url("${urlImagen}")`;
-        capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '100px 100px'; 
-        capa.style.backgroundPosition = 'center bottom';
-    } else {
-        console.warn("Capa no encontrada:", capaId);
-    }
+.menu-container p {
+    color: #7f8c8d;
+    margin-bottom: 30px;
 }
 
-function cambiarColorPared(colorHex) {
-    const escenario = document.getElementById('escenario');
-    
-    if (escenario) {
-        escenario.style.backgroundColor = colorHex;
-        
-        if (ambienteActual === 'habitacion') {
-            escenario.style.setProperty('background-color', colorHex, 'important');
-        }
-    }
+.grid-opciones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
-// Rotación instantánea del patrón sin espacios en blanco
-let estadoRotacion = 0;
-
-function girarPiso(accion) {
-    const capaPiso = document.getElementById('capa-piso');
-    if (!capaPiso) return;
-
-    if (accion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 1 + 4) % 4;
-    } else if (accion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 1) % 4;
-    } else if (accion === 'reset') {
-        estadoRotacion = 0;
-    }
-
-    const posicionesX = ['0px', '90px', '180px', '270px'];
-    const posicionesY = ['0px', '90px', '180px', '270px'];
-    
-    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-    capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
-    capaPiso.style.transition = 'none';
+.tarjeta-opcion {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-// Calculadora de materiales exacta
-function calcularMateriales() {
-    const largo = parseFloat(document.getElementById('input-largo').value) || 0;
-    const ancho = parseFloat(document.getElementById('input-ancho').value) || 0;
-    const alto = parseFloat(document.getElementById('input-alto').value) || 0;
-    const pesoSacoPego = parseInt(document.getElementById('select-pego').value) || 14;
-
-    if (largo <= 0 || ancho <= 0) {
-        alert("Por favor, ingresa un largo y un ancho válidos para la estancia.");
-        return;
-    }
-
-    const areaPiso = largo * ancho;
-    const areaPisoConDesperdicio = areaPiso * 1.10;
-
-    const m2PorCaja = 1.44; 
-    const cajasPiso = Math.ceil(areaPisoConDesperdicio / m2PorCaja);
-
-    const rendimientoPego = pesoGrisSaco(pegoSacoValor = pesoSacoPego); 
-    const sacosPegoPiso = Math.ceil(areaPiso / rendimientoPego);
-
-    document.getElementById('texto-resultado-piso').innerHTML = 
-        `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² (con 10% de desperdicio: ${areaPisoConDesperdicio.toFixed(2)} m²) = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
-    
-    document.getElementById('texto-resultado-pego-piso').innerHTML = 
-        `<strong>Pego para Piso (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPiso} sacos</strong>.`;
-
-    const resultadoDiv = document.getElementById('resultado-calculo');
-    const textoPared = document.getElementById('texto-resultado-pared');
-    const textoPegoPared = document.getElementById('texto-resultado-pego-pared');
-
-    const grupoParedes = document.getElementById('grupo-paredes');
-    
-    if (grupoParedes && !grupoParedes.classList.contains('oculto') && alto > 0) {
-        const perimetro = 2 * (largo + ancho);
-        const areaParedes = perimetro * alto;
-        const areaParedesConDesperdicio = areaParedes * 1.10;
-        
-        const cajasPared = Math.ceil(areaParedesConDesperdicio / m2PorCaja);
-        const sacosPegoPared = Math.ceil(areaParedes / rendimientoPego);
-
-        textoPared.innerHTML = `<strong>Paredes:</strong> Área de ${areaParedes.toFixed(2)} m² = <strong>${cajasPared} cajas</strong> de porcelanato para pared.`;
-        textoPegoPared.innerHTML = `<strong>Pego para Pared (${pegoSacoPego} kg):</strong> Necesitarás <strong>${sacosPegoPared} sacos</strong>.`;
-        
-        textoPared.style.display = 'block';
-        textoPegoPared.style.display = 'block';
-    } else {
-        textoPared.style.display = 'none';
-        textoPegoPared.style.display = 'none';
-    }
-
-    resultadoDiv.classList.remove('oculto');
+.tarjeta-opcion:hover {
+    transform: translateY(-5px);
 }
 
-// Función auxiliar para determinar el rendimiento del pego seleccionado
-function pesoGrisSaco(peso) {
-    if (peso === 14) {
-        return 1.5; 
-    } else {
-        return 1.0; 
-    }
+.tarjeta-opcion img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
 
+.tarjeta-opcion h3 {
+    padding: 15px;
+    color: #2c3e50;
+}
+
+/* Visualizador */
+#vista-visualizador {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.visualizador-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+}
+
+.vis-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 20px;
+    flex: 1;
+    height: calc(100% - 60px);
+}
+
+/* Controles de Rotación Flotantes */
+.controles-rotacion {
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    display: flex !important;
+    gap: 5px !important;
+    z-index: 9999 !important;
+}
+
+.controles-rotacion button {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid #bbb !important;
+    padding: 6px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+}
+
+.controles-rotacion button:hover {
+    background: #ffffff !important;
+    border-color: #3498db !important;
+    color: #3498db !important;
+}
+
+/* Escenario y Capas Transparentes */
+.escenario-container {
+    position: relative !important;
+    background-color: #F4F6F6;
+    border-radius: 10px;
+    overflow: hidden !important;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+}
+
+#capa-piso {
+    position: absolute;
+    bottom: -25px;
+    left: -40%;
+    width: 190%;
+    height: 200%;
+    z-index: 1;
+    background-repeat: repeat !important;
+    background-size: 230px 230px !important; 
+    transform: perspective(350px) rotateX(42deg) scaleX(1.45);
+    transform-origin: bottom center;
+}
+
+.capa-imagen-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 5 !important;
+    pointer-events: none !important;
+    display: block !important;
+}
+
+#capa-paredes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.escenario-sala .capa-imagen-base {
+    background-image: url('sala.png') !important;
+}
+
+.escenario-habitacion {
+    background-color: transparent !important;
+}
+
+.escenario-habitacion .capa-imagen-base {
+    background-image: url('habitacion.png') !important;
+    background-color: transparent !important;
+}
+
+.escenario-bano .capa-imagen-base {
+    background-image: url('baño.png') !important;
+}
+
+/* Catálogo Lateral */
+.catalogo-lateral {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.selector-zona {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.btn-zona {
+    flex: 1;
+    padding: 8px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-zona.activo {
+    background: #3498db;
+    color: white;
+}
+
+.grid-catalogo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 5px;
+}
+
+.item-porcelanato {
+    border: 2px solid transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.item-porcelanato:hover {
+    border-color: #3498db;
+}
+
+.grid-catalogo .item-porcelanato img {
+    width: 100%;
+    height: 105px;
+    object-fit: cover;
+}
+
+.item-porcelanato span {
+    font-size: 0.8rem;
+    display: block;
+    padding: 5px;
+}
+
+/* Calculadora */
+.calc-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.form-calculadora {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.grupo-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.grupo-input input, .grupo-input select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.resultado-calculo {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e8f8f5;
+    border-left: 5px solid #2ecc71;
+    border-radius: 4px;
+}
+
+/* Utilidades */
+.oculto {
+    display: none !important;
+}
+
+.btn-principal {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-secundario {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.btn-color:hover {
+    transform: scale(1.1);
+}
+/* Corrección de la Vista Calculadora para que sea un modal centrado con scroll */
+#vista-calculadora.vista.activa {
+    display: flex !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    z-index: 100000 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow-y: auto !important;
+    padding: 20px !important;
+}
+
+.calc-container {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    z-index: 100001;
+    margin: auto;
+}
+.modal-calculadora {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+}
+
+.modal-calculadora.oculto {
+    display: none !important;
+}
+/* ========================================================== */
+/* ESTILOS ADAPTADOS PARA CELULARES (MÓVILES Y TABLETS PEQUEÑAS) */
+/* ========================================================== */
+@media screen and (max-width: 768px) {
+    /* 1. Ajustes generales de vistas */
+    .vista {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    /* 2. Menú principal en móviles: apilar tarjetas en 1 o 2 columnas si es necesario */
+    .grid-opciones {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .menu-container h1 {
+        font-size: 1.8rem;
+    }
+
+    /* 3. Visualizador interactivo: pasar de columnas a filas (escenario arriba, catálogo abajo) */
+    .vis-content {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        height: auto !important;
+        flex: none !important;
+    }
+
+    /* Permitir scroll en la página del visualizador en móviles */
+    #vista-visualizador {
+        height: auto !important;
+        min-height: 100vh;
+        overflow-y: auto !important;
+    }
+
+    .visualizador-container {
+        height: auto !important;
+    }
+
+    /* 4. Reducir el alto del escenario 3D para que la pantalla del celular lo abarque bien */
+    .escenario-container {
+        width: 100% !important;
+        height: 260px !important;
+        min-height: 260px !important;
+    }
+
+    /* 5. Catálogo lateral adaptado al ancho del celular */
+    .catalogo-lateral {
+        width: 100% !important;
+        max-height: none !important;
+        box-sizing: border-box;
+    }
+
+    /* Cuadrícula del catálogo a 2 columnas para aprovechar mejor el espacio vertical */
+    .grid-catalogo {
+        grid-template-columns: repeat(2, 1fr) !important;
+        max-height: 220px !important;
+    }
+
+    /* 6. Reacomodar la barra superior (Header del visualizador) */
+    .vis-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .vis-header h2 {
+        text-align: center;
+        font-size: 1rem !important;
+    }
+
+    .vis-header > div {
+        justify-content: center !important;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    /* 7. Ajustar el modal de la calculadora en pantallas pequeñas */
+    .modal-calculadora {
+        padding: 10px !important;
+        align-items: flex-start !important;
+        overflow-y: auto !important;
+    }
+
+    .calc-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 20px auto !important;
+        padding: 15px !important;
+        max-height: none !important;
+    }
+    /* 8. Ajustar la escala de la textura del piso para que guarde proporción en celulares */
+    #capa-piso {
+        background-size: 90px 90px !important; /* Reduce el patrón para que se vea más real y pequeño */
+        bottom: -15px !important;
+        left: -30% !important;
+        width: 90% !important;
+    }
+}
