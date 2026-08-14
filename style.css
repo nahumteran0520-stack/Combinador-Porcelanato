@@ -483,7 +483,7 @@ body {
     #capa-piso {
         background-size: 90px 90px !important; /* Reduce el patrón para que se vea más real y pequeño */
         bottom: -15px !important;
-        left: -30% !important;
+        left: -50% !important;
         width: 160% !important;
     }
 }
