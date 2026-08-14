@@ -179,7 +179,6 @@ body {
     height: 100% !important;
 }
 
-/* Configuración inicial limpia del piso (sin textura por defecto) */
 #capa-piso {
     position: absolute;
     bottom: 0px;
@@ -195,9 +194,8 @@ body {
     transform-origin: bottom center;
     mask-image: none;
     -webkit-mask-image: none;
-    pointer-events: none !important;
+    /* QUITAMOS EL pointer-events: none para que sea interactivo */
 }
-
 /* Parámetros exclusivos para la SALA */
 .escenario-sala #capa-piso {
     position: absolute;
