@@ -191,7 +191,7 @@ body {
     background-repeat: repeat !important;
     background-size: 140px 140px !important; 
     
-    transform: perspective(250px) rotateX(55deg) scaleX(1.45);
+    transform: perspective(300px) rotateX(55deg) scaleX(1.45);
     transform-origin: bottom center;
     
     mask-image: none;
