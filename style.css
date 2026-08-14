@@ -183,13 +183,13 @@ body {
 #capa-piso {
     position: absolute;
     bottom: -50px;
-    left: -60%;
-    width: 230%;
+    left: -70%;
+    width: 250%;
     height: 400%;
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 190px 190px !important; 
+    background-size: 195px 195px !important; 
     
     transform: perspective(320px) rotateX(50deg) scaleX(1.6);
     transform-origin: bottom center;
