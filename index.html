@@ -40,8 +40,12 @@
             </header>
 
             <div class="vis-content">
-                <!-- Columna Izquierda: Controles y Paleta de Colores -->
+               <!-- Columna Izquierda: Botón Calculadora, Rotación y Paleta de Colores -->
                 <aside class="panel-controles-izq">
+                    <div class="tarjeta-panel">
+                        <button class="btn-principal" style="width: 100%; text-align: center; cursor: pointer;" onclick="abrirCalculadora()">🧮 Calcular Materiales</button>
+                    </div>
+
                     <div class="tarjeta-panel">
                         <h3>Rotación de Piso</h3>
                         <div class="controles-rotacion-panel">
@@ -67,6 +71,7 @@
                     </div>
                 </aside>
 
+        
                 <!-- Columna Central: Escenario 3D -->
                 <div class="escenario-container" id="escenario">
                     <div id="capa-piso"></div>
