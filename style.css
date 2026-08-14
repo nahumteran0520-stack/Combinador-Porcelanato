@@ -185,11 +185,11 @@ body {
     bottom: -50px;
     left: -50%;
     width: 200%;
-    height: 300%;
+    height: 400%;
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 160px 160px !important; 
+    background-size: 180px 180px !important; 
     
     transform: perspective(320px) rotateX(50deg) scaleX(1.45);
     transform-origin: bottom center;
