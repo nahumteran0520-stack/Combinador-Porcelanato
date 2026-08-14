@@ -180,20 +180,24 @@ function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
-    // Controla los grados de giro (acumulando 90 grados por cada clic)
     if (direccion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 90) % 360;
+        estadoRotacion = (estadoRotacion + 1) % 4;
     } else if (direccion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 90) % 360;
+        estadoRotacion = (estadoRotacion - 3 + 4) % 4;
     } else {
-        estadoRotacion = 0; // Frente / Reiniciar
+        estadoRotacion = 0; 
     }
 
-    // Aplica la perspectiva 3D original combinada con la rotación de grados
-    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.6) rotate(${estadoRotacion}deg)`;
-    capaPiso.style.transformOrigin = 'bottom center';
+    const posicionesX = ['0px', '100px', '200px', '300px'];
+    const posicionesY = ['0px', '100px', '200px', '300px'];
+    
+    // Actualizamos la posición del fondo para mantener la textura visible
+    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+    
+    // Mantenemos la perspectiva fija sin deformaciones ni cortes raros
+    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    capaPiso.style.transformOrigin = "bottom center";
 }
-
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
