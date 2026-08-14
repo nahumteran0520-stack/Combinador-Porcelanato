@@ -1,17 +1,28 @@
 // Variables de estado global
 let ambienteActual = '';
 let zonaSeleccionada = 'piso';
+let estadoRotacion = 0; // Control de rotación en grados
+let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
+let materialActivoActual = null; // Referencia del material seleccionado
 
-// Catálogo de porcelanatos
-const catalogoPorcelanatos = [
-    { id: 1, nombre: 'Gris Cemento', tipo: 'patron', url: 'piso-griscemento-350.jpg' },
-    { id: 2, nombre: 'Marmoleado Azul', tipo: 'patron', url: 'piso-marmoleadoazul-357.jpg' },
-    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'patron', url: 'piso-marmoleadoblanco-344.jpg' },
-    { id: 4, nombre: 'Marmoleado Gris', tipo: 'patron', url: 'piso-marmoleadogris-347.jpg' },
-    { id: 5, nombre: 'Marmoleado Negro', tipo: 'patron', url: 'piso-marmoleadonegro-358.jpg' },
-    { id: 6, nombre: 'Super Blanco', tipo: 'patron', url: 'piso-superblanco-345.jpg' },
-    { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supernegro-346.jpg' },
-    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' }
+// Catálogo unificado de materiales
+const catalogoMateriales = [
+    // Porcelanatos (1.44 m² por caja)
+    { id: 1, nombre: 'Gris Cemento', tipo: 'porcelanato', url: 'piso-griscemento-350.jpg' },
+    { id: 2, nombre: 'Marmoleado Azul', tipo: 'porcelanato', url: 'piso-marmoleadoazul-357.jpg' },
+    { id: 3, nombre: 'Marmoleado Blanco', tipo: 'porcelanato', url: 'piso-marmoleadoblanco-344.jpg' },
+    { id: 4, nombre: 'Marmoleado Gris', tipo: 'porcelanato', url: 'piso-marmoleadogris-347.jpg' },
+    { id: 5, nombre: 'Marmoleado Negro', tipo: 'porcelanato', url: 'piso-marmoleadonegro-358.jpg' },
+    { id: 6, nombre: 'Super Blanco', tipo: 'porcelanato', url: 'piso-superblanco-345.jpg' },
+    { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
+    { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
+    
+    // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
+   { id: 9, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
+   { id: 9, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
+   { id: 9, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
+   { id: 9, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
+   { id: 9, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,6 +66,17 @@ function cambiarAmbiente(ambiente) {
     
     const spanNombre = document.getElementById('span-nombre-ambiente');
     if (spanNombre) spanNombre.innerText = ambiente;
+
+    estadoRotacion = 0;
+    const capaPiso = document.getElementById('capa-piso');
+    if (capaPiso) {
+        capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(0deg)`;
+        capaPiso.style.transformOrigin = 'bottom center';
+    }
+
+    // Por defecto inicia en porcelanato y selecciona el primero
+    tipoMaterialSeleccionado = 'porcelanato';
+    materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
 
     cargarCatalogo();
     cambiarVista('vista-visualizador');
@@ -116,16 +138,56 @@ function seleccionarZona(zona) {
 function cargarCatalogo() {
     const grid = document.getElementById('grid-catalogo');
     if (!grid) return;
+
+    let contenedorPadre = grid.parentNode;
+    let selectorTabs = document.getElementById('selector-tipo-material');
+    
+    if (!selectorTabs) {
+        selectorTabs = document.createElement('div');
+        selectorTabs.id = 'selector-tipo-material';
+        selectorTabs.className = 'selector-zona';
+        selectorTabs.style.marginBottom = '12px';
+        selectorTabs.style.display = 'flex';
+        selectorTabs.style.gap = '8px';
+        selectorTabs.innerHTML = `
+            <button type="button" id="tab-porcelanato" class="btn-zona activo" onclick="filtrarTipoMaterial('porcelanato')">Porcelanatos</button>
+            <button type="button" id="tab-ceramica" class="btn-zona" onclick="filtrarTipoMaterial('ceramica')">Cerámicas</button>
+        `;
+        contenedorPadre.insertBefore(selectorTabs, grid);
+    }
+
+    renderizarGridCatalogo();
+}
+
+function filtrarTipoMaterial(tipo) {
+    tipoMaterialSeleccionado = tipo;
+    const tabPorc = document.getElementById('tab-porcelanato');
+    const tabCera = document.getElementById('tab-ceramica');
+    
+    if(tabPorc) tabPorc.classList.toggle('activo', tipo === 'porcelanato');
+    if(tabCera) tabCera.classList.toggle('activo', tipo === 'ceramica');
+    
+    renderizarGridCatalogo();
+}
+
+function renderizarGridCatalogo() {
+    const grid = document.getElementById('grid-catalogo');
+    if (!grid) return;
     grid.innerHTML = '';
 
-    catalogoPorcelanatos.forEach(item => {
+    const filtrados = catalogoMateriales.filter(item => item.tipo === tipoMaterialSeleccionado);
+
+    filtrados.forEach(item => {
         const div = document.createElement('div');
         div.className = 'item-porcelanato';
         div.innerHTML = `
             <img src="${item.url}" alt="${item.nombre}">
             <span>${item.nombre}</span>
         `;
-        div.addEventListener('click', () => aplicarTextura(item.url));
+        div.addEventListener('click', () => {
+            materialActivoActual = item;
+            aplicarTextura(item.url);
+        });
         grid.appendChild(div);
     });
 }
@@ -155,26 +217,55 @@ function cambiarColorPared(colorHex) {
     }
 }
 
-let estadoRotacion = 0;
-
-function girarPiso(accion) {
+function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
-
-    if (accion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 1 + 4) % 4;
-    } else if (accion === 'derecha') {
-        estadoRotacion = (estadoRotacion + 1) % 4;
-    } else if (accion === 'reset') {
-        estadoRotacion = 0;
+    
+    if (direccion === 'izquierda') {
+        estadoRotacion = (estadoRotacion - 90 + 360) % 360;
+    } else if (direccion === 'derecha') {
+        estadoRotacion = (estadoRotacion + 90) % 360;
+    } else {
+        estadoRotacion = 0; 
     }
 
-    const posicionesX = ['0px', '90px', '180px', '270px'];
-    const posicionesY = ['0px', '90px', '180px', '270px'];
+    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    capaPiso.style.transformOrigin = "bottom center";
+
+    const bgImageStyle = capaPiso.style.backgroundImage;
+    if (!bgImageStyle) return;
     
-    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
-    capaPiso.style.transform = 'perspective(350px) rotateX(42deg)';
-    capaPiso.style.transition = 'none';
+    const urlMatch = bgImageStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+    if (!urlMatch) return;
+    
+    const imgUrl = urlMatch[1];
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = imgUrl;
+    
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (estadoRotacion === 90 || estadoRotacion === 270) {
+            canvas.width = img.height;
+            canvas.height = img.width;
+        } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
+        }
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((estadoRotacion * Math.PI) / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+        
+        capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
+        capaPiso.style.backgroundRepeat = 'repeat';
+        capaPiso.style.backgroundSize = '200px 200px';
+    };
 }
 
 function calcularMateriales() {
@@ -192,9 +283,12 @@ function calcularMateriales() {
     }
 
     const areaPiso = largo * ancho;
-
-    const m2PorCaja = 1.44; 
-    // Se calcula directo con el área real (sin multiplicar por 1.10)
+    
+    // Si no ha seleccionado ninguna aún, toma por defecto porcelanato
+    const esCeramica = materialActivoActual && materialActivoActual.tipo === 'ceramica';
+    const m2PorCaja = esCeramica ? 1.77 : 1.44; 
+    const nombreMaterial = esCeramica ? 'Cerámica' : 'Porcelanato';
+    
     const cajasPiso = Math.ceil(areaPiso / m2PorCaja);
 
     const rendimientoPego = pesoSacoPego === 14 ? 1.5 : 1.0; 
@@ -204,7 +298,7 @@ function calcularMateriales() {
     const textoPegoPiso = document.getElementById('texto-resultado-pego-piso');
 
     if (textoPiso) {
-        textoPiso.innerHTML = `<strong>Piso:</strong> Área de ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong> de porcelanato.`;
+        textoPiso.innerHTML = `<strong>${nombreMaterial}:</strong> Área de ${areaPiso.toFixed(2)} m² = <strong>${cajasPiso} cajas</strong> (${m2PorCaja} m²/caja).`;
     }
     
     if (textoPegoPiso) {
