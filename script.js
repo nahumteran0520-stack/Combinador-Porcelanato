@@ -13,6 +13,8 @@ const catalogoPorcelanatos = [
     { id: 6, nombre: 'Super Blanco', tipo: 'patron', url: 'piso-superblanco-345.jpg' },
     { id: 7, nombre: 'Super Negro', tipo: 'patron', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'patron', url: 'pisobeige-343.jpg' },
+    
+ // Cerámicas (1.77 m² por caja)
     { id: 9, nombre: 'Arce Gris', tipo: 'patron', url: 'arcegris-230.jpg' }
 ];
 
