@@ -212,15 +212,13 @@ body {
 /* 3. Parámetros exclusivos para la HABITACIÓN */
 .escenario-habitacion #capa-piso {
     position: absolute;
-    bottom: 0px;
-    left: -15% !important;
-    width: 130% !important;
-    height: 35% !important; /* Controla la profundidad exacta de la franja inferior */
-    background-size: 150px 150px !important; 
-    transform: perspective(300px) rotateX(48deg) scaleX(1.2) !important;
-    transform-origin: bottom center !important;
+    bottom: 0px !important;     /* Pegado al borde inferior de la imagen */
+    left: 0px !important;       /* Ocupa todo el ancho */
+    width: 100% !important;     
+    height: 31% !important;     /* Altura justa de la franja del piso inferior */
+    background-size: 140px 140px !important; 
+    transform: none !important; 
 }
-
 /* Capa de la imagen de fondo (Sala, Habitación, Baño) */
 .capa-imagen-base {
     position: absolute;
