@@ -182,9 +182,9 @@ body {
 /* Capa del piso corregida y simétrica */
 #capa-piso {
     position: absolute;
-    bottom: -12px;
-    left: -25%;
-    width: 155%;
+    bottom: -10px;
+    left: -30%;
+    width: 160%;
     height: 1000px;
     z-index: 1;
     
