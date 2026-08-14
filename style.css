@@ -515,5 +515,10 @@ body {
         bottom: -15px !important;
         left: -30% !important;
         width: 160% !important;
+         transform: perspective(350px) rotateX(42deg) scaleX(1.45);
+    transform-origin: bottom center;
+    
+    mask-image: none;
+    -webkit-mask-image: none;
     }
 }
