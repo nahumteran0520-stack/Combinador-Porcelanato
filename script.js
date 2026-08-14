@@ -155,22 +155,32 @@ function cambiarColorPared(colorHex) {
     }
 }
 
+// Variable para llevar el control de la rotación de la textura (0, 90, 180, 270 grados)
+let estadoRotacion = 0;
+
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
-    // Forzamos el origen de la transformación desde el script para que no se mueva del centro-abajo
-    capaPiso.style.transformOrigin = "bottom center";
-    
-    const baseTransform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
-    
+    // Controlamos el índice de rotación de la textura
     if (direccion === 'izquierda') {
-        capaPiso.style.transform = baseTransform + " rotate(90deg)";
+        estadoRotacion = (estadoRotacion + 1) % 4;
     } else if (direccion === 'derecha') {
-        capaPiso.style.transform = baseTransform + " rotate(-90deg)";
+        estadoRotacion = (estadoRotacion - 3 + 4) % 4;
     } else {
-        capaPiso.style.transform = baseTransform + " rotate(0deg)";
+        estadoRotacion = 0; // Frente / Reset
     }
+
+    // Array con las posiciones para desplazar el patrón y simular el giro del diseño
+    const posicionesX = ['0px', '100px', '200px', '300px'];
+    const posicionesY = ['0px', '100px', '200px', '300px'];
+    
+    // Aplicamos el desplazamiento de la textura manteniendo intacta la perspectiva fija
+    capaPiso.style.backgroundPosition = `${posicionesX[estadoRotacion]} ${posicionesY[estadoRotacion]}`;
+    
+    // Mantenemos la perspectiva fija sin deformaciones ni cortes raros
+    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    capaPiso.style.transformOrigin = "bottom center";
 }
 
 function calcularMateriales() {
