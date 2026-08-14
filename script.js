@@ -159,6 +159,9 @@ function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
+    // Forzamos el origen de la transformación desde el script para que no se mueva del centro-abajo
+    capaPiso.style.transformOrigin = "bottom center";
+    
     const baseTransform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
     
     if (direccion === 'izquierda') {
