@@ -164,27 +164,58 @@ function cambiarColorPared(colorHex) {
         }
     }
 }
-
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
     if (direccion === 'izquierda') {
-        estadoRotacion = (estadoRotacion - 90) % 360;
+        estadoRotacion = (estadoRotacion - 90 + 360) % 360;
     } else if (direccion === 'derecha') {
         estadoRotacion = (estadoRotacion + 90) % 360;
     } else {
         estadoRotacion = 0; // Frente / Reset
     }
 
-    // Ajusta la escala horizontal dinámicamente para que cubra todo el espacio al girar
-    let escalaX = 1.45;
-    if (Math.abs(estadoRotacion) === 90 || Math.abs(estadoRotacion) === 270) {
-        escalaX = 2.2;
-    }
+    // Mantenemos la perspectiva 3D fija y limpia del piso
+    capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
+    capaPiso.style.transformOrigin = "bottom center";
 
-    capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(${escalaX}) rotate(${estadoRotacion}deg)`;
-    capaPiso.style.transformOrigin = 'bottom center';
+    // Obtenemos la URL actual de la textura
+    const bgImageStyle = capaPiso.style.backgroundImage;
+    if (!bgImageStyle) return;
+    
+    const urlMatch = bgImageStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+    if (!urlMatch) return;
+    
+    const imgUrl = urlMatch[1];
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = imgUrl;
+    
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (estadoRotacion === 90 || estadoRotacion === 270) {
+            canvas.width = img.height;
+            canvas.height = img.width;
+        } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
+        }
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((estadoRotacion * Math.PI) / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+        
+        // Asignamos la imagen físicamente rotada al fondo del piso
+        capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
+        capaPiso.style.backgroundRepeat = 'repeat';
+        capaPiso.style.backgroundSize = '200px 200px';
+    };
 }
 
 function calcularMateriales() {
