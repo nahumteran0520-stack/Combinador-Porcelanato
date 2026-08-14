@@ -185,11 +185,11 @@ body {
     bottom: -10px;
     left: -15%;
     width: 130%;
-    height: 500px;
+    height: 700px;
     z-index: 1;
     
     background-repeat: repeat !important;
-    background-size: 180px 180px !important; 
+    background-size: 160px 160px !important; 
     background-position: center bottom !important; /* Centra perfectamente el patrón de las líneas */
     
     transform: perspective(320px) rotateX(50deg) scaleX(1.2);
