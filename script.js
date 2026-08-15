@@ -17,12 +17,12 @@ const catalogoMateriales = [
     { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
     
-    // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
-   { id: 9, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
-   { id: 9, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
-   { id: 9, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
-   { id: 9, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
-   { id: 9, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
+    // Cerámicas (1.77 m² por caja)
+    { id: 9, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
+    { id: 10, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
+    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
+    { id: 12, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
+    { id: 13, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,12 +52,17 @@ function cambiarAmbiente(ambiente) {
         escenario.classList.add(`escenario-${ambiente}`);
     }
 
-    if (btnZonaPared) {
-        if (ambiente === 'bano') {
-            btnZonaPared.classList.remove('oculto');
-        } else {
-            btnZonaPared.classList.add('oculto');
-        }
+    // Control de visibilidad y clases del modo baño (Totalmente independiente)
+    if (ambiente === 'bano') {
+        document.body.classList.add('modo-bano');
+        if (btnZonaPared) btnZonaPared.classList.remove('oculto');
+    } else {
+        document.body.classList.remove('modo-bano');
+        if (btnZonaPared) btnZonaPared.classList.add('oculto');
+        
+        // Limpiar capa de paredes al salir del baño para no afectar otras vistas
+        const capaParedes = document.getElementById('capa-paredes');
+        if (capaParedes) capaParedes.style.backgroundImage = 'none';
     }
 
     zonaSeleccionada = 'piso';
@@ -202,7 +207,7 @@ function aplicarTextura(urlImagen) {
     if (capa) {
         capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '200px 200px'; 
+        capa.style.backgroundSize = '150px 150px'; 
         capa.style.backgroundPosition = '0px 0px';
     }
 }
@@ -264,7 +269,7 @@ function girarPiso(direccion) {
         
         capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = '200px 200px';
+        capaPiso.style.backgroundSize = '150px 150px';
     };
 }
 
@@ -284,7 +289,6 @@ function calcularMateriales() {
 
     const areaPiso = largo * ancho;
     
-    // Si no ha seleccionado ninguna aún, toma por defecto porcelanato
     const esCeramica = materialActivoActual && materialActivoActual.tipo === 'ceramica';
     const m2PorCaja = esCeramica ? 1.77 : 1.44; 
     const nombreMaterial = esCeramica ? 'Cerámica' : 'Porcelanato';
@@ -310,14 +314,4 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
-    function cambiarAmbiente(ambiente) {
-    if (ambiente === 'bano') {
-        document.body.classList.add('modo-bano'); // Activa los recortes exclusivos del baño
-    } else {
-        document.body.classList.remove('modo-bano'); // Los quita para que la sala y habitación queden limpias
-        
-        // Limpiar las capas del baño para que no interfieran con las otras vistas
-        document.getElementById('capa-paredes').style.backgroundImage = 'none';
-    }
-}
 }
