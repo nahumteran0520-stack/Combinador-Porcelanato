@@ -236,6 +236,11 @@ function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
     
+    // Configuración de las juntas
+    const tamanoTile = '150px';
+    const grosorJunta = '3px';
+    const colorJunta = 'rgba(90, 90, 90, 0.5)';
+    
     if (direccion === 'izquierda') {
         estadoRotacion = (estadoRotacion - 90 + 360) % 360;
     } else if (direccion === 'derecha') {
@@ -277,12 +282,16 @@ function girarPiso(direccion) {
         ctx.drawImage(img, -img.width / 2, -img.height / 2);
         ctx.restore();
         
-        capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
+        // AQUÍ ES DONDE APLICAMOS LA IMAGEN ROTADA + LAS JUNTAS
+        capaPiso.style.backgroundImage = `
+            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            url(${canvas.toDataURL()})
+        `;
         capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = '150px 150px';
+        capaPiso.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
     };
 }
-
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
