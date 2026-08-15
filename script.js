@@ -17,12 +17,12 @@ const catalogoMateriales = [
     { id: 7, nombre: 'Super Negro', tipo: 'porcelanato', url: 'piso-supernegro-346.jpg' },
     { id: 8, nombre: 'Sal Soluble Beige', tipo: 'porcelanato', url: 'pisobeige-343.jpg' },
     
-    // Cerámicas (1.77 m² por caja)
-    { id: 9, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
-    { id: 10, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
-    { id: 11, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
-    { id: 12, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
-    { id: 13, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
+    // Cerámicas (1.77 m² por caja) -> Cambia 'tu-imagen-ceramica.jpg' por el nombre real de tu archivo de baldosa
+   { id: 9, nombre: 'Mallorca Gris', tipo: 'ceramica', url: 'mallorcagris.jpg' },
+   { id: 9, nombre: 'Mykonos', tipo: 'ceramica', url: 'mykonos-2208238.jpg' },
+   { id: 9, nombre: 'Agata Nacar', tipo: 'ceramica', url: 'agatanacar-2208209.jpg' },
+   { id: 9, nombre: 'Arce Gris', tipo: 'ceramica', url: 'arcegris-230.jpg' },
+   { id: 9, nombre: 'Forest Caramel', tipo: 'ceramica', url: 'forestcaramel.jpg' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,17 +52,12 @@ function cambiarAmbiente(ambiente) {
         escenario.classList.add(`escenario-${ambiente}`);
     }
 
-    // Control de visibilidad y clases del modo baño (Totalmente independiente)
-    if (ambiente === 'bano') {
-        document.body.classList.add('modo-bano');
-        if (btnZonaPared) btnZonaPared.classList.remove('oculto');
-    } else {
-        document.body.classList.remove('modo-bano');
-        if (btnZonaPared) btnZonaPared.classList.add('oculto');
-        
-        // Limpiar capa de paredes al salir del baño para no afectar otras vistas
-        const capaParedes = document.getElementById('capa-paredes');
-        if (capaParedes) capaParedes.style.backgroundImage = 'none';
+    if (btnZonaPared) {
+        if (ambiente === 'bano') {
+            btnZonaPared.classList.remove('oculto');
+        } else {
+            btnZonaPared.classList.add('oculto');
+        }
     }
 
     zonaSeleccionada = 'piso';
@@ -205,21 +200,11 @@ function aplicarTextura(urlImagen) {
 
     const capa = document.getElementById(capaId);
     if (capa) {
-        const tamanoTile = '150px';
-        const grosorJunta = '3px';
-        const colorJunta = 'rgba(90, 90, 90, 0.5)'; // Color gris semitransparente para la junta
-
-        // Combinamos las líneas de la junta vertical/horizontal con la imagen de la baldosa
-        capa.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            url("${urlImagen}")
-        `;
+        capa.style.backgroundImage = `url("${urlImagen}")`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
+        capa.style.backgroundSize = '200px 200px'; 
         capa.style.backgroundPosition = '0px 0px';
     }
-}
 }
 
 function cambiarColorPared(colorHex) {
@@ -235,11 +220,6 @@ function cambiarColorPared(colorHex) {
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
-    
-    // Configuración de las juntas
-    const tamanoTile = '150px';
-    const grosorJunta = '3px';
-    const colorJunta = 'rgba(90, 90, 90, 0.5)';
     
     if (direccion === 'izquierda') {
         estadoRotacion = (estadoRotacion - 90 + 360) % 360;
@@ -282,16 +262,12 @@ function girarPiso(direccion) {
         ctx.drawImage(img, -img.width / 2, -img.height / 2);
         ctx.restore();
         
-        // AQUÍ ES DONDE APLICAMOS LA IMAGEN ROTADA + LAS JUNTAS
-        capaPiso.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            url(${canvas.toDataURL()})
-        `;
+        capaPiso.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
+        capaPiso.style.backgroundSize = '200px 200px';
     };
 }
+
 function calcularMateriales() {
     const largoInput = document.getElementById('input-largo');
     const anchoInput = document.getElementById('input-ancho');
@@ -308,6 +284,7 @@ function calcularMateriales() {
 
     const areaPiso = largo * ancho;
     
+    // Si no ha seleccionado ninguna aún, toma por defecto porcelanato
     const esCeramica = materialActivoActual && materialActivoActual.tipo === 'ceramica';
     const m2PorCaja = esCeramica ? 1.77 : 1.44; 
     const nombreMaterial = esCeramica ? 'Cerámica' : 'Porcelanato';
