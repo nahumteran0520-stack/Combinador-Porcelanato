@@ -200,11 +200,21 @@ function aplicarTextura(urlImagen) {
 
     const capa = document.getElementById(capaId);
     if (capa) {
-        capa.style.backgroundImage = `url("${urlImagen}")`;
+        const tamanoTile = '150px';
+        const grosorJunta = '3px';
+        const colorJunta = 'rgba(90, 90, 90, 0.5)'; // Color gris semitransparente para la junta
+
+        // Combinamos las líneas de la junta vertical/horizontal con la imagen de la baldosa
+        capa.style.backgroundImage = `
+            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            url("${urlImagen}")
+        `;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = '200px 200px'; 
+        capa.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
         capa.style.backgroundPosition = '0px 0px';
     }
+}
 }
 
 function cambiarColorPared(colorHex) {
