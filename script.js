@@ -217,7 +217,7 @@ function aplicarTextura(urlImagen) {
         const ctx = canvas.getContext('2d');
 
         const tileSize = 150;
-        const grosorJunta = 2; // Más delgado y elegante
+        const grosorJunta = 1; // Más delgado y elegante
 
         canvas.width = tileSize;
         canvas.height = tileSize;
