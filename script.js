@@ -230,6 +230,17 @@ function cambiarColorPared(colorHex) {
 function girarPiso(direccion) {
     const capaPiso = document.getElementById('capa-piso');
     if (!capaPiso) return;
+    const tamanoTile = '150px';
+        const grosorJunta = '3px';
+        const colorJunta = 'rgba(90, 90, 90, 0.5)';
+
+        capaPiso.style.backgroundImage = `
+            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            url(${canvas.toDataURL()})
+        `;
+        capaPiso.style.backgroundRepeat = 'repeat';
+        capaPiso.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
     
     if (direccion === 'izquierda') {
         estadoRotacion = (estadoRotacion - 90 + 360) % 360;
