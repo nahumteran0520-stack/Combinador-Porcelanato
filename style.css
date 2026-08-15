@@ -221,7 +221,6 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    pointer-events: none !important;
 }
 
 .escenario-sala .capa-imagen-base {
@@ -239,21 +238,6 @@ body {
 
 .escenario-bano .capa-imagen-base {
     background-image: url('baño.png') !important;
-}
-
-/* ========================================================== */
-/* ESTILOS Y RECORTES EXCLUSIVOS PARA EL BAÑO (GLOBALES)      */
-/* ========================================================== */
-body.modo-bano #capa-paredes {
-    background-size: 150px 150px; /* Tamaño de la cuadrícula de la cerámica en la pared */
-    background-repeat: repeat;
-    /* Este polygon recorta exactamente el rectángulo de la pared del fondo del baño, 
-       dejando intactos el espejo, la poceta y el mueble flotante */
-    clip-path: polygon(23% 15%, 77% 15%, 77% 78%, 23% 78%);
-}
-
-body.modo-bano #capa-piso {
-    clip-path: polygon(30% 60%, 70% 60%, 100% 100%, 0% 100%);
 }
 
 /* Catálogo Lateral Derecho */
@@ -527,9 +511,4 @@ body.modo-bano #capa-piso {
         padding: 15px !important;
         max-height: none !important;
     }
-}
-
-body.modo-bano #capa-piso {
-    clip-path: polygon(30% 60%, 70% 60%, 100% 100%, 0% 100%); /* Ajusta según la perspectiva del piso del baño */
-}
 }
