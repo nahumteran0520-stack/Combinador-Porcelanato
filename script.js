@@ -217,7 +217,7 @@ function aplicarTextura(urlImagen) {
         const ctx = canvas.getContext('2d');
 
         const tileSize = 150;
-        const grosorJunta = 05; // Más delgado y elegante
+        const grosorJunta = 0.5; // Más delgado y elegante
 
         canvas.width = tileSize;
         canvas.height = tileSize;
@@ -251,7 +251,7 @@ function aplicarTextura(urlImagen) {
         // 2. Efecto de relieve 3D (sombra interior para simular surco rehundido)
         ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.fillRect(0, grosorJunta, tileSize, 1);       // Sombra inferior de la junta superior
-        ctx.fillRect(grosorJunta, 0, 1, tileSize);       // Sombra derecha de la junta izquierda
+        ctx.fillRect(grosorJunta, 0, 0.5, tileSize);       // Sombra derecha de la junta izquierda
 
         capa.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capa.style.backgroundRepeat = 'repeat';
