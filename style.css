@@ -511,19 +511,22 @@ body {
         padding: 15px !important;
         max-height: none !important;
     }
-    /* --- MÓDULO EXCLUSIVO PARA EL BAÑO (NO AFECTA SALA/HABITACIÓN) --- */
-#capa-bano-pared {
+    
+    /* ESTOS RECORTES SOLO FUNCIONAN EN EL BAÑO Y NO TOCAN LA SALA NI LA HABITACIÓN */
+body.modo-bano #capa-paredes {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center;
-    pointer-events: none;
-    z-index: 1; /* Detrás de los muebles fijos, pero al frente del fondo base */
-    opacity: 0; /* Empieza transparente hasta que el usuario elija un material */
-    transition: opacity 0.3s ease;
+    z-index: 1;
+    clip-path: polygon(25% 20%, 75% 20%, 75% 75%, 25% 75%); /* Ajusta según tu foto de baño */
+}
+
+body.modo-bano #capa-piso {
+    clip-path: polygon(30% 60%, 70% 60%, 100% 100%, 0% 100%); /* Ajusta según la perspectiva del piso del baño */
 }
 }
