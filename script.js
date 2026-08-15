@@ -4,7 +4,7 @@ let zonaSeleccionada = 'piso';
 let estadoRotacion = 0; // Control de rotación en grados
 let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
 let materialActivoActual = null; // Referencia del material seleccionado
-let colorJuntaActual = 'rgba(90, 90, 90, 0.7)'; // Color por defecto de las juntas
+let colorJuntaActual = 'rgba(90, 90, 90, 0.8)'; // Color por defecto de las juntas
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
@@ -196,7 +196,7 @@ function renderizarGridCatalogo() {
     });
 }
 
-// Textura optimizada con Canvas para evitar duplicados y errores de perspectiva
+// Textura optimizada con Canvas, juntas más delgadas y efecto de relieve 3D
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -217,7 +217,7 @@ function aplicarTextura(urlImagen) {
         const ctx = canvas.getContext('2d');
 
         const tileSize = 150;
-        const grosorJunta = 3;
+        const grosorJunta = 2; // Más delgado y elegante
 
         canvas.width = tileSize;
         canvas.height = tileSize;
@@ -243,10 +243,15 @@ function aplicarTextura(urlImagen) {
             ctx.drawImage(img, 0, 0, tileSize, tileSize);
         }
 
-        // Dibujar juntas limpias directamente en los bordes del tile
+        // 1. Dibujar el relleno de la junta
         ctx.fillStyle = colorJuntaActual;
         ctx.fillRect(0, 0, tileSize, grosorJunta); // Junta superior
         ctx.fillRect(0, 0, grosorJunta, tileSize); // Junta izquierda
+
+        // 2. Efecto de relieve 3D (sombra interior para simular surco rehundido)
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+        ctx.fillRect(0, grosorJunta, tileSize, 1);       // Sombra inferior de la junta superior
+        ctx.fillRect(grosorJunta, 0, 1, tileSize);       // Sombra derecha de la junta izquierda
 
         capa.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capa.style.backgroundRepeat = 'repeat';
@@ -292,12 +297,12 @@ function inicializarPaletaJuntas() {
     divJuntas.innerHTML = `
         <label style="font-weight: bold; display: block; margin-bottom: 8px; font-size: 14px; color: #333;">Color de Juntas</label>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button onclick="cambiarColorJunta('rgba(240, 240, 240, 0.8)')" title="Blanco" style="width: 25px; height: 25px; border-radius: 50%; background: #f0f0f0; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(210, 180, 140, 0.8)')" title="Beige / Marfil" style="width: 25px; height: 25px; border-radius: 50%; background: #d2b48c; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(139, 69, 19, 0.8)')" title="Caramelo / Madera" style="width: 25px; height: 25px; border-radius: 50%; background: #8b4513; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(128, 128, 128, 0.8)')" title="Gris Cemento" style="width: 25px; height: 25px; border-radius: 50%; background: #808080; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(80, 50, 30, 0.8)')" title="Chocolate" style="width: 25px; height: 25px; border-radius: 50%; background: #50321e; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(40, 40, 40, 0.8)')" title="Antracita / Negro" style="width: 25px; height: 25px; border-radius: 50%; background: #282828; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(240, 240, 240, 0.85)')" title="Blanco" style="width: 25px; height: 25px; border-radius: 50%; background: #f0f0f0; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(210, 180, 140, 0.85)')" title="Beige / Marfil" style="width: 25px; height: 25px; border-radius: 50%; background: #d2b48c; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(139, 69, 19, 0.85)')" title="Caramelo / Madera" style="width: 25px; height: 25px; border-radius: 50%; background: #8b4513; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(128, 128, 128, 0.85)')" title="Gris Cemento" style="width: 25px; height: 25px; border-radius: 50%; background: #808080; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(80, 50, 30, 0.85)')" title="Chocolate" style="width: 25px; height: 25px; border-radius: 50%; background: #50321e; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(40, 40, 40, 0.85)')" title="Antracita / Negro" style="width: 25px; height: 25px; border-radius: 50%; background: #282828; border: 1px solid #ccc; cursor: pointer;"></button>
         </div>
     `;
     
