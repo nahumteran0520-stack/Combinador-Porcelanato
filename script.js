@@ -310,4 +310,14 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
+    function cambiarAmbiente(ambiente) {
+    if (ambiente === 'bano') {
+        document.body.classList.add('modo-bano'); // Activa los recortes exclusivos del baño
+    } else {
+        document.body.classList.remove('modo-bano'); // Los quita para que la sala y habitación queden limpias
+        
+        // Limpiar las capas del baño para que no interfieran con las otras vistas
+        document.getElementById('capa-paredes').style.backgroundImage = 'none';
+    }
+}
 }
