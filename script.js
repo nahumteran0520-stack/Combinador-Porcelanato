@@ -4,7 +4,7 @@ let zonaSeleccionada = 'piso';
 let estadoRotacion = 0; // Control de rotación en grados
 let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
 let materialActivoActual = null; // Referencia del material seleccionado
-let colorJuntaActual = 'rgba(90, 90, 90, 0.5);'; // Color por defecto de las juntas
+let colorJuntaActual = 'rgba(90, 90, 90, 0.5)'; // ✅ Corregido (sin punto y coma interno)
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
@@ -228,14 +228,11 @@ function cambiarColorPared(colorHex) {
     }
 }
 
-// NUEVA FUNCIÓN: Selector de color para las juntas
 function cambiarColorJunta(rgbaColor) {
     colorJuntaActual = rgbaColor;
-    // Si ya hay un material activo, refresca la textura actual con el nuevo color de junta
     if (materialActivoActual) {
         aplicarTextura(materialActivoActual.url);
     } else {
-        // Por defecto si hay una imagen cargada en el piso
         const capaPiso = document.getElementById('capa-piso');
         if (capaPiso && capaPiso.style.backgroundImage) {
             const urlMatch = capaPiso.style.backgroundImage.match(/url\(['"]?([^'"]+)['"]?\)/);
@@ -245,9 +242,6 @@ function cambiarColorJunta(rgbaColor) {
 }
 
 function inicializarPaletaJuntas() {
-    const panelControles = document.querySelector('.panel-controles') || document.querySelector('.sidebar') || document.body;
-    
-    // Evita duplicar la sección si ya existe
     if (document.getElementById('seccion-color-juntas')) return;
 
     const divJuntas = document.createElement('div');
@@ -270,11 +264,12 @@ function inicializarPaletaJuntas() {
         </div>
     `;
     
-    // Lo inserción idealmente debajo del bloque de color de pared o rotación
-    const bloqueColorPared = document.querySelector('.color-pared') || panelControles.firstElementChild;
+    // Inserta la paleta justo debajo del bloque de Color de Pared
+    const bloqueColorPared = document.querySelector('.color-pared');
     if (bloqueColorPared) {
         bloqueColorPared.parentNode.insertBefore(divJuntas, bloqueColorPared.nextSibling);
     } else {
+        const panelControles = document.querySelector('.panel-controles') || document.querySelector('.sidebar') || document.body;
         panelControles.appendChild(divJuntas);
     }
 }
