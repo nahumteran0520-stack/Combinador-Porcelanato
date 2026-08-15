@@ -4,6 +4,7 @@ let zonaSeleccionada = 'piso';
 let estadoRotacion = 0; // Control de rotación en grados
 let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
 let materialActivoActual = null; // Referencia del material seleccionado
+let colorJuntaActual = 'rgba(90, 90, 90, 0.5);'; // Color por defecto de las juntas
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             calcularMateriales();
         });
     }
+    inicializarPaletaJuntas();
 });
 
 function cambiarVista(idVista) {
@@ -77,7 +79,6 @@ function cambiarAmbiente(ambiente) {
         capaPiso.style.transformOrigin = 'bottom center';
     }
 
-    // Por defecto inicia en porcelanato y selecciona el primero
     tipoMaterialSeleccionado = 'porcelanato';
     materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
 
@@ -205,11 +206,10 @@ function aplicarTextura(urlImagen) {
     if (capa) {
         const tamanoTile = '150px';
         const grosorJunta = '3px';
-        const colorJunta = 'rgba(90, 90, 90, 0.5)';
 
         capa.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(0deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(90deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
             url("${urlImagen}")
         `;
         capa.style.backgroundRepeat = 'repeat';
@@ -225,6 +225,57 @@ function cambiarColorPared(colorHex) {
         if (ambienteActual === 'habitacion') {
             escenario.style.setProperty('background-color', colorHex, 'important');
         }
+    }
+}
+
+// NUEVA FUNCIÓN: Selector de color para las juntas
+function cambiarColorJunta(rgbaColor) {
+    colorJuntaActual = rgbaColor;
+    // Si ya hay un material activo, refresca la textura actual con el nuevo color de junta
+    if (materialActivoActual) {
+        aplicarTextura(materialActivoActual.url);
+    } else {
+        // Por defecto si hay una imagen cargada en el piso
+        const capaPiso = document.getElementById('capa-piso');
+        if (capaPiso && capaPiso.style.backgroundImage) {
+            const urlMatch = capaPiso.style.backgroundImage.match(/url\(['"]?([^'"]+)['"]?\)/);
+            if (urlMatch) aplicarTextura(urlMatch[1]);
+        }
+    }
+}
+
+function inicializarPaletaJuntas() {
+    const panelControles = document.querySelector('.panel-controles') || document.querySelector('.sidebar') || document.body;
+    
+    // Evita duplicar la sección si ya existe
+    if (document.getElementById('seccion-color-juntas')) return;
+
+    const divJuntas = document.createElement('div');
+    divJuntas.id = 'seccion-color-juntas';
+    divJuntas.style.marginTop = '15px';
+    divJuntas.style.padding = '10px';
+    divJuntas.style.background = '#fff';
+    divJuntas.style.borderRadius = '8px';
+    divJuntas.style.boxShadow = '0 2px 5px rgba(0,0,0,0.05)';
+    
+    divJuntas.innerHTML = `
+        <label style="font-weight: bold; display: block; margin-bottom: 8px; font-size: 14px; color: #333;">Color de Juntas</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button onclick="cambiarColorJunta('rgba(240, 240, 240, 0.7)')" title="Blanco" style="width: 25px; height: 25px; border-radius: 50%; background: #f0f0f0; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(210, 180, 140, 0.7)')" title="Beige / Marfil" style="width: 25px; height: 25px; border-radius: 50%; background: #d2b48c; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(139, 69, 19, 0.6)')" title="Caramelo / Madera" style="width: 25px; height: 25px; border-radius: 50%; background: #8b4513; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(128, 128, 128, 0.6)')" title="Gris Cemento" style="width: 25px; height: 25px; border-radius: 50%; background: #808080; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(80, 50, 30, 0.7)')" title="Chocolate" style="width: 25px; height: 25px; border-radius: 50%; background: #50321e; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(40, 40, 40, 0.7)')" title="Antracita / Negro" style="width: 25px; height: 25px; border-radius: 50%; background: #282828; border: 1px solid #ccc; cursor: pointer;"></button>
+        </div>
+    `;
+    
+    // Lo inserción idealmente debajo del bloque de color de pared o rotación
+    const bloqueColorPared = document.querySelector('.color-pared') || panelControles.firstElementChild;
+    if (bloqueColorPared) {
+        bloqueColorPared.parentNode.insertBefore(divJuntas, bloqueColorPared.nextSibling);
+    } else {
+        panelControles.appendChild(divJuntas);
     }
 }
 
@@ -275,11 +326,10 @@ function girarPiso(direccion) {
         
         const tamanoTile = '150px';
         const grosorJunta = '3px';
-        const colorJunta = 'rgba(90, 90, 90, 0.5)';
 
         capaPiso.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJunta}, ${colorJunta} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(0deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
+            repeating-linear-gradient(90deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
             url(${canvas.toDataURL()})
         `;
         capaPiso.style.backgroundRepeat = 'repeat';
