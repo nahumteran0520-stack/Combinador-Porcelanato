@@ -4,7 +4,7 @@ let zonaSeleccionada = 'piso';
 let estadoRotacion = 0; // Control de rotación en grados
 let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
 let materialActivoActual = null; // Referencia del material seleccionado
-let colorJuntaActual = 'rgba(90, 90, 90, 0.5)'; // ✅ Corregido (sin punto y coma interno)
+let colorJuntaActual = 'rgba(90, 90, 90, 0.7)'; // Color por defecto de las juntas
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
@@ -196,6 +196,7 @@ function renderizarGridCatalogo() {
     });
 }
 
+// Textura optimizada con Canvas para evitar duplicados y errores de perspectiva
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -203,19 +204,55 @@ function aplicarTextura(urlImagen) {
     }
 
     const capa = document.getElementById(capaId);
-    if (capa) {
-        const tamanoTile = '150px';
-        const grosorJunta = '3px';
+    if (!capa) return;
 
-        capa.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            url("${urlImagen}")
-        `;
+    capa.dataset.urlActual = urlImagen;
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = urlImagen;
+
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const tileSize = 150;
+        const grosorJunta = 3;
+
+        canvas.width = tileSize;
+        canvas.height = tileSize;
+        ctx.clearRect(0, 0, tileSize, tileSize);
+
+        // Manejo de rotación en el canvas
+        if (estadoRotacion !== 0) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            if (estadoRotacion === 90 || estadoRotacion === 270) {
+                tempCanvas.width = img.height;
+                tempCanvas.height = img.width;
+            } else {
+                tempCanvas.width = img.width;
+                tempCanvas.height = img.height;
+            }
+            tempCtx.translate(tempCanvas.width / 2, tempCanvas.height / 2);
+            tempCtx.rotate((estadoRotacion * Math.PI) / 180);
+            tempCtx.drawImage(img, -img.width / 2, -img.height / 2);
+
+            ctx.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, tileSize, tileSize);
+        } else {
+            ctx.drawImage(img, 0, 0, tileSize, tileSize);
+        }
+
+        // Dibujar juntas limpias directamente en los bordes del tile
+        ctx.fillStyle = colorJuntaActual;
+        ctx.fillRect(0, 0, tileSize, grosorJunta); // Junta superior
+        ctx.fillRect(0, 0, grosorJunta, tileSize); // Junta izquierda
+
+        capa.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capa.style.backgroundRepeat = 'repeat';
-        capa.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
+        capa.style.backgroundSize = `${tileSize}px ${tileSize}px`;
         capa.style.backgroundPosition = '0px 0px';
-    }
+    };
 }
 
 function cambiarColorPared(colorHex) {
@@ -234,9 +271,8 @@ function cambiarColorJunta(rgbaColor) {
         aplicarTextura(materialActivoActual.url);
     } else {
         const capaPiso = document.getElementById('capa-piso');
-        if (capaPiso && capaPiso.style.backgroundImage) {
-            const urlMatch = capaPiso.style.backgroundImage.match(/url\(['"]?([^'"]+)['"]?\)/);
-            if (urlMatch) aplicarTextura(urlMatch[1]);
+        if (capaPiso && capaPiso.dataset.urlActual) {
+            aplicarTextura(capaPiso.dataset.urlActual);
         }
     }
 }
@@ -247,6 +283,7 @@ function inicializarPaletaJuntas() {
     const divJuntas = document.createElement('div');
     divJuntas.id = 'seccion-color-juntas';
     divJuntas.style.marginTop = '15px';
+    divJuntas.style.marginBottom = '15px';
     divJuntas.style.padding = '10px';
     divJuntas.style.background = '#fff';
     divJuntas.style.borderRadius = '8px';
@@ -255,22 +292,40 @@ function inicializarPaletaJuntas() {
     divJuntas.innerHTML = `
         <label style="font-weight: bold; display: block; margin-bottom: 8px; font-size: 14px; color: #333;">Color de Juntas</label>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button onclick="cambiarColorJunta('rgba(240, 240, 240, 0.7)')" title="Blanco" style="width: 25px; height: 25px; border-radius: 50%; background: #f0f0f0; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(210, 180, 140, 0.7)')" title="Beige / Marfil" style="width: 25px; height: 25px; border-radius: 50%; background: #d2b48c; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(139, 69, 19, 0.6)')" title="Caramelo / Madera" style="width: 25px; height: 25px; border-radius: 50%; background: #8b4513; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(128, 128, 128, 0.6)')" title="Gris Cemento" style="width: 25px; height: 25px; border-radius: 50%; background: #808080; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(80, 50, 30, 0.7)')" title="Chocolate" style="width: 25px; height: 25px; border-radius: 50%; background: #50321e; border: 1px solid #ccc; cursor: pointer;"></button>
-            <button onclick="cambiarColorJunta('rgba(40, 40, 40, 0.7)')" title="Antracita / Negro" style="width: 25px; height: 25px; border-radius: 50%; background: #282828; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(240, 240, 240, 0.8)')" title="Blanco" style="width: 25px; height: 25px; border-radius: 50%; background: #f0f0f0; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(210, 180, 140, 0.8)')" title="Beige / Marfil" style="width: 25px; height: 25px; border-radius: 50%; background: #d2b48c; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(139, 69, 19, 0.8)')" title="Caramelo / Madera" style="width: 25px; height: 25px; border-radius: 50%; background: #8b4513; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(128, 128, 128, 0.8)')" title="Gris Cemento" style="width: 25px; height: 25px; border-radius: 50%; background: #808080; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(80, 50, 30, 0.8)')" title="Chocolate" style="width: 25px; height: 25px; border-radius: 50%; background: #50321e; border: 1px solid #ccc; cursor: pointer;"></button>
+            <button onclick="cambiarColorJunta('rgba(40, 40, 40, 0.8)')" title="Antracita / Negro" style="width: 25px; height: 25px; border-radius: 50%; background: #282828; border: 1px solid #ccc; cursor: pointer;"></button>
         </div>
     `;
     
-    // Inserta la paleta justo debajo del bloque de Color de Pared
-    const bloqueColorPared = document.querySelector('.color-pared');
-    if (bloqueColorPared) {
-        bloqueColorPared.parentNode.insertBefore(divJuntas, bloqueColorPared.nextSibling);
+    // Ubicación exacta debajo del bloque de Color de Pared
+    let puntoInsert = null;
+    const candidatos = document.querySelectorAll('.color-pared, #color-pared, [class*="pared"], .panel-controles > div, .sidebar > div');
+    for (let el of candidatos) {
+        if (el.textContent && el.textContent.includes('Color de Pared')) {
+            puntoInsert = el;
+            break;
+        }
+    }
+
+    if (!puntoInsert) {
+        puntoInsert = document.querySelector('.color-pared') || document.querySelector('#color-pared');
+    }
+
+    if (puntoInsert) {
+        puntoInsert.parentNode.insertBefore(divJuntas, puntoInsert.nextSibling);
     } else {
-        const panelControles = document.querySelector('.panel-controles') || document.querySelector('.sidebar') || document.body;
-        panelControles.appendChild(divJuntas);
+        const panel = document.querySelector('.panel-controles') || document.querySelector('.sidebar') || document.querySelector('aside');
+        if (panel && panel.children.length > 1) {
+            panel.insertBefore(divJuntas, panel.children[1]);
+        } else if (panel) {
+            panel.appendChild(divJuntas);
+        } else {
+            document.body.appendChild(divJuntas);
+        }
     }
 }
 
@@ -289,47 +344,11 @@ function girarPiso(direccion) {
     capaPiso.style.transform = "perspective(320px) rotateX(50deg) scaleX(1.45)";
     capaPiso.style.transformOrigin = "bottom center";
 
-    const bgImageStyle = capaPiso.style.backgroundImage;
-    if (!bgImageStyle) return;
-    
-    const urlMatch = bgImageStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
-    if (!urlMatch) return;
-    
-    const imgUrl = urlMatch[1];
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = imgUrl;
-    
-    img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        if (estadoRotacion === 90 || estadoRotacion === 270) {
-            canvas.width = img.height;
-            canvas.height = img.width;
-        } else {
-            canvas.width = img.width;
-            canvas.height = img.height;
-        }
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate((estadoRotacion * Math.PI) / 180);
-        ctx.drawImage(img, -img.width / 2, -img.height / 2);
-        ctx.restore();
-        
-        const tamanoTile = '150px';
-        const grosorJunta = '3px';
-
-        capaPiso.style.backgroundImage = `
-            repeating-linear-gradient(0deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            repeating-linear-gradient(90deg, ${colorJuntaActual}, ${colorJuntaActual} ${grosorJunta}, transparent ${grosorJunta}, transparent ${tamanoTile}),
-            url(${canvas.toDataURL()})
-        `;
-        capaPiso.style.backgroundRepeat = 'repeat';
-        capaPiso.style.backgroundSize = `${tamanoTile} ${tamanoTile}`;
-    };
+    if (materialActivoActual) {
+        aplicarTextura(materialActivoActual.url);
+    } else if (capaPiso.dataset.urlActual) {
+        aplicarTextura(capaPiso.dataset.urlActual);
+    }
 }
 
 function calcularMateriales() {
