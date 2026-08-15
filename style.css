@@ -511,4 +511,19 @@ body {
         padding: 15px !important;
         max-height: none !important;
     }
+    /* --- MÓDULO EXCLUSIVO PARA EL BAÑO (NO AFECTA SALA/HABITACIÓN) --- */
+#capa-bano-pared {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 1; /* Detrás de los muebles fijos, pero al frente del fondo base */
+    opacity: 0; /* Empieza transparente hasta que el usuario elija un material */
+    transition: opacity 0.3s ease;
+}
 }
