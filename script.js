@@ -402,4 +402,34 @@ function calcularMateriales() {
         resultadoCalculo.classList.remove('oculto');
         resultadoCalculo.style.display = 'block';
     }
+    // URL de tu Google Apps Script
+const URL_GOOGLE_SCRIPT = "PEGA_AQUÍ_TU_URL_DE_GOOGLE_APPS_SCRIPT";
+
+// Variables para rastrear lo último seleccionado en pared y piso
+let opcionParedActual = "Sin pared";
+let opcionPisoActual = "piso-marmoleadoblanco-344.jpg"; // Valor por defecto inicial
+
+function enviarRegistroSheets() {
+    if (!URL_GOOGLE_SCRIPT || URL_GOOGLE_SCRIPT.includes("https://script.google.com/macros/s/AKfycbzgc2sa-Um5sEDLYmZLcocD9Bo4sNApkJD9tKXdU1hVjNfID1gbhenPskzYDFzc_u0b/exec")) return;
+
+    const ahora = new Date();
+    // Formato de fecha y hora idéntico al de tu hoja: 9/8/2026, 23:47:52
+    const fechaHora = ahora.toLocaleDateString() + ", " + ahora.toLocaleTimeString();
+
+    const payload = {
+        fechaHora: fechaHora,
+        opcionPared: opcionParedActual,
+        opcionPiso: opcionPisoActual,
+        habitacion: ambienteActual || "sala"
+    };
+
+    fetch(URL_GOOGLE_SCRIPT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).catch(error => {
+        console.error('Error al registrar en Sheets:', error);
+    });
+}
 }
