@@ -31,21 +31,16 @@ const catalogoMateriales = [
 // --- FUNCIONES DE GOOGLE SHEETS ---
 function enviarRegistroSheets() {
     if (!URL_GOOGLE_SCRIPT) return;
-
     const ahora = new Date();
     const fechaHora = ahora.toLocaleDateString() + ", " + ahora.toLocaleTimeString();
-
     const payload = {
         fechaHora: fechaHora,
         opcionPared: opcionParedActual,
         opcionPiso: opcionPisoActual,
         habitacion: ambienteActual || "sala"
     };
-
     fetch(URL_GOOGLE_SCRIPT, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     }).catch(error => console.error('Error al registrar en Sheets:', error));
 }
@@ -54,12 +49,10 @@ function enviarRegistroSheets() {
 document.addEventListener('DOMContentLoaded', () => {
     const btnCalcular = document.querySelector('.btn-calcular');
     if (btnCalcular) {
-        btnCalcular.addEventListener('click', (e) => {
-            e.preventDefault();
-            calcularMateriales();
-        });
+        btnCalcular.addEventListener('click', (e) => { e.preventDefault(); calcularMateriales(); });
     }
-    inicializarPaletaJuntas();
+    // Asumimos que inicializarPaletaJuntas existe en tu archivo original
+    if(typeof inicializarPaletaJuntas === 'function') inicializarPaletaJuntas();
 });
 
 function cambiarVista(idVista) {
@@ -73,43 +66,32 @@ function cambiarAmbiente(ambiente) {
     ambienteActual = ambiente;
     const escenario = document.getElementById('escenario');
     const btnZonaPared = document.getElementById('btn-zona-pared');
-    
     if (escenario) {
         escenario.className = 'escenario-container';
         escenario.classList.add(`escenario-${ambiente}`);
     }
-
     if (ambiente === 'bano') {
         document.body.classList.add('modo-bano');
         if (btnZonaPared) btnZonaPared.classList.remove('oculto');
     } else {
         document.body.classList.remove('modo-bano');
         if (btnZonaPared) btnZonaPared.classList.add('oculto');
-        
         const capaParedes = document.getElementById('capa-paredes');
         if (capaParedes) capaParedes.style.backgroundImage = 'none';
     }
-
     zonaSeleccionada = 'piso';
-    const tituloAmbiente = document.getElementById('titulo-ambiente');
-    if (tituloAmbiente) tituloAmbiente.innerText = `Simulador de ${ambiente.toUpperCase()}`;
-    
-    const spanNombre = document.getElementById('span-nombre-ambiente');
-    if (spanNombre) spanNombre.innerText = ambiente;
-
     estadoRotacion = 0;
     const capaPiso = document.getElementById('capa-piso');
     if (capaPiso) {
         capaPiso.style.transform = `perspective(320px) rotateX(50deg) scaleX(1.45) rotate(0deg)`;
         capaPiso.style.transformOrigin = 'bottom center';
     }
-
     tipoMaterialSeleccionado = 'porcelanato';
     materialActivoActual = catalogoMateriales.find(m => m.tipo === 'porcelanato');
-
-    cargarCatalogo();
+    if(typeof cargarCatalogo === 'function') cargarCatalogo();
     cambiarVista('vista-visualizador');
 }
+
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -166,7 +148,7 @@ function aplicarTextura(urlImagen) {
         capa.style.backgroundSize = `${tileSize}px ${tileSize}px`;
         capa.style.backgroundPosition = '0px 0px';
 
-        // --- ACTUALIZAR REGISTRO GOOGLE SHEETS ---
+        // --- ACTUALIZACIÓN DE ESTADO Y ENVÍO A GOOGLE SHEETS ---
         const nombreArchivo = urlImagen.split('/').pop();
         if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
             opcionParedActual = nombreArchivo;
@@ -211,5 +193,3 @@ function calcularMateriales() {
         resultadoCalculo.style.display = 'block';
     }
 }
-
-// ... (El resto de tus funciones como renderizarGridCatalogo, inicializarPaletaJuntas, etc. permanecen igual)
