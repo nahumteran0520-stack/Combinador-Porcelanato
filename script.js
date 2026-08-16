@@ -222,6 +222,26 @@ function aplicarTextura(urlImagen) {
         canvas.width = tileSize;
         canvas.height = tileSize;
         ctx.clearRect(0, 0, tileSize, tileSize);
+      img.onload = function() {
+        // ... (todo el código del canvas que ya tienes) ...
+
+        capa.style.backgroundImage = `url(${canvas.toDataURL()})`;
+        capa.style.backgroundRepeat = 'repeat';
+        capa.style.backgroundSize = `${tileSize}px ${tileSize}px`;
+        capa.style.backgroundPosition = '0px 0px';
+
+        // --- NUEVO: Actualiza la variable correspondiente y envía a Google Sheets ---
+        const nombreArchivo = urlImagen.split('/').pop(); // Extrae solo el nombre del archivo (ej. piso-griscemento-350.jpg)
+        
+        if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
+            opcionParedActual = nombreArchivo;
+        } else {
+            opcionPisoActual = nombreArchivo;
+        }
+
+        // Envía el registro con la combinación actual a la hoja Visitas
+        enviarRegistroSheets();
+    };
 
         // Manejo de rotación en el canvas
         if (estadoRotacion !== 0) {
@@ -403,7 +423,8 @@ function calcularMateriales() {
         resultadoCalculo.style.display = 'block';
     }
     // URL de tu Google Apps Script
-const URL_GOOGLE_SCRIPT = "PEGA_AQUÍ_TU_URL_DE_GOOGLE_APPS_SCRIPT";
+const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbzgc2sa-Um5sEDLYmZLcocD9Bo4sNApkJD9tKXdU1hVjNfID1gbhenPskzYDFzc_u0b/exec
+";
 
 // Variables para rastrear lo último seleccionado en pared y piso
 let opcionParedActual = "Sin pared";
