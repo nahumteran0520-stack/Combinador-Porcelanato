@@ -4,7 +4,7 @@ let zonaSeleccionada = 'piso';
 let estadoRotacion = 0; // Control de rotación en grados
 let tipoMaterialSeleccionado = 'porcelanato'; // Pestaña activa del catálogo
 let materialActivoActual = null; // Referencia del material seleccionado
-let colorJuntaActual = 'rgba(90, 90, 90, 0.8)'; // Color por defecto de las juntas
+let colorJuntaActual = 'rgba(90, 90, 90, 0.85)'; // Color por defecto de las juntas
 
 // Catálogo unificado de materiales
 const catalogoMateriales = [
@@ -196,7 +196,7 @@ function renderizarGridCatalogo() {
     });
 }
 
-// Textura optimizada con Canvas, juntas más delgadas y efecto de relieve 3D
+// Juntas intactas: Grosor 0.5 con relieve 3D sutil
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
@@ -217,7 +217,7 @@ function aplicarTextura(urlImagen) {
         const ctx = canvas.getContext('2d');
 
         const tileSize = 150;
-        const grosorJunta = 0.5; // Más delgado y elegante
+        const grosorJunta = 0.5;
 
         canvas.width = tileSize;
         canvas.height = tileSize;
@@ -243,15 +243,15 @@ function aplicarTextura(urlImagen) {
             ctx.drawImage(img, 0, 0, tileSize, tileSize);
         }
 
-        // 1. Dibujar el relleno de la junta
+        // 1. Relleno de la junta ultrafina
         ctx.fillStyle = colorJuntaActual;
-        ctx.fillRect(0, 0, tileSize, grosorJunta); // Junta superior
-        ctx.fillRect(0, 0, grosorJunta, tileSize); // Junta izquierda
+        ctx.fillRect(0, 0, tileSize, grosorJunta); 
+        ctx.fillRect(0, 0, grosorJunta, tileSize); 
 
-        // 2. Efecto de relieve 3D (sombra interior para simular surco rehundido)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-        ctx.fillRect(0, grosorJunta, tileSize, 1);       // Sombra inferior de la junta superior
-        ctx.fillRect(grosorJunta, 0, 0.5, tileSize);       // Sombra derecha de la junta izquierda
+        // 2. Relieve 3D sutil
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+        ctx.fillRect(0, grosorJunta, tileSize, 0.5);       
+        ctx.fillRect(grosorJunta, 0, 0.5, tileSize);       
 
         capa.style.backgroundImage = `url(${canvas.toDataURL()})`;
         capa.style.backgroundRepeat = 'repeat';
@@ -260,12 +260,18 @@ function aplicarTextura(urlImagen) {
     };
 }
 
+// Color de pared con sombras y profundidad integradas (sin alterar las juntas)
 function cambiarColorPared(colorHex) {
     const escenario = document.getElementById('escenario');
     if (escenario) {
-        escenario.style.backgroundColor = colorHex;
+        const estiloFondo = `
+            radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.45) 100%),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.3) 100%),
+            ${colorHex}
+        `;
+        escenario.style.background = estiloFondo;
         if (ambienteActual === 'habitacion') {
-            escenario.style.setProperty('background-color', colorHex, 'important');
+            escenario.style.setProperty('background', estiloFondo, 'important');
         }
     }
 }
@@ -306,7 +312,6 @@ function inicializarPaletaJuntas() {
         </div>
     `;
     
-    // Ubicación exacta debajo del bloque de Color de Pared
     let puntoInsert = null;
     const candidatos = document.querySelectorAll('.color-pared, #color-pared, [class*="pared"], .panel-controles > div, .sidebar > div');
     for (let el of candidatos) {
