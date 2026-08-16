@@ -110,7 +110,6 @@ function cambiarAmbiente(ambiente) {
     cargarCatalogo();
     cambiarVista('vista-visualizador');
 }
-
 function aplicarTextura(urlImagen) {
     let capaId = 'capa-piso';
     if (ambienteActual === 'bano' && zonaSeleccionada === 'pared') {
